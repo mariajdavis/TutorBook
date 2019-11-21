@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+
+    <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
+
+    <style>
+        body {
+            text-align: center;
+            margin-top: 35%;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 170%;
+            color: rgb(23, 187, 134);
+        }
+
+        input {
+            border-color: rgb(23, 187, 134);
+            border-width: 1px;
+            width: 200px;
+            height: 30px;
+            font-size: 120%;
+            color: rgb(23, 187, 134);
+        }
+
+        button {
+            display: inline-block;
+            border: none;
+            padding: 0.5rem 1rem;
+            margin: 0;
+            text-decoration: none;
+            background: rgb(23, 187, 134);
+            color: #ffffff;
+            font-family: sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            text-align: center;
+            transition: background 250ms ease-in-out,
+                transform 150ms ease;
+        }
+
+        button:hover,
+        button:focus {
+            background: rgba(23, 187, 134, 0.5);
+        }
+
+        button:focus {
+            outline: 1px solid #fff;
+            outline-offset: -4px;
+        }
+
+        button:active {
+            transform: scale(0.99);
+        }
+    </style>
+</head>
+
+<body>
+
+    <img src='logo.jpeg' alt='logo' width=302px height=200px>
+
+
+    <p id="title">What subject do you <br> need help with?</p>
+    <span id="searchbox">
+        <input type="text" id="subject" value="">
+        <button type='button' id='buttonId'>Search!</button><br><br>
+    </span>
+
+
+    <script>
+
+        function searchBySubject() {
+
+            let subject = document.getElementById('subject').value;
+            db.collection('users').where("subjects", "array-contains", subject).get()
+                .then(function (tutorArray) {
+                    tutorArray.forEach(function (doc) {
+                        console.log(doc.data());
+                    })
+                }).catch(function (error) {
+                    console.log("Error getting document:", error);
+                });
+        }
+
+        document.getElementById('buttonId').onclick = searchBySubject;
+
+        //db.collection('users').doc("maria@gmail.com").collection("reviews").add({
+
+       // })
+
+    //     db.collection('users').doc("maria@gmail.com").collection("reviews").get()
+
+    // })
+    </script>
+
+
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
+    <script>
+
+        var firebaseConfig = {
+            apiKey: "AIzaSyBppJzDA662sj6TZBCP_Dprbx8cIq2SwSU",
+            authDomain: "tutorbookvancouver.firebaseapp.com",
+            databaseURL: "https://tutorbookvancouver.firebaseio.com",
+            projectId: "tutorbookvancouver",
+            storageBucket: "tutorbookvancouver.appspot.com",
+            messagingSenderId: "169085210695",
+            appId: "1:169085210695:web:e24ff38e1ece1c5a65e162"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.firestore();
+
+        // Add a document with a generated ID.
+        db.collection("users").add({
+            first: "Alan",
+            middle: "Mathison",
+            last: "Turing",
+            born: 1912
+        })
+            .then(function (docRef) {
+                console.log("Document written with ID: ", docRef.id);
+            })
+            .catch(function (error) {
+                console.error("Error adding document: ", error);
+            });
+
+    </script>
+
+</body>
+
+
+</html>
