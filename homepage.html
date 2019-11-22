@@ -102,10 +102,14 @@
             text-decoration: none;
             cursor: pointer;
         }
+        #welcome {
+            left: 100%
+        }
     </style>
 </head>
 
 <body>
+    <p id='welcome'></p>
 
     <img src='logo.jpeg' alt='logo' width=302px height=200px>
 
@@ -116,14 +120,13 @@
         <button type='button' id='buttonId'>Search!</button><br><br>
     </span>
 
-
     <!-- User information modal -->
     <div id="myModal" class="modal">
 
         <!-- Modal content -->
         <div class="modal-content">
             <span class="close">&times;</span>
-            <form>
+            <form id="myform">
                 <table>
                     <tr>
                         <td>First name:</td>
@@ -155,42 +158,36 @@
                         <td><input type="checkbox" id="tutor" name="Tutor" value="yes"><br />
                         </td>
                     </tr>
-
                     <tr>
                         <td>Subject 1:</td>
                         <td><select name="subject1" id="sub1">
-                                <option value="math">Not a tutor</option>
-                                <option value="english">Communications</option>
-                                <option value="compSci">Python</option>
-                                <option value="code">Javascript</option>
-                                <option value="other">Linear Algebra</option>
+                                <option value=null>Not a tutor</option>
+                                <option value="communications">Communications</option>
+                                <option value="python">Python</option>
+                                <option value="javascript">Javascript</option>
+                                <option value="linear algebra">Linear Algebra</option>
                         </td>
                     </tr>
                     <tr>
                         <td>Subject 2:</td>
                         <td>
-
                             <select name="subject2" id="sub2">
-                                <option value="math">Not a tutor</option>
-                                <option value="english">Communications</option>
-                                <option value="compSci">Python</option>
-                                <option value="code">Javascript</option>
-                                <option value="other">Linear Algebra</option>
+                                <option value=null>Not a tutor</option>
+                                <option value="communications">Communications</option>
+                                <option value="python">Python</option>
+                                <option value="javascript">Javascript</option>
+                                <option value="linear algebra">Linear Algebra</option>
                         </td>
                     </tr>
                 </table>
 
-                <input type="submit" id="confirmBtn">
+                <input type="submit">
             </form>
         </div>
 
     </div>
 
-
-
     <script>
-
-        console.log('hi')
 
         function searchBySubject() {
 
@@ -198,7 +195,8 @@
 
             let subject = document.getElementById('subject').value;
             db.collection('users').where("subjects", "array-contains", subject).get()
-                console.log('inside get')
+
+            console.log('inside get')
                 .then(function (tutorArray) {
                     tutorArray.forEach(function (doc) {
                         console.log(doc.data());
@@ -210,12 +208,13 @@
 
         document.getElementById('buttonId').onclick = searchBySubject;
 
-
     </script>
 
 
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
+
     <script>
 
         var firebaseConfig = {
@@ -238,16 +237,10 @@
         // Get the <span> element that closes the modal
         var span = document.getElementsByClassName("close")[0];
 
-        // When the user clicks the button, open the modal 
-        btn.onclick = function () {
-            modal.style.display = "block";
-        }
-
         // When the user clicks on <span> (x), close the modal
         span.onclick = function () {
             modal.style.display = "none";
         }
-
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function (event) {
             if (event.target == modal) {
@@ -255,56 +248,56 @@
             }
         }
 
-        console.log(user)
-        console.log(user.iud)
 
         firebase.auth().onAuthStateChanged(function (user) {
-            if (user.uid) {
-                // User is signed in.
-                console.log(user.uid);
-                if (db.collection('users').where("ID", "==", user.uid).get()) {
-                    console.log('user already has an account')
-                }
+            console.log("auth state")
+            if (user) {
+                // save user's name in local storage
 
-                else {
-                    form();
-                    console.log('hi')
-                    db.collection("users").doc(user.uid).set({
-                        firstname: userfirst,
-                        lastname: userlast,
-                        email: useremail,
-                        city: usercity,
-                        student: userstudent,
-                        tutor: usertutor,
-                        subjects: usersubjects,
-
+                db.collection('users').doc(user.email).get()
+                    .then(function (doc) {
+                        if (doc.exists) {
+                            console.log("user already exists")
+                            console.log('Document data:', doc.data());
+                            localStorage.setItem('userName', user.email.firstName);
+                            document.getElementById('welcome').innerHTML = 'Welcome back, ' + doc.data().firstName + '!'
+                        }
+                        else {
+                            modal.style.display = "block";
+                        }
                     })
-                }
-            } else {
-                // No user is signed in.
-                console.log('none'
-                )
+                    .catch(function (error) {
+                        console.log("err" + error)
+                    })
             }
-        });
+        })
 
+        // Function to get values from modal form
+        function getValues(e) {
+            var user = firebase.auth().currentUser
+            e.preventDefault();
+            console.log('inside getValues')
 
-        function form() {
-            modal.style.display = "block"
-            let submitForm = getElementById('confirmBtn')
-            submitForm.onclick = getValues;
+            db.collection("users").doc(user.email).set({
+                firstName: document.getElementById('firstname').value,
+                firstName: document.getElementById('firstname').value,
+                lastName: document.getElementById('lastname').value,
+                city: document.getElementById('city').value,
+                student: document.getElementById('student').checked,
+                tutor: document.getElementById('tutor').checked,
+                subjects: [document.getElementById('sub1').value, document.getElementById('sub2').value]
+                            })
+                                .then(function (docRef) {
+                                    console.log("written to database")
+                                })
+                                .catch(function (error) {
+                                    console.log("err")
+                                })
+                         modal.style.display = "none";
+
         }
 
-        function getValues() {
-            let userfirst = document.getElementById('firstname').value;
-            let userlast = document.getElementById('lastname').value;
-            let useremail = document.getElementById('email').value;
-            let usercity = document.getElementById('city').value;
-            let userstudent = document.getElementById('student').value;
-            let usertutor = document.getElementById('tutor').value;
-            let usersubjects = [document.getElementById('sub1').value, document.getElementById('sub2')]
-        }
-
-
+        document.getElementById("myform").addEventListener('submit',getValues)
 
 
     </script>
