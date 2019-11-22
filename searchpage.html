@@ -13,19 +13,104 @@
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
 
     <style>
-
+            body {
+                text-align: center;
+                margin-top: 35%;
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 170%;
+                color: rgb(23, 187, 134);
+            }
     
-        body {
-            text-align: center;
-            margin-top: 35%;
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 170%;
-            color: rgb(23, 187, 134);
-        }
-        table {
-            border-color: black;
-        }
-    </style>
+            input {
+                border-color: rgb(23, 187, 134);
+                border-width: 1px;
+                width: 200px;
+                height: 30px;
+                font-size: 120%;
+                color: rgb(23, 187, 134);
+            }
+    
+            button {
+                display: inline-block;
+                border: none;
+                padding: 0.5rem 1rem;
+                margin: 0;
+                text-decoration: none;
+                background: rgb(23, 187, 134);
+                color: #ffffff;
+                font-family: sans-serif;
+                font-size: 1rem;
+                cursor: pointer;
+                text-align: center;
+                transition: background 250ms ease-in-out,
+                    transform 150ms ease;
+            }
+    
+            button:hover,
+            button:focus {
+                background: rgba(23, 187, 134, 0.5);
+            }
+    
+            button:focus {
+                outline: 1px solid #fff;
+                outline-offset: -4px;
+            }
+    
+            button:active {
+                transform: scale(0.99);
+            }
+    
+            /* The Modal (background) */
+            .modal {
+                display: none;
+                /* Hidden by default */
+                position: fixed;
+                /* Stay in place */
+                z-index: 1;
+                /* Sit on top */
+                padding-top: 100px;
+                /* Location of the box */
+                left: 0;
+                top: 0;
+                width: 100%;
+                /* Full width */
+                height: 100%;
+                /* Full height */
+                overflow: auto;
+                /* Enable scroll if needed */
+                background-color: rgb(0, 0, 0);
+                /* Fallback color */
+                background-color: rgba(0, 0, 0, 0.4);
+                /* Black w/ opacity */
+            }
+    
+            /* Modal Content */
+            .modal-content {
+                background-color: #fefefe;
+                margin: auto;
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%;
+            }
+    
+            /* The Close Button */
+            .close {
+                color: #aaaaaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+    
+            .close:hover,
+            .close:focus {
+                color: #000;
+                text-decoration: none;
+                cursor: pointer;
+            }
+            #welcome {
+                left: 100%
+            }
+        </style>
 
 </head>
 
@@ -43,6 +128,31 @@
 
     <table id = tableid></table>
 
+        <!-- Search modal -->
+        <div id="searchModal" class="modal">
+
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <form id="searchform">
+                        <table>
+                            <tr>
+        
+                                <td><input type='radio' id='rating'>Ratings<br />
+                                </td>
+                            </tr>
+                            <tr>
+        
+                                <td><input type='radio' id='lastname'>Price<br />
+                                </td>
+                            </tr>
+                        </table>
+        
+                        <input type="submit">
+                    </form>
+                </div>
+        
+            </div>
+
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
@@ -50,6 +160,10 @@
     <script>
 
         let tutorTable = document.getElementById('tableid')
+
+        
+        // Get the search modal
+        let searchModal = document.getElementById("searchModal");
 
         var firebaseConfig = {
             apiKey: "AIzaSyBppJzDA662sj6TZBCP_Dprbx8cIq2SwSU",
@@ -60,6 +174,22 @@
             messagingSenderId: "169085210695",
             appId: "1:169085210695:web:e24ff38e1ece1c5a65e162"
         };
+
+        // Get the <span> element that closes the modal
+                var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function () {
+    searchModal.style.display = "none";
+}
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
+    if (event.target == searchModal) {
+        searchModal.style.display = "none";
+    }
+}
+
+
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
@@ -126,6 +256,8 @@
 
         addRow('Maria')
         addRow('Timothy')
+
+        searchModal.style.display = "block";
 
     </script>
 
