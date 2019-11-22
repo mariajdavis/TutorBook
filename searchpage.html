@@ -1,32 +1,57 @@
 <!DOCTYPE html>
 <html>
 
+
+
+
+
 <head>
 
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
-        <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
+    <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
+
+    <style>
+
+    
+        body {
+            text-align: center;
+            margin-top: 35%;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 170%;
+            color: rgb(23, 187, 134);
+        }
+        table {
+            border-color: black;
+        }
+    </style>
 
 </head>
 
 <body>
 
+        <span id="searchbox">
+                <form action='onclick' method="GET">
+                    <input type="text" name='searched'/><br/>
+                    <input type='submit' value='Search!'/>
+                </form>
+            </span>
 
 
+    <p><b>Search results</b></p>
 
-        <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
-    
+    <table id = tableid></table>
 
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
 
     <script>
 
+        let tutorTable = document.getElementById('tableid')
 
-        
-
-var firebaseConfig = {
+        var firebaseConfig = {
             apiKey: "AIzaSyBppJzDA662sj6TZBCP_Dprbx8cIq2SwSU",
             authDomain: "tutorbookvancouver.firebaseapp.com",
             databaseURL: "https://tutorbookvancouver.firebaseio.com",
@@ -51,21 +76,56 @@ var firebaseConfig = {
 
         function searchBySubject() {
 
-            console.log('inside searchBySubject')
-
             let tutorArray = db.collection('users')
+            let tutorList = []
+
             tutorArray.where("subjects", "array-contains", subject).get()
                 .then(function (tutorArray) {
                     tutorArray.forEach(function (doc) {
-                        console.log(doc.data());
+                        tutorList.push(doc.data());
                     })
+                    searchResults(tutorList);
+                    
                 })
                 .catch(function (error) {
                     console.log("Error getting document:", error);
                 });
         }
 
-        searchBySubject();
+
+        function searchResults(resultList) {
+
+            for (let i = 0; i < resultList.length; i++) {
+                console.log(resultList[i])
+                
+            }
+        }
+
+        // add photo and rating
+        function addRow(tutorName) {
+
+            let row = tutorTable.insertRow(0);
+            let photoCell = row.insertCell(0);
+            let nameCell = row.insertCell(1);
+            let ratingCell = row.insertCell(2);
+            nameCell.innerHTML = tutorName;
+            ratingCell.innerHTML = '* * * * *'
+            // this.name = tutorName;
+            // this.h = '25px'; // cell width
+            // this.w = '150px'; // cell width
+            // this.index = index;
+            // this.display = function () {
+            //     let row = document.createElement('TABLEROW');
+            //     tutorTable.appendChild(row);
+            //     row.style = 'height:' + this.h + ';width:' + this.w;
+            //     row.innerHTML = tutorName;
+            }
+        
+
+        listOfTutors = searchBySubject();
+
+        addRow('Maria')
+        addRow('Timothy')
 
     </script>
 
