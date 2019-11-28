@@ -2,8 +2,7 @@
 <html>
 
 <head>
-    <meta name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
 
     <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
@@ -250,30 +249,6 @@
         }
 
 
-        firebase.auth().onAuthStateChanged(function (user) {
-            console.log("auth state")
-            if (user) {
-                // save user's name in local storage
-
-                db.collection('users').doc(user.email).get()
-                    .then(function (doc) {
-                        if (doc.exists) {
-                            console.log("user already exists")
-                            console.log('Document data:', doc.data());
-                            localStorage.setItem('userName', user.email.firstName);
-                            document.getElementById('welcome').innerHTML = 'Welcome back, ' + doc.data().firstName + '!';
-                            document.getElementById('signin').innerHTML = profilepic;
-                            document.getElementById('signin').style.backgroundColor='white';
-                        }
-                        else {
-                            modal.style.display = "block";
-                        }
-                    })
-                    .catch(function (error) {
-                        console.log("err" + error)
-                    })
-            }
-        })
 
         // Function to get values from modal form
         function getValues(e) {
@@ -299,6 +274,48 @@
                          modal.style.display = "none";
 
         }
+
+        db.collection("users").onSnapshot((snapshot)=>{
+            let currentUser = firebase.auth().currentUser;
+            snapshot.forEach(doc => {
+                if(doc.id == currentUser.email)
+                {
+                            console.log('Document data:', doc.data());
+                            localStorage.setItem('userName', currentUser.email.firstName);
+                            document.getElementById('welcome').innerHTML = 'Welcome back, ' + doc.data().firstName + '!';
+                            document.getElementById('signin').innerHTML = profilepic;
+                            document.getElementById('signin').style.backgroundColor='white';
+                }
+            })
+
+
+        })
+
+
+        firebase.auth().onAuthStateChanged(function (user) {
+            console.log("auth state")
+            if (user) {
+                // save user's name in local storage
+
+                db.collection('users').doc(user.email).get()
+                    .then(function (doc) {
+                        if (doc.exists) {
+                            console.log("user already exists")
+                            console.log('Document data:', doc.data());
+                            localStorage.setItem('userName', user.email.firstName);
+                            document.getElementById('welcome').innerHTML = 'Welcome back, ' + doc.data().firstName + '!';
+                            document.getElementById('signin').innerHTML = profilepic;
+                            document.getElementById('signin').style.backgroundColor='white';
+                        }
+                        else {
+                            modal.style.display = "block";
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log("err" + error)
+                    })
+            }
+        })
 
         document.getElementById("myform").addEventListener('submit',getValues)
 
