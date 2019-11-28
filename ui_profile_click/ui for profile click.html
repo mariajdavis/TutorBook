@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: rgba(225, 249, 248, 1);
+    border: 1px solid blue;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    /* L : change width according to the user image size */
+    width: 15%;
+    /* L : change position according to user image location on homepage*/
+    position:absolute;
+    top: 150px;
+    right: 40px;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position:absolute;
+    top: 1px;
+    right: 10px;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+    
+
+#profile:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+    
+
+#profile {
+    /* L : position of user profile */
+    position: absolute;
+    top: 1px;
+    right: 25px;
+}
+    
+#viewProfile, #viewMessages, #logOut {
+    /* L : each 'button' (p-tagged) of the modal */
+    background-color: rgba(130, 232, 225, 1);
+    border: 1px  solid #888;
+    color: white;
+    font-size: 90%;
+}
+    
+#viewProfile:hover,
+#viewMessages:hover,
+#logOut:hover {
+    /* L : easy indication of user knowing that the 'buttons' are clickable */
+    background-color: rgba(83, 223, 214, 1);
+    cursor: pointer;
+    border: 1px solid black;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    text-align: center;
+}
+    
+</style>
+</head>
+<body>
+
+<!-- Trigger/Open The Modal -->
+<img id="profile" src="profilephoto.png" width=20%>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content" align="center";>
+    <span class="close">&times;</span>
+      <!-- L : display each click-able element created when the user image is clicked -->
+    <p id="viewProfile" onclick="viewProfile()"></p>
+      <p id="viewMessages" onclick="viewMessages()"></p>
+      <p id="logOut" onclick="logOut()"></p>
+  </div>
+    
+</div>
+
+    
+<script>
+    // L : onclick will lead to these functions, might be able to change later by adding <a href> tag inside each <p> tag. 
+function viewProfile() {
+    alert("This will lead to the profile page.");
+}
+    
+function viewMessages() {
+    alert("This will lead to the message page.");
+}
+    
+function logOut() {
+    alert("This will redirect back to the main page and log you out.");
+}
+    // ** L : that's all i've got done so far 8(
+    
+    
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("profile");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+  modal.style.display = "block";
+    document.getElementById("viewProfile").innerHTML = "<br>View Profile<br><br>";
+    document.getElementById("viewMessages").innerHTML = "<br>View Messages<br><br>";
+    document.getElementById("logOut").innerHTML = "<br>Log out<br><br>";
+}
+function test() { 
+    alert("hi");
+}
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>
+
+</body>
+</html>
