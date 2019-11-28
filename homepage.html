@@ -250,7 +250,7 @@
         }
 
 
-        firebase.auth().onAuthStateChanged(function (user) {
+        firebase.auth().onAuthStateChanged(setTimer(function (user) {
             console.log("auth state")
             if (user) {
                 // save user's name in local storage
@@ -273,7 +273,7 @@
                         console.log("err" + error)
                     })
             }
-        })
+        }, 1000))
 
         // Function to get values from modal form
         function getValues(e) {
