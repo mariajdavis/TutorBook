@@ -6,7 +6,7 @@
 body {font-family: Arial, Helvetica, sans-serif;}
 
 /* The Modal (background) */
-.modal {
+.modalL {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
@@ -21,7 +21,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 }
 
 /* Modal Content */
-.modal-content {
+.modal-contentL {
     background-color: rgba(225, 249, 248, 1);
     border: 1px solid blue;
     margin: auto;
@@ -36,7 +36,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 }
 
 /* The Close Button */
-.close {
+.closeL {
     color: #aaaaaa;
     float: right;
     font-size: 28px;
@@ -46,8 +46,8 @@ body {font-family: Arial, Helvetica, sans-serif;}
     right: 10px;
 }
 
-.close:hover,
-.close:focus {
+.closeL:hover,
+.closeL:focus {
     color: #000;
     text-decoration: none;
     cursor: pointer;
@@ -67,7 +67,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
     right: 25px;
 }
     
-#viewProfile, #viewMessages, #logOut {
+#viewProfile, #viewMessages, #logOut, #yourTutors {
     /* L : each 'button' (p-tagged) of the modal */
     background-color: rgba(130, 232, 225, 1);
     border: 1px  solid #888;
@@ -77,6 +77,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
     
 #viewProfile:hover,
 #viewMessages:hover,
+#yourTutors:hover,
 #logOut:hover {
     /* L : easy indication of user knowing that the 'buttons' are clickable */
     background-color: rgba(83, 223, 214, 1);
@@ -94,15 +95,16 @@ body {font-family: Arial, Helvetica, sans-serif;}
 <img id="profile" src="profilephoto.png" width=20%>
 
 <!-- The Modal -->
-<div id="myModal" class="modal">
+<div id="myModalL" class="modalL">
 
   <!-- Modal content -->
-  <div class="modal-content" align="center";>
-    <span class="close">&times;</span>
+  <div class="modal-contentL" align="center";>
+    <span class="closeL">&times;</span>
       <!-- L : display each click-able element created when the user image is clicked -->
     <p id="viewProfile" onclick="viewProfile()"></p>
-      <p id="viewMessages" onclick="viewMessages()"></p>
-      <p id="logOut" onclick="logOut()"></p>
+    <p id="viewMessages" onclick="viewMessages()"></p>
+    <p id="yourTutors" onclick="yourTutors()"></p>
+    <p id="logOut" onclick="logOut()"></p>
   </div>
     
 </div>
@@ -121,17 +123,21 @@ function viewMessages() {
 function logOut() {
     alert("This will redirect back to the main page and log you out.");
 }
+
+function yourTutors() {
+    alert("This will lead to a page with all previous tutors, and clicking on one will lead to their profile.")
+}
     // ** L : that's all i've got done so far 8(
     
     
 // Get the modal
-var modal = document.getElementById("myModal");
+var modal = document.getElementById("myModalL");
 
 // Get the button that opens the modal
 var btn = document.getElementById("profile");
 
 // Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
+var span = document.getElementsByClassName("closeL")[0];
 
 // When the user clicks the button, open the modal 
 btn.onclick = function() {
@@ -139,6 +145,7 @@ btn.onclick = function() {
     // L : Creating the innerHTML for each click-able p tag
     document.getElementById("viewProfile").innerHTML = "<br>View Profile<br><br>";
     document.getElementById("viewMessages").innerHTML = "<br>View Messages<br><br>";
+    document.getElementById("yourTutors").innerHTML = "<br> Your Tutors<br><br>";
     document.getElementById("logOut").innerHTML = "<br>Log out<br><br>";
 }
 
