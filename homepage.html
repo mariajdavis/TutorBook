@@ -2,7 +2,8 @@
 <html>
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
 
     <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
@@ -10,7 +11,7 @@
     <style>
         body {
             text-align: center;
-            margin-top: 35%;
+            margin-top: 10%;
             font-family: Arial, Helvetica, sans-serif;
             font-size: 170%;
             color: rgb(23, 187, 134);
@@ -44,6 +45,15 @@
         button:hover,
         button:focus {
             background: rgba(23, 187, 134, 0.5);
+        }
+        #subjectentry {
+            margin: 5px;
+            width: 200px;
+        }
+
+        #searchBtn {
+            font-size: 70%;
+            width: 204px;
         }
 
         button:focus {
@@ -105,10 +115,26 @@
         #welcome {
             left: 100%
         }
+        #signin {
+            background-color:rgb(23, 187, 134);
+            color: white;
+            position: fixed;
+            right:0%;
+            top:0%;
+            display: block;
+            height: 40px;
+            line-height: 40px;
+            text-decoration: none;
+            width: 100px;
+            text-align: center;
+        }
     </style>
 </head>
 
 <body>
+
+    <a id="signin" href="signup.html">Sign In</a>
+
     <p id='welcome'></p>
 
     <img src='logo.jpeg' alt='logo' width=302px height=200px>
@@ -117,8 +143,8 @@
 
     <span id="searchbox">
         <form action='searchpage.html' method="GET">
-            <input type="text" name='searched'/><br/>
-            <input type='submit' value='Search!'/>
+            <input type="text" id='subjectentry' name='searched'/><br/>
+            <input type='submit' id='searchBtn' value='Search!'/>
         </form>
     </span>
 
@@ -200,13 +226,15 @@
             appId: "1:169085210695:web:e24ff38e1ece1c5a65e162"
         };
 
+        let profilepic = "<img src='profilephoto.png' width=100px height=100px href='profilepage.html'></img>'"
+
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         db = firebase.firestore();
 
         // Get the modal
         var modal = document.getElementById("myModal");
-
+        
         // Get the <span> element that closes the modal
         var span = document.getElementsByClassName("close")[0];
 
@@ -233,7 +261,9 @@
                             console.log("user already exists")
                             console.log('Document data:', doc.data());
                             localStorage.setItem('userName', user.email.firstName);
-                            document.getElementById('welcome').innerHTML = 'Welcome back, ' + doc.data().firstName + '!'
+                            document.getElementById('welcome').innerHTML = 'Welcome back, ' + doc.data().firstName + '!';
+                            document.getElementById('signin').innerHTML = profilepic;
+                            document.getElementById('signin').style.backgroundColor='white';
                         }
                         else {
                             modal.style.display = "block";
