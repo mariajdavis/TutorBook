@@ -136,13 +136,12 @@ var span = document.getElementsByClassName("close")[0];
 // When the user clicks the button, open the modal 
 btn.onclick = function() {
   modal.style.display = "block";
+    // L : Creating the innerHTML for each click-able p tag
     document.getElementById("viewProfile").innerHTML = "<br>View Profile<br><br>";
     document.getElementById("viewMessages").innerHTML = "<br>View Messages<br><br>";
     document.getElementById("logOut").innerHTML = "<br>Log out<br><br>";
 }
-function test() { 
-    alert("hi");
-}
+
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
   modal.style.display = "none";
