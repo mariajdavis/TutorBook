@@ -114,6 +114,7 @@
         #welcome {
             left: 100%
         }
+        
         #signin {
             background-color:rgb(23, 187, 134);
             color: white;
@@ -125,8 +126,9 @@
             line-height: 40px;
             text-decoration: none;
             width: 100px;
-            text-align: center;
+            text-align: center;            
         }
+
         #signin:hover{
             background-color: rgba(18, 145, 105, 1);
         }
@@ -134,12 +136,40 @@
         #profileperson:hover{
             opacity:0.7;
         }
-    
+
+        #profileperson{
+            position:absolute;
+            right:10px;
+        }
+
+        #logOut{
+            position:absolute;
+            right:10px;
+            top:115px;
+        }
+ 
+        select {
+            height: 50px;
+            width: 180px;
+            font-weight:525;
+            font-size: 65%;
+            color:rgb(23, 187, 134);
+        }
+        #searchBtn{
+            background-color:rgb(23, 187, 134);
+            color:white;
+        }
+
+        #searchBtn:hover{
+            cursor:pointer;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            background-color:rgba(16, 127, 92, 1);
+        }
     </style>
 </head>
 
 <body>
-
+    <button id="logOut">Log Out</button>
     <a id="signin" href="signup.html">Sign In</a>
 
     <p id='welcome'></p>
@@ -150,7 +180,19 @@
 
     <span id="searchbox">
         <form action='searchpage.html' method="GET">
-            <input type="text" id='subjectentry' name='searched'/><br/>
+                <div class="input-group-btn">
+             <select id="dropdown0" class="dropdown-menu dropdown-menu-right">
+                <option class="dropdown-item" value="">Choose here!</option>
+                <div role="separator" class="dropdown-divider"></div>
+               <option class="dropdown-item" value="communications">Communications</option>
+               <div role="separator" class="dropdown-divider"></div>
+               <option class="dropdown-item" value="python">Python</option>
+               <div role="separator" class="dropdown-divider"></div>
+               <option class="dropdown-item" value="javascript">JavaScript</option>
+               <div role="separator" class="dropdown-divider"></div>
+               <option class="dropdown-item" option value="linear algebra">Linear Algebra</option>
+                  </select>
+                  </div><br/>
             <input type='submit' id='searchBtn' value='Search!'/>
         </form>
     </span>
@@ -230,9 +272,23 @@
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
-
+    <script type="text/javascript">
+        var mydropdown = document.getElementById('dropdown0');
+    
+        mydropdown.onchange = function(){
+              mydropdown.value = this.value; //to change the value
+    }
+    </script>
     <script>
-
+        // Log-out template, use for the modal when user is clicked
+        document.getElementById("logOut").onclick=function(){
+            firebase.auth().signOut().then(function() {
+                if(!alert('Signout successful.')){window.location.reload();}
+            }).catch(function(error) {
+                alert("Error signing out, please try again later.")
+            })
+        };
+    
         var firebaseConfig = {
             apiKey: "AIzaSyBppJzDA662sj6TZBCP_Dprbx8cIq2SwSU",
             authDomain: "tutorbookvancouver.firebaseapp.com",
@@ -303,12 +359,12 @@
                             console.log('Document data:', doc.data());
                             localStorage.setItem('userName', currentUser.email.firstName);
                             document.getElementById('welcome').innerHTML = 'Welcome back, ' + doc.data().firstName + '!';
+
                             document.getElementById('signin').innerHTML = profilepic;
                             document.getElementById('signin').style.backgroundColor='white';
                 }
             })
         })
-
 
         firebase.auth().onAuthStateChanged(function (user) {
             console.log("auth state")
