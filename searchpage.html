@@ -3,11 +3,11 @@
 
 <head>
 
-        <meta name="viewport"
+    <meta name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
 
     <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css"/>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
 
     <style>
         body {
@@ -24,6 +24,10 @@
             width: 200px;
             height: 30px;
             font-size: 100%;
+            color: rgb(23, 187, 134);
+        }
+        #filterid tr{
+            background-color:white;
             color: rgb(23, 187, 134);
         }
 
@@ -113,20 +117,67 @@
         #welcome {
             left: 100%;
         }
+
+        tr:hover {
+            opacity: 0.7;
+        }
+
+        #content, #thead {
+            width: 402px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #thead tr {
+            background-color: white;
+            color:rgb(23, 187, 134);
+            font-size:120%;
+        }
+
+        #tableid {
+            margin: 5px;
+            text-align: center;
+            border-collapse: collapse;
+            color: white;
+            border-collapse: separate;
+            border-spacing: 0 1em;
+        }
+        tr {
+            background-color: rgb(23, 187, 134);
+        }
+        td {
+            width: 150px;
+            height: 40px;
+            padding: 3px;
+}
     </style>
+
+
 
 </head>
 
 <body>
 
-    <input type="text" id='subject' /><br />
+    <img src='profilephoto.png' width=100px height=100px onclick:'></img>
+
+    <input type="text" id='subject'/><br/>
     <input type='submit' id='searchBtn' value='Search!' />
     <input type='button' id='filterBtn' value='Filter' />
 
+    <table id='thead' width=402px>
+    <br><br>
+        <tr>
+            <td>Tutor</td>
+            <td>Rate</td>
+            <td>Rating</td>
+        </tr>
 
-    <p><b>Search results</b></p>
+    </table>
 
-    <table id=tableid></table>
+    <div id='content'>
+
+        <table id=tableid></table>
+    </div>
+
 
     <!-- Search modal -->
     <div id="filterModal" class="modal">
@@ -134,7 +185,7 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <form id="searchform">
-                <table>
+                <table id='filterid'>
                     <tr>
                         <td><input type='radio' name='filter' id='ratings'>Ratings<br />
                         </td>
@@ -157,10 +208,11 @@
 
     <script>
 
-        let tutorTable = document.getElementById('tableid')
+        let tutorTable = document.getElementById('tableid');
 
-        let searchBtn = document.getElementById('searchBtn')
+        let searchBtn = document.getElementById('searchBtn');
 
+        let subject = parseURL(window.location.href);
 
         // Get the filter modal
         let filterModal = document.getElementById("filterModal");
@@ -200,7 +252,7 @@
             return query
         }
 
-        subject = parseURL(window.location.href)
+        let table = document.getElementById('tableid');
 
         function searchBySubject(subject) {
 
@@ -209,80 +261,99 @@
 
             tutorArray.where("subjects", "array-contains", subject).get()
                 .then(function (tutorArray) {
-                    tutorArray.forEach(function (doc) {
-                        tutorList.push(doc.data());
-                    })
-                    displayResults(tutorList);
-
+                    // tutorArray.forEach(function (doc) {
+                    //     tutorList.push(doc.data());
+                    // })
+                    searchResults(table, tutorArray);
                 })
                 .catch(function (error) {
                     console.log("Error getting document:", error);
                 });
         }
 
+        // function displayResults(resultList) {
 
-        function displayResults(resultList) {
+            //     for (let i = 0; i < resultList.length; i++) {
+            //         let rating = document.getElementById('ratings').value;
+            //         let price = document.getElementById('price').value;
 
-            for (let i = 0; i < resultList.length; i++) {
-                let rating = document.getElementById('ratings').value; 
-                let price = document.getElementById('price').value;
+            //         if (price) {
+            //             // sort resultList high to low
+            //         }
 
-                if (price) {
-                    // sort resultList high to low
-                }
+            //         if (rating) {
+            //             // sort resultList high to low
+            //         }
 
-                if (rating) {
-                    // sort resultList high to low
-                }
+            //         addRow(resultList[i])
+
+            //         console.log(resultList[i])
+
+            //     }
+            // }
+
+            function searchResults(table, tutorArray) {
+                tutorArray.forEach(tutor => {
+                    let row = table.insertRow();
+                    // for (key in element) {
+                        let photoCell = row.insertCell(0);
+                        let nameCell = row.insertCell(1);
+                        let ratingCell = row.insertCell(2);
+                        // photoCell.innerHTML = '<img src=""' + tutorInfo.photo + '"></img>'
+                        nameCell.innerHTML = tutor.data().firstName;
+                        ratingCell.innerHTML = addStars(tutor.data().rating);
+                        // table.appendChild(nameCell);
+                        // table.appendChild(ratingCell);
+                    })
                 
-            addRow(resultList[i])
-     
-                console.log(resultList[i])
+            
+             }
 
-            }
-        }
+            // let table = document.querySelector("table");
 
-        // add div (row of tutor information)
-        function addRow(tutorInfo) {
-        function addStars(num) {
-            if (num === 1) {
-                return '*'
-            }
-            while (num > 0) {
-                console.log(num)
-                return '* ' + addStars(num - 1)
+            // // add div (row of tutor information)
+            // function addRow(tutorInfo) {
+            //     document.getElementById('')
+            //     let row = tutorTable.insertRow(0);
+            //     let photoCell = row.insertCell(0);
+            //     let nameCell = row.insertCell(1);
+            //     let ratingCell = row.insertCell(2);
+            //     // photoCell.innerHTML = '<img src=""' + tutorInfo.photo + '"></img>'
+            //     nameCell.innerHTML = tutorInfo.firstName;
+            //     ratingCell.innerHTML = addStars(tutorInfo.rating);
+            // }
+
+            function addStars(num) {
+                if (num === 1) {
+                    return '*'
+                }
+                while (num > 0) {
+                    console.log(num)
+                    return '* ' + addStars(num - 1)
                 }
             }
-            let row = tutorTable.insertRow(0);
-            let photoCell = row.insertCell(0);
-            let nameCell = row.insertCell(1);
-            let ratingCell = row.insertCell(2);
-            // photoCell.innerHTML = '<img src=""' + tutorInfo.photo + '"></img>'
-            nameCell.innerHTML = tutorInfo.firstName;
-            ratingCell.innerHTML = addStars(tutorInfo.rating);
-        }
 
 
-        function filter() {
+            function filter() {
 
-            console.log('inside filter')
-            db.collection("users").doc(user.email).set({
+                console.log('inside filter')
+                db.collection("users").doc(user.email).set({
 
-            })
-                .then(function (docRef) {
-                    console.log("written to database")
                 })
-                .catch(function (error) {
-                    console.log("err")
-                })
-            searchModal.style.display = "none";
+                    .then(function (docRef) {
+                        console.log("written to database")
+                    })
+                    .catch(function (error) {
+                        console.log("err")
+                    })
+                searchModal.style.display = "none";
 
-        }
+            }
 
-        listOfTutors = searchBySubject(subject);
+            listOfTutors = searchBySubject(subject);
 
-        filterBtn.onclick = function () { filterModal.style.display = "block"; }
-        searchBtn.onclick = function () {let subject = document.getElementById('subject').value; searchBySubject(subject) }
+            filterBtn.onclick = function () { filterModal.style.display = "block"; }
+            searchBtn.onclick = function () { let subject = document.getElementById('subject').value; searchBySubject(subject) }
 
     </script>
 
