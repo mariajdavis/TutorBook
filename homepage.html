@@ -271,13 +271,36 @@
     <div id="options" class="modal">
         <div class="modal-content" align="center">
             <span id='close'>&times;</span>
-            <p id="viewProfile" onclick="viewProfile()"></p>
+            <p id="viewNotifications" onclick="viewNotifications()"></p>
             <p id="viewMessages" onclick="viewMessages()"></p>
-            <p id="logOut" onclick="logOut()"></p>
+            <p id="viewSessions" onclick="viewSessions()"></p>
+            <p id='logOut' onclick='logOut()'></p>
         </div>
     </div>
 
+
     <script>
+
+span.onclick = function () {
+            optionsModal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                optionsModal.style.display = "none";
+            }
+        }
+
+        var firebaseConfig = {
+            apiKey: "AIzaSyBppJzDA662sj6TZBCP_Dprbx8cIq2SwSU",
+            authDomain: "tutorbookvancouver.firebaseapp.com",
+            databaseURL: "https://tutorbookvancouver.firebaseio.com",
+            projectId: "tutorbookvancouver",
+            storageBucket: "tutorbookvancouver.appspot.com",
+            messagingSenderId: "169085210695",
+            appId: "1:169085210695:web:e24ff38e1ece1c5a65e162"
+        };
 
         var profileBtn = document.getElementById("profile");
         var optionsModal = document.getElementById("options");
@@ -286,8 +309,9 @@
 
         profileBtn.onclick = function () {
             optionsModal.style.display = "block";
-            document.getElementById("viewProfile").innerHTML = "<br>View Profile<br>";
-            document.getElementById("viewMessages").innerHTML = "<br>View Messages<br>";
+            document.getElementById("viewNotifications").innerHTML = "<br>Notifications<br>";
+            document.getElementById("viewMessages").innerHTML = "<br>Messages<br>";
+            document.getElementById("viewSessions").innerHTML = "<br>Upcoming sessions<br>";
             document.getElementById("logOut").innerHTML = "<br>Log out<br>";
         }
 
@@ -302,12 +326,16 @@
             }
         }
 
-        function viewProfile() {
-            alert("This will lead to the profile page.");
+        function viewNotifications() {
+            alert("This will lead to user's notifications.");
         }
 
         function viewMessages() {
-            alert("This will lead to the message page.");
+            alert("This will lead to user's message page.");
+        }
+
+        function viewSessions() {
+            alert("This will lead to user's future tutoring sessions page.");
         }
 
         function logOut() {

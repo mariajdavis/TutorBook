@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+            <meta name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+
+    <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
+
+
+    <style>
+            body {
+                text-align: center;
+                margin-top: 10px;
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 120%;
+                color: rgb(23, 187, 134);
+            }
+    
+            input {
+                border-color: rgb(23, 187, 134);
+                border-width: 1px;
+                width: 200px;
+                height: 30px;
+                font-size: 100%;
+                color: rgb(23, 187, 134);
+            }
+    
+            #filterid tr {
+                background-color: white;
+                color: rgb(23, 187, 134);
+            }
+    
+            button {
+                display: inline-block;
+                border: none;
+                padding: 0.5rem 1rem;
+                margin: 0;
+                text-decoration: none;
+                background: rgb(23, 187, 134);
+                color: #ffffff;
+                font-family: sans-serif;
+                font-size: 1rem;
+                cursor: pointer;
+                text-align: center;
+                transition: background 250ms ease-in-out,
+                    transform 150ms ease;
+            }
+    
+            button:hover,
+            button:focus {
+                background: rgba(23, 187, 134, 0.5);
+            }
+    
+            button:focus {
+                outline: 1px solid #fff;
+                outline-offset: -4px;
+            }
+    
+            button:active {
+                transform: scale(0.99);
+            }
+    
+            #subject {
+                width: 402px;
+                margin: 5px;
+            }
+    
+            /* The Modal (background) */
+            .modal {
+                display: none;
+                /* Hidden by default */
+                position: fixed;
+                /* Stay in place */
+                z-index: 1;
+                /* Sit on top */
+                padding-top: 100px;
+                /* Location of the box */
+                left: 0;
+                top: 0;
+                width: 100%;
+                /* Full width */
+                height: 100%;
+                /* Full height */
+                overflow: auto;
+                /* Enable scroll if needed */
+            }
+    
+            /* Modal Content */
+            .modal-content {
+                background-color: #fefefe;
+                margin: auto;
+                padding: 20px;
+                border: 1px solid rgb(23, 187, 134);
+                width: 80%;
+            }
+    
+            /* The Close Button */
+            .close {
+                color: #aaaaaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+    
+            .close:hover,
+            .close:focus {
+                color: #000;
+                text-decoration: none;
+                cursor: pointer;
+            }
+    
+            #welcome {
+                left: 100%;
+            }
+    
+            tr:hover {
+                opacity: 0.7;
+            }
+    
+            #thead:hover {
+                opacity: 1.0;
+            }
+    
+            #content,
+            #thead {
+                width: 402px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+    
+            #thead tr {
+                background-color: white;
+                color: rgb(23, 187, 134);
+                font-size: 120%;
+            }
+    
+            #tableid {
+                margin: 5px;
+                text-align: center;
+                border-collapse: collapse;
+                color: white;
+                border-collapse: separate;
+                border-spacing: 0 1em;
+            }
+    
+            tr {
+                background-color: rgb(23, 187, 134);
+            }
+    
+            td {
+                width: 150px;
+                height: 40px;
+                padding: 3px;
+            }
+    
+            #profile {
+                height: 100px;
+                width: 100px;
+                top: 0%;
+                right: 0%;
+                position: fixed;
+                display: block;
+            }
+        </style>
+
+
+    </head>
+    <body>
+
+            <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
+
+
+  
+    <div id='listOfSessions'></div>
+
+
+    </div>
+
+        <div id="notificationModal" class="modal">
+        <div class="modal-content" align="center" ;>
+            <span id='close'>&times;</span>
+            <p id="messageTutor" onclick="sendMessage()"></p>
+            <p id="cancelSession" onclick="cancelSession()"></p>
+        </div>
+    </div>
+
+<script>
+
+           // Initialize Firebase
+           firebase.initializeApp(firebaseConfig);
+        db = firebase.firestore();
+
+      //  let sessionOptions = document.getElementById('listOfSessions')
+
+
+
+
+
+
+// insert a table above to append things to...
+
+function retrieveSessions() {
+            let sessionArray = db.collection('users').document(user.email).collection('sessions').get()
+                .then(function (sessionArray) {
+                    searchResults(table, sessionArray);
+                })
+                .catch(function (error) {
+                    console.log("Error getting document:", error);
+                });
+        }
+
+function displaySessions(table, sessions) {
+            sessions.forEach(session => {
+                let row = table.insertRow();
+                let photoCell = row.insertCell(0);
+                let nameCell = row.insertCell(1);
+                let ratingCell = row.insertCell(2);
+                photoCell.innerHTML = '<img src="' + tutor.data().photo + '" width=100%>';
+                nameCell.innerHTML = tutor.data().firstName;
+                ratingCell.innerHTML = addStars(tutor.data().rating);
+                console.log(tutor.data())
+                row.onclick = function() { localStorage.setItem("tutor", JSON.stringify(tutor.data())); 
+                                           location.href = 'profilepage.html'; }
+            })
+        }
+
+
+
+
+
+
+
+
+            sessionOptions.onclick = function () {
+            optionsModal.style.display = "block";
+            document.getElementById("messageTutor").innerHTML = "<br>Message Tutor<br><br>";
+            document.getElementById("cancelSession").innerHTML = "<br>Cancel Session<br><br>";
+        }
+        </script>
+          </body>
+        </html>

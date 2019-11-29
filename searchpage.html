@@ -224,13 +224,14 @@
 
 
     <div id="options" class="modal">
-        <div class="modal-content" align="center" ;>
-            <span id='close'>&times;</span>
-            <p id="viewProfile" onclick="viewProfile()"></p>
-            <p id="viewMessages" onclick="viewMessages()"></p>
-            <p id="logOut" onclick="logOut()"></p>
+            <div class="modal-content" align="center">
+                <span id='close'>&times;</span>
+                <p id="viewNotifications" onclick="viewNotifications()"></p>
+                <p id="viewMessages" onclick="viewMessages()"></p>
+                <p id="viewSessions" onclick="viewSessions()"></p>
+                <p id='logOut' onclick='logOut()'></p>
+            </div>
         </div>
-    </div>
 
     <script>
 
@@ -241,9 +242,10 @@
 
         profileBtn.onclick = function () {
             optionsModal.style.display = "block";
-            document.getElementById("viewProfile").innerHTML = "<br>View Profile<br><br>";
-            document.getElementById("viewMessages").innerHTML = "<br>View Messages<br><br>";
-            document.getElementById("logOut").innerHTML = "<br>Log out<br><br>";
+            document.getElementById("viewNotifications").innerHTML = "<br>Notifications<br>";
+            document.getElementById("viewMessages").innerHTML = "<br>Messages<br>";
+            document.getElementById("viewSessions").innerHTML = "<br>Upcoming sessions<br>";
+            document.getElementById("logOut").innerHTML = "<br>Log out<br>";
         }
 
         span.onclick = function () {
@@ -257,17 +259,22 @@
             }
         }
 
-        function viewProfile() {
-            alert("This will lead to the profile page.");
+        function viewNotifications() {
+            alert("This will lead to user's notifications.");
         }
 
         function viewMessages() {
-            alert("This will lead to the message page.");
+            alert("This will lead to user's message page.");
+        }
+
+        function viewSessions() {
+            alert("This will lead to user's future tutoring sessions page.");
         }
 
         function logOut() {
             alert("This will redirect back to the main page and log you out.");
         }
+
 
         let tutorTable = document.getElementById('tableid');
 
@@ -316,13 +323,10 @@
         let table = document.getElementById('tableid');
 
         function searchBySubject(subject) {
-
             let tutorArray = db.collection('users')
             let tutorList = []
-
             tutorArray.where("subjects", "array-contains", subject).get()
                 .then(function (tutorArray) {
-
                     searchResults(table, tutorArray);
                 })
                 .catch(function (error) {

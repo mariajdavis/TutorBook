@@ -1,0 +1,23 @@
+
+    <div id='sessionOptions'></div>
+
+    let sessionOptions = document.getElementById('sessionOptions')
+
+    </div>
+
+        <div id="notificationModal" class="modal">
+        <div class="modal-content" align="center" ;>
+            <span id='close'>&times;</span>
+            <p id="messageTutor" onclick="sendMessage()"></p>
+            <p id="cancelSession" onclick="cancelSession()"></p>
+        </div>
+    </div>
+
+
+
+
+            sessionOptions.onclick = function () {
+            optionsModal.style.display = "block";
+            document.getElementById("messageTutor").innerHTML = "<br>Message Tutor<br><br>";
+            document.getElementById("cancelSession").innerHTML = "<br>Cancel Session<br><br>";
+        }
