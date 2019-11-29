@@ -43,7 +43,52 @@
 </head>
 
 <body>
-
+        <div id="options" class="modal">
+                <div class="modal-content" align="center" ;>
+                    <span id='close'>&times;</span>
+                    <p id="viewProfile" onclick="viewProfile()"></p>
+                    <p id="viewMessages" onclick="viewMessages()"></p>
+                    <p id="logOut" onclick="logOut()"></p>
+                </div>
+            </div>
+        
+            <script>
+        
+                var profileBtn = document.getElementById("profile");
+                var optionsModal = document.getElementById("options");
+                var span = document.getElementById('close');
+        
+        
+                profileBtn.onclick = function () {
+                    optionsModal.style.display = "block";
+                    document.getElementById("viewProfile").innerHTML = "<br>View Profile<br><br>";
+                    document.getElementById("viewMessages").innerHTML = "<br>View Messages<br><br>";
+                    document.getElementById("logOut").innerHTML = "<br>Log out<br><br>";
+                }
+        
+                span.onclick = function () {
+                    optionsModal.style.display = "none";
+                }
+        
+                // When the user clicks anywhere outside of the modal, close it
+                window.onclick = function (event) {
+                    if (event.target == modal) {
+                        optionsModal.style.display = "none";
+                    }
+                }
+        
+                function viewProfile() {
+                    alert("This will lead to the profile page.");
+                }
+        
+                function viewMessages() {
+                    alert("This will lead to the message page.");
+                }
+        
+                function logOut() {
+                    alert("This will redirect back to the main page and log you out.");
+                }
+</script>        
 
     <div class="card">
         <img src="profilephoto.png" alt="photo" width=250px height=250px">

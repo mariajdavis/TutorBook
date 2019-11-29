@@ -124,13 +124,13 @@
         }
 
         #content,
-        #thead  {
+        #thead {
             width: 402px;
             margin-left: auto;
             margin-right: auto;
         }
 
-        #thead tr{
+        #thead tr {
             background-color: white;
             color: rgb(23, 187, 134);
             font-size: 120%;
@@ -187,7 +187,7 @@
 
     <div id='content'>
 
-        <table id=tableid></table>
+        <table id='tableid'></table>
     </div>
 
 
@@ -228,7 +228,8 @@
             <p id="viewProfile" onclick="viewProfile()"></p>
             <p id="viewMessages" onclick="viewMessages()"></p>
             <p id="logOut" onclick="logOut()"></p>
-        </div></div>
+        </div>
+    </div>
 
     <script>
 
@@ -320,6 +321,7 @@
 
             tutorArray.where("subjects", "array-contains", subject).get()
                 .then(function (tutorArray) {
+
                     searchResults(table, tutorArray);
                 })
                 .catch(function (error) {
@@ -328,23 +330,17 @@
         }
 
         // function displayResults(resultList) {
-
         //     for (let i = 0; i < resultList.length; i++) {
         //         let rating = document.getElementById('ratings').value;
         //         let price = document.getElementById('price').value;
-
         //         if (price) {
         //             // sort resultList high to low
         //         }
-
         //         if (rating) {
         //             // sort resultList high to low
         //         }
-
         //         addRow(resultList[i])
-
         //         console.log(resultList[i])
-
         //     }
         // }
 
@@ -359,11 +355,7 @@
                 photoCell.innerHTML = '<img src="' + tutor.data().photo + '" width=100%>';
                 nameCell.innerHTML = tutor.data().firstName;
                 ratingCell.innerHTML = addStars(tutor.data().rating);
-                // table.appendChild(nameCell);
-                // table.appendChild(ratingCell);
             })
-
-
         }
 
         function addStars(num) {
@@ -376,6 +368,12 @@
             }
         }
 
+        function clearTable() {
+            let tableRef = document.getElementById('tableid');
+            while (tableRef.rows.length > 0) {
+                tableRef.deleteRow(0);
+            }
+        }
 
         function filter() {
 
@@ -396,7 +394,7 @@
         listOfTutors = searchBySubject(subject);
 
         filterBtn.onclick = function () { filterModal.style.display = "block"; }
-        searchBtn.onclick = function () { let subject = document.getElementById('subject').value; searchBySubject(subject) }
+        searchBtn.onclick = function () { let subject = document.getElementById('subject').value; clearTable(); searchBySubject(subject) }
 
     </script>
 
