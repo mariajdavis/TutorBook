@@ -171,9 +171,9 @@
 
 <body>
 
-    <input type="text" id='subject' /><br />
-    <input type='submit' id='searchBtn' value='Search!' />
-    <input type='button' id='filterBtn' value='Filter' />
+    <input type="text" id='subject'/><br />
+    <input type='submit' id='searchBtn' value='Search!'/>
+    <input type='button' id='filterBtn' value='Filter'/>
 
     <table id='thead' width=402px>
         <br><br>
@@ -184,6 +184,7 @@
         </tr>
 
     </table>
+
 
     <div id='content'>
 
@@ -347,14 +348,13 @@
         function searchResults(table, tutorArray) {
             tutorArray.forEach(tutor => {
                 let row = table.insertRow();
-                // for (key in element) {
                 let photoCell = row.insertCell(0);
                 let nameCell = row.insertCell(1);
                 let ratingCell = row.insertCell(2);
-                console.log(tutor.data().photo)
                 photoCell.innerHTML = '<img src="' + tutor.data().photo + '" width=100%>';
                 nameCell.innerHTML = tutor.data().firstName;
                 ratingCell.innerHTML = addStars(tutor.data().rating);
+                row.onclick = function() { location.href = 'profilepage.html'; }
             })
         }
 
@@ -363,7 +363,6 @@
                 return '*'
             }
             while (num > 0) {
-                console.log(num)
                 return '* ' + addStars(num - 1)
             }
         }

@@ -2,6 +2,12 @@
 <html>
 
 <head>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+
+    <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
+
 
     <style>
         .card {
@@ -43,6 +49,8 @@
 </head>
 
 <body>
+
+    <!-- 
         <div id="options" class="modal">
                 <div class="modal-content" align="center" ;>
                     <span id='close'>&times;</span>
@@ -88,33 +96,69 @@
                 function logOut() {
                     alert("This will redirect back to the main page and log you out.");
                 }
-</script>        
+</script>         -->
+
+
 
     <div class="card">
-        <img src="profilephoto.png" alt="photo" width=250px height=250px">
-        <h1>Timothy D.</h1>
-        <h3 id='location'>Vancouver</h3>
-        <h3>* * * * *</h3>
-        <h3 id="title">Tutor: Linear Algebra</h3>
-        <p style="font-size: 75%">I am passionate about mathematics and computer science!</p>
+        <img src="profilephoto.png" id='tutorPhoto' alt="photo" width=250px height=250px">
+        <h1 id='tutorName'></h1>
+        <h3 id='tutorCity'></h3>
+        <h3 id='tutorRating'></h3>
+        <h3>Tutor: </h3><h3 id='tutorSubjects'></h3>
+        <p style="font-size: 75%">bio goes here</p>
 
         <p><button>Reviews</button></p>
         <p><button>Contact</button></p>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
+
+
     <script>
+
+var firebaseConfig = {
+            apiKey: "AIzaSyBppJzDA662sj6TZBCP_Dprbx8cIq2SwSU",
+            authDomain: "tutorbookvancouver.firebaseapp.com",
+            databaseURL: "https://tutorbookvancouver.firebaseio.com",
+            projectId: "tutorbookvancouver",
+            storageBucket: "tutorbookvancouver.appspot.com",
+            messagingSenderId: "169085210695",
+            appId: "1:169085210695:web:e24ff38e1ece1c5a65e162"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.firestore();
+
+      
+ 
+ // ******** get/set local storage
+ let item = JSON.parse(localStorage.getItem('tutor'))
+ console.log(item)
+
+        // document.getElementById('tutorPhoto').src = sessionStorage.getItem("photo");
+        // document.getElementById('tutorName').innerHTML = sessionStorage.getItem("firstName");
+        // document.getElementById('tutorCity').innerHTML = sessionStorage.getItem("city");
+        // document.getElementById('tutorRating').innerHTML = sessionStorage.getItem("rating");
+
+
         db.collection("users").onSnapshot((snapshot) => {
             let currentUser = firebase.auth().currentUser;
             snapshot.forEach(doc => {
                 if (doc.id == currentUser.email) {
                     console.log('Document data:', doc.data());
                     localStorage.setItem('userName', currentUser.email.firstName);
-                    document.getElementById('welcome').innerHTML = 'Welcome back, ' + doc.data().firstName + '!';
-                    document.getElementById('signin').innerHTML = profilepic;
-                    document.getElementById('signin').style.backgroundColor = 'white';
+                    // document.getElementById('profile').innerHTML = profilepic;
+
                 }
             })
         })
+
+
+
     </script>
 
 

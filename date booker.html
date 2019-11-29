@@ -8,10 +8,10 @@
 
 <body>
 
-    <input id="calender" type="date" min="">
+    <input id="calendar" type="date" min="">
     <input id="confirm" type="button" value="confirm">
     <br>
-    (NAME HERE)'s current booked dates
+    <p></p>Schedule a session with </p><p id='tutorName'></p>
     <ul id="days">
         <li>Dates go here</li>
     </ul>
@@ -26,8 +26,9 @@
             var ul = document.getElementById("days");
             var li = document.createElement("li");
             var children = ul.children.length + 1
-            li.appendChild(document.createTextNode(document.getElementById("calender").value));
+            li.appendChild(document.createTextNode(document.getElementById("calendar").value));
             ul.appendChild(li)
+            console.log(children)
         }
 
     </script>

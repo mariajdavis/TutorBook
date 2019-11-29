@@ -320,6 +320,7 @@
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
     <script type="text/javascript">
+    
         var mydropdown = document.getElementById('dropdown0');
     
         mydropdown.onchange = function(){
@@ -406,15 +407,16 @@
                             localStorage.setItem('userName', currentUser.email.firstName);
                             document.getElementById('welcome').innerHTML = 'Welcome back, ' + doc.data().firstName + '!';
                             document.getElementById('signin').style.visibility='hidden';
+                            document.getElementById('profile').src=doc.data().photo;
                             document.getElementById('profile').style.visibility='visible';
                 }
             })
         })
 
         firebase.auth().onAuthStateChanged(function (user) {
-            console.log("auth state")
             if (user) {
                 // save user's name in local storage
+                console.log("someone has logged in")
 
                 db.collection('users').doc(user.email).get()
                     .then(function (doc) {
