@@ -127,6 +127,14 @@
             width: 100px;
             text-align: center;
         }
+        #signin:hover{
+            background-color: rgba(18, 145, 105, 1);
+        }
+        
+        #profileperson:hover{
+            opacity:0.7;
+        }
+    
     </style>
 </head>
 
@@ -230,7 +238,7 @@
             appId: "1:169085210695:web:e24ff38e1ece1c5a65e162"
         };
 
-        let profilepic = "<img src='profilephoto.png' width=100px height=100px href='profilepage.html'></img>'"
+        let profilepic = "<img id='profileperson' src='profilephoto.png' width=100px height=100px href='profilepage.html'></img>'"
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
