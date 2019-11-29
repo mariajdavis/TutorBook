@@ -179,6 +179,11 @@
                         </td>
                     </tr>
                     <tr>
+                            <td>Profile photo (png/jpg):</td>
+                            <td><input type='text' id='photo'><br />
+                            </td>
+                        </tr>
+                    <tr>
                         <td>Student?</td>
                         <td><input type="checkbox" id="student" name="Student" value="yes"><br />
                         </td>
@@ -275,6 +280,7 @@
                 firstName: document.getElementById('firstname').value,
                 lastName: document.getElementById('lastname').value,
                 city: document.getElementById('city').value,
+                photo: document.getElementById('photo').value,
                 student: document.getElementById('student').checked,
                 tutor: document.getElementById('tutor').checked,
                 subjects: [document.getElementById('sub1').value.toLowerCase(), document.getElementById('sub2').value.toLowerCase()]

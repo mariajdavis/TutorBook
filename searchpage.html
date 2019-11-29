@@ -26,8 +26,9 @@
             font-size: 100%;
             color: rgb(23, 187, 134);
         }
-        #filterid tr{
-            background-color:white;
+
+        #filterid tr {
+            background-color: white;
             color: rgb(23, 187, 134);
         }
 
@@ -84,10 +85,6 @@
             /* Full height */
             overflow: auto;
             /* Enable scroll if needed */
-            background-color: rgb(0, 0, 0);
-            /* Fallback color */
-            background-color: rgba(0, 0, 0, 0.4);
-            /* Black w/ opacity */
         }
 
         /* Modal Content */
@@ -95,7 +92,7 @@
             background-color: #fefefe;
             margin: auto;
             padding: 20px;
-            border: 1px solid #888;
+            border: 1px solid rgb(23, 187, 134);
             width: 80%;
         }
 
@@ -122,15 +119,21 @@
             opacity: 0.7;
         }
 
-        #content, #thead {
+        #thead:hover {
+            opacity: 1.0;
+        }
+
+        #content,
+        #thead  {
             width: 402px;
             margin-left: auto;
             margin-right: auto;
         }
-        #thead tr {
+
+        #thead tr{
             background-color: white;
-            color:rgb(23, 187, 134);
-            font-size:120%;
+            color: rgb(23, 187, 134);
+            font-size: 120%;
         }
 
         #tableid {
@@ -141,14 +144,25 @@
             border-collapse: separate;
             border-spacing: 0 1em;
         }
+
         tr {
             background-color: rgb(23, 187, 134);
         }
+
         td {
             width: 150px;
             height: 40px;
             padding: 3px;
-}
+        }
+
+        #profile {
+            height: 100px;
+            width: 100px;
+            top: 0%;
+            right: 0%;
+            position: fixed;
+            display: block;
+        }
     </style>
 
 
@@ -157,14 +171,12 @@
 
 <body>
 
-    <img src='profilephoto.png' width=100px height=100px onclick:'></img>
-
-    <input type="text" id='subject'/><br/>
+    <input type="text" id='subject' /><br />
     <input type='submit' id='searchBtn' value='Search!' />
     <input type='button' id='filterBtn' value='Filter' />
 
     <table id='thead' width=402px>
-    <br><br>
+        <br><br>
         <tr>
             <td>Tutor</td>
             <td>Rate</td>
@@ -206,7 +218,54 @@
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
 
+
+    <img src='profilephoto.png' width=100px height=100px id='profile'></img>
+
+
+    <div id="options" class="modal">
+        <div class="modal-content" align="center" ;>
+            <span id='close'>&times;</span>
+            <p id="viewProfile" onclick="viewProfile()"></p>
+            <p id="viewMessages" onclick="viewMessages()"></p>
+            <p id="logOut" onclick="logOut()"></p>
+        </div></div>
+
     <script>
+
+        var profileBtn = document.getElementById("profile");
+        var optionsModal = document.getElementById("options");
+        var span = document.getElementById('close');
+
+
+        profileBtn.onclick = function () {
+            optionsModal.style.display = "block";
+            document.getElementById("viewProfile").innerHTML = "<br>View Profile<br><br>";
+            document.getElementById("viewMessages").innerHTML = "<br>View Messages<br><br>";
+            document.getElementById("logOut").innerHTML = "<br>Log out<br><br>";
+        }
+
+        span.onclick = function () {
+            optionsModal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                optionsModal.style.display = "none";
+            }
+        }
+
+        function viewProfile() {
+            alert("This will lead to the profile page.");
+        }
+
+        function viewMessages() {
+            alert("This will lead to the message page.");
+        }
+
+        function logOut() {
+            alert("This will redirect back to the main page and log you out.");
+        }
 
         let tutorTable = document.getElementById('tableid');
 
@@ -261,9 +320,6 @@
 
             tutorArray.where("subjects", "array-contains", subject).get()
                 .then(function (tutorArray) {
-                    // tutorArray.forEach(function (doc) {
-                    //     tutorList.push(doc.data());
-                    // })
                     searchResults(table, tutorArray);
                 })
                 .catch(function (error) {
@@ -273,87 +329,73 @@
 
         // function displayResults(resultList) {
 
-            //     for (let i = 0; i < resultList.length; i++) {
-            //         let rating = document.getElementById('ratings').value;
-            //         let price = document.getElementById('price').value;
+        //     for (let i = 0; i < resultList.length; i++) {
+        //         let rating = document.getElementById('ratings').value;
+        //         let price = document.getElementById('price').value;
 
-            //         if (price) {
-            //             // sort resultList high to low
-            //         }
+        //         if (price) {
+        //             // sort resultList high to low
+        //         }
 
-            //         if (rating) {
-            //             // sort resultList high to low
-            //         }
+        //         if (rating) {
+        //             // sort resultList high to low
+        //         }
 
-            //         addRow(resultList[i])
+        //         addRow(resultList[i])
 
-            //         console.log(resultList[i])
+        //         console.log(resultList[i])
 
-            //     }
-            // }
+        //     }
+        // }
 
-            function searchResults(table, tutorArray) {
-                tutorArray.forEach(tutor => {
-                    let row = table.insertRow();
-                    // for (key in element) {
-                        let photoCell = row.insertCell(0);
-                        let nameCell = row.insertCell(1);
-                        let ratingCell = row.insertCell(2);
-                        // photoCell.innerHTML = '<img src=""' + tutorInfo.photo + '"></img>'
-                        nameCell.innerHTML = tutor.data().firstName;
-                        ratingCell.innerHTML = addStars(tutor.data().rating);
-                        // table.appendChild(nameCell);
-                        // table.appendChild(ratingCell);
-                    })
-                
-            
-             }
+        function searchResults(table, tutorArray) {
+            tutorArray.forEach(tutor => {
+                let row = table.insertRow();
+                // for (key in element) {
+                let photoCell = row.insertCell(0);
+                let nameCell = row.insertCell(1);
+                let ratingCell = row.insertCell(2);
+                photoCell.innerHTML = '<img src=""' + tutorInfo.photo + '"></img>'
+                nameCell.innerHTML = tutor.data().firstName;
+                ratingCell.innerHTML = addStars(tutor.data().rating);
+                // table.appendChild(nameCell);
+                // table.appendChild(ratingCell);
+            })
 
-            // let table = document.querySelector("table");
 
-            // // add div (row of tutor information)
-            // function addRow(tutorInfo) {
-            //     document.getElementById('')
-            //     let row = tutorTable.insertRow(0);
-            //     let photoCell = row.insertCell(0);
-            //     let nameCell = row.insertCell(1);
-            //     let ratingCell = row.insertCell(2);
-            //     // photoCell.innerHTML = '<img src=""' + tutorInfo.photo + '"></img>'
-            //     nameCell.innerHTML = tutorInfo.firstName;
-            //     ratingCell.innerHTML = addStars(tutorInfo.rating);
-            // }
+        }
 
-            function addStars(num) {
-                if (num === 1) {
-                    return '*'
-                }
-                while (num > 0) {
-                    console.log(num)
-                    return '* ' + addStars(num - 1)
-                }
+        function addStars(num) {
+            if (num === 1) {
+                return '*'
             }
+            while (num > 0) {
+                console.log(num)
+                return '* ' + addStars(num - 1)
+            }
+        }
 
 
-            function filter() {
+        function filter() {
 
-                console.log('inside filter')
-                db.collection("users").doc(user.email).set({
+            console.log('inside filter')
+            db.collection("users").doc(user.email).set({
 
+            })
+                .then(function (docRef) {
+                    console.log("written to database")
                 })
-                    .then(function (docRef) {
-                        console.log("written to database")
-                    })
-                    .catch(function (error) {
-                        console.log("err")
-                    })
-                searchModal.style.display = "none";
+                .catch(function (error) {
+                    console.log("err")
+                })
+            searchModal.style.display = "none";
 
-            }
+        }
 
-            listOfTutors = searchBySubject(subject);
+        listOfTutors = searchBySubject(subject);
 
-            filterBtn.onclick = function () { filterModal.style.display = "block"; }
-            searchBtn.onclick = function () { let subject = document.getElementById('subject').value; searchBySubject(subject) }
+        filterBtn.onclick = function () { filterModal.style.display = "block"; }
+        searchBtn.onclick = function () { let subject = document.getElementById('subject').value; searchBySubject(subject) }
 
     </script>
 
