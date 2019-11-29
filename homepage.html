@@ -169,6 +169,7 @@
 </head>
 
 <body>
+    <button id="logOut">Log Out</button>
     <a id="signin" href="signup.html">Sign In</a>
 
     <p id='welcome'></p>
@@ -274,7 +275,15 @@
     }
     </script>
     <script>
-
+        // Log-out template, use for the modal when user is clicked
+        document.getElementById("logOut").onclick=function(){
+            firebase.auth().signOut().then(function() {
+                if(!alert('Signout successful.')){window.location.reload();}
+            }).catch(function(error) {
+                alert("Error signing out, please try again later.")
+            })
+        };
+    
         var firebaseConfig = {
             apiKey: "AIzaSyBppJzDA662sj6TZBCP_Dprbx8cIq2SwSU",
             authDomain: "tutorbookvancouver.firebaseapp.com",
