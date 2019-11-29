@@ -354,7 +354,8 @@
                 photoCell.innerHTML = '<img src="' + tutor.data().photo + '" width=100%>';
                 nameCell.innerHTML = tutor.data().firstName;
                 ratingCell.innerHTML = addStars(tutor.data().rating);
-                row.onclick = function() { location.href = 'profilepage.html'; }
+                console.log(tutor.data())
+                row.onclick = function() { localStorage.setItem("tutor", JSON.stringify(tutor.data())); location.href = 'profilepage.html'; }
             })
         }
 

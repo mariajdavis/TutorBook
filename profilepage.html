@@ -136,13 +136,19 @@ var firebaseConfig = {
       
  
  // ******** get/set local storage
- let item = JSON.parse(localStorage.getItem('tutor'))
- console.log(item)
+        tutor = JSON.parse(localStorage.getItem("tutor"))
+        console.log(tutor)
+        let subjects = ''
 
-        // document.getElementById('tutorPhoto').src = sessionStorage.getItem("photo");
-        // document.getElementById('tutorName').innerHTML = sessionStorage.getItem("firstName");
-        // document.getElementById('tutorCity').innerHTML = sessionStorage.getItem("city");
-        // document.getElementById('tutorRating').innerHTML = sessionStorage.getItem("rating");
+        document.getElementById('tutorPhoto').src = tutor.photo;
+        document.getElementById('tutorName').innerHTML = tutor.firstName;
+        document.getElementById('tutorCity').innerHTML = tutor.city;
+        document.getElementById('tutorRating').innerHTML = tutor.rating;
+        tutor.subjects.forEach(tutorSubject => {
+            subjects += tutorSubject + ' ';
+        })
+        document.getElementById('tutorSubjects').innerHTML = subjects;
+
 
 
         db.collection("users").onSnapshot((snapshot) => {
