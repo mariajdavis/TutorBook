@@ -335,7 +335,8 @@ span.onclick = function () {
         }
 
         function viewSessions() {
-            alert("This will lead to user's future tutoring sessions page.");
+            //localStorage.setItem("session", JSON.stringify(tutor.data())); 
+            location.href = 'sessionspage.html';
         }
 
         function logOut() {
@@ -404,7 +405,11 @@ span.onclick = function () {
             var user = firebase.auth().currentUser
             e.preventDefault();
             console.log('inside getValues')
-            lowerCaseSubjects = 
+            console.log(user)
+
+    
+
+    
 
             db.collection("users").doc(user.email).set({
                 firstName: document.getElementById('firstname').value,
@@ -414,7 +419,8 @@ span.onclick = function () {
                 photo: document.getElementById('photo').value,
                 student: document.getElementById('student').checked,
                 tutor: document.getElementById('tutor').checked,
-                subjects: [document.getElementById('sub1').value.toLowerCase(), document.getElementById('sub2').value.toLowerCase()]
+                subjects: [document.getElementById('sub1').value.toLowerCase(), 
+                           document.getElementById('sub2').value.toLowerCase()]
                             })
                                 .then(function (docRef) {
                                     console.log("written to database")
@@ -431,6 +437,7 @@ span.onclick = function () {
             snapshot.forEach(doc => {
                 if(doc.id == currentUser.email)
                 {
+                            localStorage.setItem("userInfo", doc.data());
                             console.log('Document data:', doc.data());
                             localStorage.setItem('userName', currentUser.email.firstName);
                             document.getElementById('welcome').innerHTML = 'Welcome back, ' + doc.data().firstName + '!';
@@ -453,7 +460,7 @@ span.onclick = function () {
                             console.log('Document data:', doc.data());
                             localStorage.setItem('userName', user.email.firstName);
                             document.getElementById('welcome').innerHTML = 'Welcome back, ' + doc.data().firstName + '!';
-                            document.getElementById('profile').innerHTML = profilepic;
+                            //document.getElementById('profile').innerHTML = profilepic;
                         }
                         else {
                             modal.style.display = "block";
@@ -466,6 +473,10 @@ span.onclick = function () {
         })
 
         document.getElementById("myform").addEventListener('submit',getValues)
+ 
+
+
+        //tutor = JSON.parse(localStorage.getItem("tutor"))
 
 
     </script>

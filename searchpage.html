@@ -268,7 +268,7 @@
         }
 
         function viewSessions() {
-            alert("This will lead to user's future tutoring sessions page.");
+           location.href = 'sessionspage.html';
         }
 
         function logOut() {
@@ -321,10 +321,10 @@
         }
 
         let table = document.getElementById('tableid');
+        
 
         function searchBySubject(subject) {
             let tutorArray = db.collection('users')
-            let tutorList = []
             tutorArray.where("subjects", "array-contains", subject).get()
                 .then(function (tutorArray) {
                     searchResults(table, tutorArray);
@@ -333,21 +333,6 @@
                     console.log("Error getting document:", error);
                 });
         }
-
-        // function displayResults(resultList) {
-        //     for (let i = 0; i < resultList.length; i++) {
-        //         let rating = document.getElementById('ratings').value;
-        //         let price = document.getElementById('price').value;
-        //         if (price) {
-        //             // sort resultList high to low
-        //         }
-        //         if (rating) {
-        //             // sort resultList high to low
-        //         }
-        //         addRow(resultList[i])
-        //         console.log(resultList[i])
-        //     }
-        // }
 
         function searchResults(table, tutorArray) {
             tutorArray.forEach(tutor => {
@@ -362,6 +347,21 @@
                 row.onclick = function() { localStorage.setItem("tutor", JSON.stringify(tutor.data())); location.href = 'profilepage.html'; }
             })
         }
+
+                // function displayResults(resultList) {
+        //     for (let i = 0; i < resultList.length; i++) {
+        //         let rating = document.getElementById('ratings').value;
+        //         let price = document.getElementById('price').value;
+        //         if (price) {
+        //             // sort resultList high to low
+        //         }
+        //         if (rating) {
+        //             // sort resultList high to low
+        //         }
+        //         addRow(resultList[i])
+        //         console.log(resultList[i])
+        //     }
+        // }
 
         function addStars(num) {
             if (num === 1) {
@@ -379,27 +379,18 @@
             }
         }
 
-        function filter() {
-
-            console.log('inside filter')
-            db.collection("users").doc(user.email).set({
-
-            })
-                .then(function (docRef) {
-                    console.log("written to database")
-                })
-                .catch(function (error) {
-                    console.log("err")
-                })
-            searchModal.style.display = "none";
-
-        }
-
         listOfTutors = searchBySubject(subject);
 
         filterBtn.onclick = function () { filterModal.style.display = "block"; }
-        searchBtn.onclick = function () { let subject = document.getElementById('subject').value; clearTable(); searchBySubject(subject) }
+        searchBtn.onclick = function () { let subject = document.getElementById('subject').value;  
+                                          clearTable(); searchBySubject(subject) }
 
+
+
+
+
+
+                                          
     </script>
 
 </body>
