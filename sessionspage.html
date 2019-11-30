@@ -212,9 +212,10 @@
 
 
 
-        let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+        var user = JSON.parse(localStorage.getItem('userInfo'));
 
-        console.log(userInfo)
+        console.log('user: ', user);  
+
 
 
         retrieveSessions();

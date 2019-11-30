@@ -456,6 +456,7 @@ span.onclick = function () {
                 db.collection('users').doc(user.email).get()
                     .then(function (doc) {
                         if (doc.exists) {
+                            localStorage.setItem('userInfo', JSON.stringify(doc.data()))
                             console.log("user already exists")
                             console.log('Document data:', doc.data());
                             localStorage.setItem('userName', user.email.firstName);
@@ -473,10 +474,15 @@ span.onclick = function () {
         })
 
         document.getElementById("myform").addEventListener('submit',getValues)
+
+        console.log(JSON.parse(localStorage.getItem('userInfo')))
  
 
 
         //tutor = JSON.parse(localStorage.getItem("tutor"))
+        
+        // let result = JSON.parse(JSON.stringify(currentUser))
+        // console.log(result)
 
 
     </script>
