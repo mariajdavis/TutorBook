@@ -103,6 +103,23 @@
             font-size: 28px;
             font-weight: bold;
         }
+        #signin {
+            background-color: rgb(23, 187, 134);
+            color: white;
+            position: fixed;
+            right: 0%;
+            top: 0%;
+            display: block;
+            height: 40px;
+            line-height: 40px;
+            text-decoration: none;
+            width: 100px;
+            text-align: center;
+        }
+
+        #signin:hover {
+            background-color: rgba(18, 145, 105, 1);
+        }
 
         .close:hover,
         .close:focus {
@@ -163,6 +180,14 @@
             position: fixed;
             display: block;
         }
+
+        select {
+            height: 50px;
+            width: 402px;
+            font-weight: 525;
+            font-size: 65%;
+            color: rgb(23, 187, 134);
+        }
     </style>
 
 
@@ -171,9 +196,22 @@
 
 <body>
 
-    <input type="text" id='subject'/><br />
-    <input type='submit' id='searchBtn' value='Search!'/>
-    <input type='button' id='filterBtn' value='Filter'/>
+        <a id="signin" href="signup.html">Sign In</a>
+
+        <select id="dropdown">
+            <option value="">Select subject...</option>
+            <div role="separator" ></div>
+            <option value="communications">Communications</option>
+            <div role="separator" ></div>
+            <option value="python">Python</option>
+            <div role="separator"></div>
+            <option value="javascript">JavaScript</option>
+            <div role="separator" ></div>
+            <option option value="linear algebra">Linear Algebra</option>
+        </select><br>
+        <input type='submit' id='searchBtn' value='Search!' onclick=updateSearch()>
+        <input type='button' id='filterBtn' value='Filter' onclick=updateSearch()>
+
 
     <table id='thead' width=402px>
         <br><br>
@@ -185,9 +223,8 @@
 
     </table>
 
-
+    <!-- This is where search results are appended in body -->
     <div id='content'>
-
         <table id='tableid'></table>
     </div>
 
@@ -220,24 +257,29 @@
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
 
 
-    <img src='profilephoto.png' width=100px height=100px id='profile'></img>
+    <img src='profilephoto.png' width=100px height=100px id='profile' style='visibility:hidden'></img>
 
 
     <div id="options" class="modal">
-            <div class="modal-content" align="center">
-                <span id='close'>&times;</span>
-                <p id="viewNotifications" onclick="viewNotifications()"></p>
-                <p id="viewMessages" onclick="viewMessages()"></p>
-                <p id="viewSessions" onclick="viewSessions()"></p>
-                <p id='logOut' onclick='logOut()'></p>
-            </div>
+        <div class="modal-content" align="center">
+            <span id='close'>&times;</span>
+            <p id="viewNotifications" onclick="viewNotifications()"></p>
+            <p id="viewMessages" onclick="viewMessages()"></p>
+            <p id="viewSessions" onclick="viewSessions()"></p>
+            <p id='logOut' onclick='logOut()'></p>
         </div>
+    </div>
 
     <script>
 
-        var profileBtn = document.getElementById("profile");
-        var optionsModal = document.getElementById("options");
-        var span = document.getElementById('close');
+        let profileBtn = document.getElementById("profile");
+        let optionsModal = document.getElementById("options");
+        let span = document.getElementById('close')
+
+        let profilepic = "<img id='profileperson' src='profilephoto.png' width=100px height=100px href='profilepage.html'></img>'"
+
+        let subject = localStorage.getItem('subject')
+        console.log(subject)
 
 
         profileBtn.onclick = function () {
@@ -268,7 +310,7 @@
         }
 
         function viewSessions() {
-           location.href = 'sessionspage.html';
+            location.href = 'sessionspage.html';
         }
 
         function logOut() {
@@ -277,10 +319,9 @@
 
 
         let tutorTable = document.getElementById('tableid');
+        let filterBtn = document.getElementById('filterBtn')
 
         let searchBtn = document.getElementById('searchBtn');
-
-        let subject = parseURL(window.location.href);
 
         // Get the filter modal
         let filterModal = document.getElementById("filterModal");
@@ -296,10 +337,10 @@
         };
 
         // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
+        var closeModal = document.getElementsByClassName("close")[0];
 
         // When the user clicks on <span> (x), close the modal
-        span.onclick = function () {
+        closeModal.onclick = function () {
             filterModal.style.display = "none";
         }
         // When the user clicks anywhere outside of the modal, close it
@@ -321,7 +362,7 @@
         }
 
         let table = document.getElementById('tableid');
-        
+
 
         function searchBySubject(subject) {
             let tutorArray = db.collection('users')
@@ -334,6 +375,13 @@
                 });
         }
 
+        function updateSearch() {
+            let subject = document.getElementById('dropdown').value;
+            localStorage.setItem('subject', subject)
+            clearTable(); 
+            searchBySubject(subject)
+        }
+
         function searchResults(table, tutorArray) {
             tutorArray.forEach(tutor => {
                 let row = table.insertRow();
@@ -344,11 +392,11 @@
                 nameCell.innerHTML = tutor.data().firstName;
                 ratingCell.innerHTML = addStars(tutor.data().rating);
                 console.log(tutor.data())
-                row.onclick = function() { localStorage.setItem("tutor", JSON.stringify(tutor.data())); location.href = 'profilepage.html'; }
+                row.onclick = function () { localStorage.setItem("tutor", JSON.stringify(tutor.data())); location.href = 'profilepage.html'; }
             })
         }
 
-                // function displayResults(resultList) {
+        // function displayResults(resultList) {
         //     for (let i = 0; i < resultList.length; i++) {
         //         let rating = document.getElementById('ratings').value;
         //         let price = document.getElementById('price').value;
@@ -382,15 +430,26 @@
         listOfTutors = searchBySubject(subject);
 
         filterBtn.onclick = function () { filterModal.style.display = "block"; }
-        searchBtn.onclick = function () { let subject = document.getElementById('subject').value;  
-                                          clearTable(); searchBySubject(subject) }
+ 
 
 
 
+        db.collection("users").onSnapshot((snapshot) => {
+            let currentUser = firebase.auth().currentUser;
+            snapshot.forEach(doc => {
+                if (doc.id == currentUser.email) {
+                    localStorage.setItem("userInfo", doc.data());
+                    console.log('Document data:', doc.data());
+                    localStorage.setItem('userName', currentUser.email.firstName);
+                    document.getElementById('signin').style.visibility = 'hidden';
+                    document.getElementById('profile').src = doc.data().photo;
+                    document.getElementById('profile').style.visibility = 'visible';
+                }
+            })
+        })
 
 
 
-                                          
     </script>
 
 </body>
