@@ -103,6 +103,7 @@
             font-size: 28px;
             font-weight: bold;
         }
+
         #signin {
             background-color: rgb(23, 187, 134);
             color: white;
@@ -196,26 +197,27 @@
 
 <body>
 
-        <a id="signin" href="signup.html">Sign In</a>
+    <a id="signin" href="signup.html">Sign In</a>
 
-        <select id="dropdown">
-            <option value="">Select subject...</option>
-            <div role="separator" ></div>
-            <option value="communications">Communications</option>
-            <div role="separator" ></div>
-            <option value="python">Python</option>
-            <div role="separator"></div>
-            <option value="javascript">JavaScript</option>
-            <div role="separator" ></div>
-            <option option value="linear algebra">Linear Algebra</option>
-        </select><br>
-        <input type='submit' id='searchBtn' value='Search!' onclick=updateSearch()>
-        <input type='button' id='filterBtn' value='Filter' onclick=updateSearch()>
+    <select id="dropdown">
+        <option value="">Select subject...</option>
+        <div role="separator"></div>
+        <option value="communications">Communications</option>
+        <div role="separator"></div>
+        <option value="python">Python</option>
+        <div role="separator"></div>
+        <option value="javascript">JavaScript</option>
+        <div role="separator"></div>
+        <option option value="linear algebra">Linear Algebra</option>
+    </select><br>
+    <input type='submit' id='searchBtn' value='Search!' onclick=updateSearch()>
+    <input type='button' id='filterBtn' value='Filter'>
 
 
     <table id='thead' width=402px>
         <br><br>
         <tr>
+            <td></td>
             <td>Tutor</td>
             <td>Rate</td>
             <td>Rating</td>
@@ -234,20 +236,11 @@
 
         <div class="modal-content">
             <span class="close">&times;</span>
-            <form id="searchform">
                 <table id='filterid'>
-                    <tr>
-                        <td><input type='radio' name='filter' id='ratings'>Ratings<br />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><input type='radio' name='filter' id='price'>Price<br />
-                        </td>
-                    </tr>
+                    <tr><td><input type='radio' name='filter' id='rating'>Rating<br/></td></tr>
+                    <tr><td><input type='radio' name='filter' id='rate'>Rate<br/></td></tr>
                 </table>
-
-                <input type="submit">
-            </form>
+                <input type="submit" onclick=updateSearch()>
         </div>
 
     </div>
@@ -280,7 +273,6 @@
 
         let subject = localStorage.getItem('subject')
         console.log(subject)
-
 
         profileBtn.onclick = function () {
             optionsModal.style.display = "block";
@@ -363,6 +355,12 @@
 
         let table = document.getElementById('tableid');
 
+        function updateSearch() {
+            let subject = document.getElementById('dropdown').value;
+            localStorage.setItem('subject', subject)
+            clearTable();
+            searchBySubject(subject)
+        }
 
         function searchBySubject(subject) {
             let tutorArray = db.collection('users')
@@ -373,27 +371,6 @@
                 .catch(function (error) {
                     console.log("Error getting document:", error);
                 });
-        }
-
-        function updateSearch() {
-            let subject = document.getElementById('dropdown').value;
-            localStorage.setItem('subject', subject)
-            clearTable(); 
-            searchBySubject(subject)
-        }
-
-        function searchResults(table, tutorArray) {
-            tutorArray.forEach(tutor => {
-                let row = table.insertRow();
-                let photoCell = row.insertCell(0);
-                let nameCell = row.insertCell(1);
-                let ratingCell = row.insertCell(2);
-                photoCell.innerHTML = '<img src="' + tutor.data().photo + '" width=100%>';
-                nameCell.innerHTML = tutor.data().firstName;
-                ratingCell.innerHTML = addStars(tutor.data().rating);
-                console.log(tutor.data())
-                row.onclick = function () { localStorage.setItem("tutor", JSON.stringify(tutor.data())); location.href = 'profilepage.html'; }
-            })
         }
 
         // function displayResults(resultList) {
@@ -410,6 +387,56 @@
         //         console.log(resultList[i])
         //     }
         // }
+
+        let searchfilter = document.getElementById('filterid').value
+
+        console.log(document.getElementById('rating').checked)
+
+
+        function searchResults(table, tutorArray) {
+                if (document.getElementById('rating').checked) { // Display tutors from highest to lowest ratings
+                    for (let i = 5; i > 0; i--) {
+                        tutorArray.forEach(tutor => {
+                            console.log(tutor)
+                            if (tutor.data().rating == i) {
+                                displayTutor(tutor);
+                        }
+                    })
+                    }
+                }
+                else if (document.getElementById('rate').checked) { // Display tutors from lowest to highest rate
+                    for (let j = 0; j < 100; j++) {
+                        tutorArray.forEach(tutor => {
+                            if (tutor.data().rate == j) {
+                                displayTutor(tutor);
+                        }
+                    })
+                    }
+                }
+                else {
+                    tutorArray.forEach(tutor => {
+                        displayTutor(tutor)
+                    })
+                }
+        }
+
+        function displayTutor(tutor) {
+            let row = table.insertRow();
+            let photoCell = row.insertCell(0);
+            let nameCell = row.insertCell(1);
+            let rateCell = row.insertCell(2)
+            let ratingCell = row.insertCell(3);
+            photoCell.innerHTML = '<img src="' + tutor.data().photo + '" width=100%>';
+            nameCell.innerHTML = tutor.data().firstName;
+            rateCell.innerHTML = tutor.data().rate
+            ratingCell.innerHTML = addStars(tutor.data().rating);
+            console.log(tutor.data())
+            row.onclick = function () {
+                localStorage.setItem("tutor", JSON.stringify(tutor.data()));
+                location.href = 'profilepage.html';
+            }
+        }
+
 
         function addStars(num) {
             if (num === 1) {
@@ -430,9 +457,6 @@
         listOfTutors = searchBySubject(subject);
 
         filterBtn.onclick = function () { filterModal.style.display = "block"; }
- 
-
-
 
         db.collection("users").onSnapshot((snapshot) => {
             let currentUser = firebase.auth().currentUser;
@@ -447,8 +471,6 @@
                 }
             })
         })
-
-
 
     </script>
 
