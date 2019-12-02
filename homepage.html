@@ -162,7 +162,7 @@
             background-color: rgba(16, 127, 92, 1);
         }
 
-        #profile {
+        #userPhoto {
             position: fixed;
             right: 0%;
             top: 0%;
@@ -384,8 +384,6 @@
             appId: "1:169085210695:web:e24ff38e1ece1c5a65e162"
         };
 
-        let profilepic = "<img id='profileperson' src='profilephoto.png' width=100px height=100px href='profilepage.html'></img>'"
-
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         db = firebase.firestore();
@@ -452,7 +450,7 @@
                 if (doc.id == currentUser.email) {
                     localStorage.setItem("userInfo", doc.data());
                     console.log('Document data:', doc.data());
-                    localStorage.setItem('userName', currentUser.email.firstName);
+                    // localStorage.setItem('userName', currentUser.email.firstName);
                     document.getElementById('welcome').innerHTML = 'Welcome back, ' + doc.data().firstName + '!';
                     document.getElementById('signin').style.visibility = 'hidden';
                     document.getElementById('profile').src = doc.data().photo;
@@ -469,12 +467,11 @@
                 db.collection('users').doc(user.email).get()
                     .then(function (doc) {
                         if (doc.exists) {
-                            localStorage.setItem('userInfo', JSON.stringify(doc.data()))
+                            localStorage.setItem('userInfo', doc.data())
                             console.log("user already exists")
                             console.log('Document data:', doc.data());
                             localStorage.setItem('userName', user.email.firstName);
                             document.getElementById('welcome').innerHTML = 'Welcome back, ' + doc.data().firstName + '!';
-                            //document.getElementById('profile').innerHTML = profilepic;
                         }
                         else {
                             modal.style.display = "block";

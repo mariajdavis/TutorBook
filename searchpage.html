@@ -265,16 +265,14 @@
 
     <script>
 
-        let profileBtn = document.getElementById("profile");
+        let optionsBtn = document.getElementById("profile");
         let optionsModal = document.getElementById("options");
         let span = document.getElementById('close')
-
         let profilepic = "<img id='profileperson' src='profilephoto.png' width=100px height=100px href='profilepage.html'></img>'"
-
         let subject = localStorage.getItem('subject')
         console.log(subject)
 
-        profileBtn.onclick = function () {
+        optionsBtn.onclick = function () {
             optionsModal.style.display = "block";
             document.getElementById("viewNotifications").innerHTML = "<br>Notifications<br>";
             document.getElementById("viewMessages").innerHTML = "<br>Messages<br>";
@@ -306,7 +304,7 @@
         }
 
         function logOut() {
-            alert("This will redirect back to the main page and log you out.");
+            alert("This will log you out.");
         }
 
 
@@ -346,13 +344,6 @@
         firebase.initializeApp(firebaseConfig);
         db = firebase.firestore();
 
-        function parseURL(url) {
-            let queryStart = url.indexOf("=") + 1;
-            let queryEnd = url.length + 1;
-            let query = url.slice(queryStart, queryEnd - 1);
-            return query
-        }
-
         let table = document.getElementById('tableid');
 
         function updateSearch() {
@@ -372,21 +363,6 @@
                     console.log("Error getting document:", error);
                 });
         }
-
-        // function displayResults(resultList) {
-        //     for (let i = 0; i < resultList.length; i++) {
-        //         let rating = document.getElementById('ratings').value;
-        //         let price = document.getElementById('price').value;
-        //         if (price) {
-        //             // sort resultList high to low
-        //         }
-        //         if (rating) {
-        //             // sort resultList high to low
-        //         }
-        //         addRow(resultList[i])
-        //         console.log(resultList[i])
-        //     }
-        // }
 
         let searchfilter = document.getElementById('filterid').value
 
@@ -436,7 +412,6 @@
                 location.href = 'profilepage.html';
             }
         }
-
 
         function addStars(num) {
             if (num === 1) {

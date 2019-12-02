@@ -10,6 +10,13 @@
 
 
     <style>
+
+        body {
+            font-size: 15px;
+        }
+        #tutorRating {
+            font-size: 150%;
+        }
         .card {
             max-width: 300px;
             margin: auto;
@@ -45,72 +52,73 @@
         a:hover {
             opacity: 0.7;
         }
+        #signin {
+            background-color: rgb(23, 187, 134);
+            color: white;
+            position: fixed;
+            right: 0%;
+            top: 0%;
+            display: block;
+            height: 40px;
+            line-height: 40px;
+            text-decoration: none;
+            width: 100px;
+            text-align: center;
+        }
+
+        #signin:hover {
+            background-color: rgba(18, 145, 105, 1);
+        }
+
+        #profileperson:hover {
+            opacity: 0.7;
+        }
+
+        #profileperson {
+            position: absolute;
+            right: 10px;
+        }
+
+        #userPhoto {
+            position: fixed;
+            right: 0%;
+            top: 0%;
+
+        }
     </style>
 </head>
 
 <body>
 
-    <!-- 
-        <div id="options" class="modal">
-                <div class="modal-content" align="center" ;>
-                    <span id='close'>&times;</span>
-                    <p id="viewProfile" onclick="viewProfile()"></p>
-                    <p id="viewMessages" onclick="viewMessages()"></p>
-                    <p id="logOut" onclick="logOut()"></p>
-                </div>
-            </div>
-        
-            <script>
-        
-                var profileBtn = document.getElementById("profile");
-                var optionsModal = document.getElementById("options");
-                var span = document.getElementById('close');
-        
-        
-                profileBtn.onclick = function () {
-                    optionsModal.style.display = "block";
-                    document.getElementById("viewProfile").innerHTML = "<br>View Profile<br><br>";
-                    document.getElementById("viewMessages").innerHTML = "<br>View Messages<br><br>";
-                    document.getElementById("logOut").innerHTML = "<br>Log out<br><br>";
-                }
-        
-                span.onclick = function () {
-                    optionsModal.style.display = "none";
-                }
-        
-                // When the user clicks anywhere outside of the modal, close it
-                window.onclick = function (event) {
-                    if (event.target == modal) {
-                        optionsModal.style.display = "none";
-                    }
-                }
-        
-                function viewProfile() {
-                    alert("This will lead to the profile page.");
-                }
-        
-                function viewMessages() {
-                    alert("This will lead to the message page.");
-                }
-        
-                function logOut() {
-                    alert("This will redirect back to the main page and log you out.");
-                }
-</script>         -->
-
+   
 
 
     <div class="card">
         <img src="profilephoto.png" id='tutorPhoto' alt="photo" width=250px height=250px">
         <h1 id='tutorName'></h1>
         <h3 id='tutorCity'></h3>
+        <p id='bio'></p>
+        <h3>Subjects I tutor: </h3><p id='tutorSubjects'></p>
+        <h3>Rate ($/hr):</h3><p id='rate'> </p>
+        <p style="font-size: 75%" id='bio'></p>
         <h3 id='tutorRating'></h3>
-        <h3>Tutor: </h3><h3 id='tutorSubjects'></h3>
-        <p style="font-size: 75%">bio goes here</p>
+        <p><button>View Reviews</button></p>
+        <p><button id='leaveReview'>Leave Reviews</button></p>
+        <p><button id='contact'>Message</button></p>
+        <p><button id='bookSession'>Book Session</button></p>
+    </div>
 
-        <p><button>Reviews</button></p>
-        <p><button>Contact</button></p>
-        <p><button>Book Session</button></p>
+    <a id="signin" href="signup.html">Sign In</a>
+    <img src='profilephoto.png' width=100px height=100px id='userPhoto' style='visibility:hidden;'></img>
+
+    <div id="options" class="modal">
+        <div class="modal-content" align="center">
+            <span id='close'>&times;</span>
+            <p id="viewNotifications" onclick="viewNotifications()"></p>
+            <p id="viewMessages" onclick="viewMessages()"></p>
+            <p id="viewSessions" onclick="viewSessions()"></p>
+            <p id='logOut' onclick='logOut()'></p>
+        </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
@@ -130,13 +138,9 @@ var firebaseConfig = {
             appId: "1:169085210695:web:e24ff38e1ece1c5a65e162"
         };
 
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         db = firebase.firestore();
 
-      
- 
- // ******** get/set local storage
         tutor = JSON.parse(localStorage.getItem("tutor"))
         console.log(tutor)
         let subjects = ''
@@ -144,25 +148,114 @@ var firebaseConfig = {
         document.getElementById('tutorPhoto').src = tutor.photo;
         document.getElementById('tutorName').innerHTML = tutor.firstName;
         document.getElementById('tutorCity').innerHTML = tutor.city;
-        document.getElementById('tutorRating').innerHTML = tutor.rating;
+        document.getElementById('tutorRating').innerHTML = addStars(tutor.rating);
+        document.getElementById('rate').innerHTML = tutor.rate;
+        document.getElementById('bio').innerHTML = tutor.bio;
         tutor.subjects.forEach(tutorSubject => {
-            subjects += tutorSubject + ' ';
+            subjects += tutorSubject + '</br>';
         })
+
         document.getElementById('tutorSubjects').innerHTML = subjects;
 
 
+        // db.collection("users").onSnapshot((snapshot) => {
+        //     let currentUser = firebase.auth().currentUser;
+        //     snapshot.forEach(doc => {
+        //         if (doc.id == currentUser.email) {
+        //             localStorage.setItem("userInfo", doc.data());
+        //             console.log('Document data:', doc.data());
+        //             // localStorage.setItem('userName', currentUser.email.firstName);
+        //             document.getElementById('welcome').innerHTML = 'Welcome back, ' + doc.data().firstName + '!';
+        //             document.getElementById('signin').style.visibility = 'hidden';
+        //             document.getElementById('profile').src = doc.data().photo;
+        //             document.getElementById('profile').style.visibility = 'visible';
+        //         }
+        //     })
+        // })
 
-        db.collection("users").onSnapshot((snapshot) => {
-            let currentUser = firebase.auth().currentUser;
-            snapshot.forEach(doc => {
-                if (doc.id == currentUser.email) {
-                    console.log('Document data:', doc.data());
-                    localStorage.setItem('userName', currentUser.email.firstName);
-                    // document.getElementById('profile').innerHTML = profilepic;
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                // save user's name in local storage
+                console.log("someone has logged in")
 
-                }
-            })
+                db.collection('users').doc(user.email).get()
+                    .then(function (doc) {
+                        if (doc.exists) {
+                            localStorage.setItem('userInfo', doc.data())
+                            console.log("user already exists")
+                            console.log('Document data:', doc.data());
+                            document.getElementById('signin').style.visibility = 'hidden';
+                            document.getElementById('userPhoto').src = doc.data().photo;
+                            document.getElementById('userPhoto').style.visibility = 'visible';
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log("err" + error)
+                    })
+            }
         })
+
+        function addStars(num) {
+            if (num === 1) {
+                return '*'
+            }
+            while (num > 0) {
+                return '* ' + addStars(num - 1)
+            }
+        }
+
+        // db.collection("users").onSnapshot((snapshot) => {
+        //     let currentUser = firebase.auth().currentUser;
+        //     snapshot.forEach(doc => {
+        //         if (doc.id == currentUser.email) {
+        //             localStorage.setItem("userInfo", doc.data());
+        //             console.log('Document data:', doc.data());
+        //             document.getElementById('signin').style.visibility = 'hidden';
+        //             document.getElementById('userPhoto').src = doc.data().photo;
+        //             document.getElementById('userPhoto').style.visibility = 'visible';
+        //         }
+        //     })
+        // })
+
+        let optionsBtn = document.getElementById("userPhoto");
+        let optionsModal = document.getElementById("options");
+        let span = document.getElementById('close')
+
+        optionsBtn.onclick = function () {
+            optionsModal.style.display = "block";
+            document.getElementById("viewNotifications").innerHTML = "<br>Notifications<br>";
+            document.getElementById("viewMessages").innerHTML = "<br>Messages<br>";
+            document.getElementById("viewSessions").innerHTML = "<br>Upcoming Sessions<br>";
+            document.getElementById("logOut").innerHTML = "<br>Log Out<br>";
+        }
+
+        span.onclick = function () {
+            optionsModal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                optionsModal.style.display = "none";
+            }
+        }
+
+        function viewNotifications() {
+            alert("This will lead to user's notifications.");
+        }
+
+        function viewMessages() {
+            alert("This will lead to user's message page.");
+        }
+
+        function viewSessions() {
+            location.href = 'sessionspage.html';
+        }
+
+        function logOut() {
+            alert("This will log you out.");
+        }
+        
 
 
 
