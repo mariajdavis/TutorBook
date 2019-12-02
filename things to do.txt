@@ -1,0 +1,14 @@
+add search (link to homepage) to all options modals
+
+add a bunch of past and future sessions to mdavis81 database
+
+book a session form
+
+view upcoming sessions page
+
+
+
+
+var citiesRef = db.collection("cities");
+
+var query = citiesRef.where("capital", "==", true);

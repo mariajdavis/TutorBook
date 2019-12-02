@@ -10,13 +10,55 @@
 
 
     <style>
-
         body {
-            font-size: 15px;
+            text-align: center;
+            margin-top: 10%;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 100%;
+            color: rgb(23, 187, 134);
         }
+
+        /* The Modal (background) */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            padding-top: 100px;
+            /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid rgb(23, 187, 134);
+            width: 80%;
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
         #tutorRating {
             font-size: 150%;
         }
+
         .card {
             max-width: 300px;
             margin: auto;
@@ -52,6 +94,7 @@
         a:hover {
             opacity: 0.7;
         }
+
         #signin {
             background-color: rgb(23, 187, 134);
             color: white;
@@ -90,7 +133,7 @@
 
 <body>
 
-   
+
 
 
     <div class="card">
@@ -98,14 +141,16 @@
         <h1 id='tutorName'></h1>
         <h3 id='tutorCity'></h3>
         <p id='bio'></p>
-        <h3>Subjects I tutor: </h3><p id='tutorSubjects'></p>
-        <h3>Rate ($/hr):</h3><p id='rate'> </p>
+        <h3>Subject(s) I tutor: </h3>
+        <p id='tutorSubjects'></p>
+        <h3>Rate ($/hr):</h3>
+        <p id='rate'> </p>
         <p style="font-size: 75%" id='bio'></p>
         <h3 id='tutorRating'></h3>
         <p><button>View Reviews</button></p>
-        <p><button id='leaveReview'>Leave Reviews</button></p>
-        <p><button id='contact'>Message</button></p>
-        <p><button id='bookSession'>Book Session</button></p>
+        <p><button id='contact' style='visibility:hidden;'>Message</button></p>
+        <p><button id='bookSession' style='visibility:hidden;'>Book Session</button></p>
+        <p><button id='leaveReview' style='visibility:hidden;'>Leave a Review</button></p>
     </div>
 
     <a id="signin" href="signup.html">Sign In</a>
@@ -128,7 +173,7 @@
 
     <script>
 
-var firebaseConfig = {
+        var firebaseConfig = {
             apiKey: "AIzaSyBppJzDA662sj6TZBCP_Dprbx8cIq2SwSU",
             authDomain: "tutorbookvancouver.firebaseapp.com",
             databaseURL: "https://tutorbookvancouver.firebaseio.com",
@@ -143,6 +188,7 @@ var firebaseConfig = {
 
         tutor = JSON.parse(localStorage.getItem("tutor"))
         console.log(tutor)
+
         let subjects = ''
 
         document.getElementById('tutorPhoto').src = tutor.photo;
@@ -187,6 +233,21 @@ var firebaseConfig = {
                             document.getElementById('signin').style.visibility = 'hidden';
                             document.getElementById('userPhoto').src = doc.data().photo;
                             document.getElementById('userPhoto').style.visibility = 'visible';
+                            document.getElementById('contact').style.visibility = 'visible';
+                            document.getElementById('bookSession').style.visibility = 'visible';
+
+                            var citiesRef = db.collection('users').document(user.email).collection('sessions');
+
+                            var query = citiesRef.where("upcoming", "==", false).where("tutor", "==", tutor.email)
+
+
+                            console.log(query)
+                            //     querySnapshot.forEach(function (doc) {
+                            //         if tutor.email == doc.data().tutor {
+                            //             document.getElementById('leaveReview').style.visibility = 'visible'
+                            //         }
+                            //     });
+                            // });
                         }
                     })
                     .catch(function (error) {
@@ -255,7 +316,7 @@ var firebaseConfig = {
         function logOut() {
             alert("This will log you out.");
         }
-        
+
 
 
 
