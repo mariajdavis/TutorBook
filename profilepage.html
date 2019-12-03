@@ -236,24 +236,24 @@
                             document.getElementById('contact').style.visibility = 'visible';
                             document.getElementById('bookSession').style.visibility = 'visible';
 
-                            var citiesRef = db.collection('users').document(user.email).collection('sessions');
+                            let sessions = db.collection('sessions');
 
-                            var query = citiesRef.where("upcoming", "==", false).where("tutor", "==", tutor.email)
+                            console.log(tutor.email)
+                            console.log(user.email)
 
-
-                            console.log(query)
-                            //     querySnapshot.forEach(function (doc) {
-                            //         if tutor.email == doc.data().tutor {
-                            //             document.getElementById('leaveReview').style.visibility = 'visible'
-                            //         }
-                            //     });
-                            // });
+                            sessions.where("upcoming", "==", false).where("student", "==", user.email).where("tutor", "==", tutor.email).get()
+                                .then(function (querySnapshot) {
+                                    querySnapshot.forEach(function (doc) {
+                                        console.log(doc.id, " => ", doc.data());
+                                        document.getElementById('leaveReview').style.visibility = 'visible';
+                                    });
+                                })
+                                .catch(function (error) {
+                                    console.log("Error getting documents: ", error);
+                                });
                         }
-                    })
-                    .catch(function (error) {
-                        console.log("err" + error)
-                    })
-            }
+                    }
+            )}
         })
 
         function addStars(num) {

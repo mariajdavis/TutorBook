@@ -9,7 +9,7 @@
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
 
     <style>
-        body {
+        body:not(#profile) {
             text-align: center;
             margin-top: 10%;
             font-family: Arial, Helvetica, sans-serif;
@@ -162,7 +162,7 @@
             background-color: rgba(16, 127, 92, 1);
         }
 
-        #userPhoto {
+        #profile {
             position: fixed;
             right: 0%;
             top: 0%;
@@ -467,8 +467,8 @@
                 db.collection('users').doc(user.email).get()
                     .then(function (doc) {
                         if (doc.exists) {
-                            localStorage.setItem('userInfo', doc.data())
-                            console.log("user already exists")
+                            localStorage.setItem('userInfo', doc.data());
+                            console.log("user already exists");
                             console.log('Document data:', doc.data());
                             localStorage.setItem('userName', user.email.firstName);
                             document.getElementById('welcome').innerHTML = 'Welcome back, ' + doc.data().firstName + '!';
