@@ -5,3 +5,5 @@ add a bunch of past and future sessions to a new collection (all tutor sessions)
 book a session form
 
 view upcoming sessions page
+
+add user auth stuff to review page and view upcoming sessions page

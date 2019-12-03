@@ -150,7 +150,7 @@
         <p><button>View Reviews</button></p>
         <p><button id='contact' style='visibility:hidden;'>Message</button></p>
         <p><button id='bookSession' style='visibility:hidden;'>Book Session</button></p>
-        <p><button id='leaveReview' style='visibility:hidden;'>Leave a Review</button></p>
+        <p><button id='leaveReview' style='visibility:hidden;' onclick=goToReviewPage()>Leave a Review</button></p>
     </div>
 
     <a id="signin" href="signup.html">Sign In</a>
@@ -265,19 +265,6 @@
             }
         }
 
-        // db.collection("users").onSnapshot((snapshot) => {
-        //     let currentUser = firebase.auth().currentUser;
-        //     snapshot.forEach(doc => {
-        //         if (doc.id == currentUser.email) {
-        //             localStorage.setItem("userInfo", doc.data());
-        //             console.log('Document data:', doc.data());
-        //             document.getElementById('signin').style.visibility = 'hidden';
-        //             document.getElementById('userPhoto').src = doc.data().photo;
-        //             document.getElementById('userPhoto').style.visibility = 'visible';
-        //         }
-        //     })
-        // })
-
         let optionsBtn = document.getElementById("userPhoto");
         let optionsModal = document.getElementById("options");
         let span = document.getElementById('close')
@@ -294,12 +281,12 @@
             optionsModal.style.display = "none";
         }
 
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                optionsModal.style.display = "none";
-            }
-        }
+        // // When the user clicks anywhere outside of the modal, close it
+        // window.onclick = function (event) {
+        //     if (event.target == modal) {
+        //         optionsModal.style.display = "none";
+        //     }
+        // }
 
         function viewNotifications() {
             alert("This will lead to user's notifications.");
@@ -317,7 +304,9 @@
             alert("This will log you out.");
         }
 
-
+        function goToReviewPage() {
+            location.href = 'reviewpage.html';
+        }
 
 
     </script>

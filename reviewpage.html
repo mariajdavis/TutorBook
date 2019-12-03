@@ -5,6 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <style>
+        body:not(#profile) {
+            text-align: center;
+            margin-top: 10%;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 100%;
+            color: rgb(23, 187, 134);
+        }
+        #starRating {
+            font-size: 70%;
+            width: 204px;
+        }
+
+        input {
+            border-color: rgb(23, 187, 134);
+            border-width: 1px;
+            width: 200px;
+            height: 30px;
+            font-size: 120%;
+            color: rgb(23, 187, 134);
+        }
+
+        button {
+            display: inline-block;
+            border: none;
+            padding: 0.5rem 1rem;
+            margin: 0;
+            text-decoration: none;
+            background: rgb(23, 187, 134);
+            color: #ffffff;
+            font-family: sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            text-align: center;
+            transition: background 250ms ease-in-out,
+                transform 150ms ease;
+        }
+
+        button:hover,
+        button:focus {
+            background: rgba(23, 187, 134, 0.5);
+        }
+
+        #subjectentry {
+            margin: 5px;
+            width: 200px;
+        }
+        h2 {
+            display:inline;
+        }
+
+        #searchBtn {
+            font-size: 70%;
+            width: 204px;
+        }
+
+        button:focus {
+            outline: 1px solid #fff;
+            outline-offset: -4px;
+        }
+
+        button:active {
+            transform: scale(0.99);
+        }
         #reviewBox,
         #reviewText {
             text-align: center;
@@ -75,9 +138,9 @@
 <body>
 
     <div id="reviewBox">
-        <h2>Leave a Review for (NAME HERE)</h2>
-        <textarea id="reviewText" name="review" cols="25px" rows="10px" required></textarea>
-        <br>
+        <h2>Leave a Review for </h2><h2 id='tutorName'></h2><br><br>
+        <textarea id="reviewText" name="review" cols="20px" rows="10px" required></textarea>
+        <br><br>
         <select id="starRating">
             <option value="1">1 Star</option>
             <option value="2">2 Stars</option>
@@ -85,8 +148,8 @@
             <option value="4">4 Stars</option>
             <option value="5">5 Stars</option>
         </select>
-        <br>
-        <input id="myBtn" clas="btn" type="button" value="Submit Review?">
+        <br><br>
+        <input id="myBtn" clas="btn" type="button" value="Submit">
 
         <!-- The Modal -->
         <div id="myModal" class="modal">
@@ -94,14 +157,11 @@
             <!-- Modal content -->
             <div class="modal-content">
                 <span class="close">&times;</span>
-                <h2>Are You Sure You Want To Submit This Review?</h2><br>
-                <input class="btn" id="confirm" type="button" value="Yes">
+                <h2>Please confirm submission</h2><br>
+                <input class="btn" id="confirm" type="button" value="Submit">
             </div>
 
-        </div>
-        <p id="demo">Instead of sending the textarea value here, send it to the users data base</p>
-        <p id="demo2">This is for the stars, same concept. needs to go to database</p>
-    </div>
+  
 
 
     <script>
@@ -140,6 +200,17 @@
             document.getElementById("demo2").innerHTML = strUser + " Stars"
             modal.style.display = "none";
         }
+
+
+        tutor = JSON.parse(localStorage.getItem("tutor"))
+        console.log(tutor)
+
+        document.getElementById('tutorName').innerHTML = tutor.firstName
+
+
+
+
+
     </script>
 
 
