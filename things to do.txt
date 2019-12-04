@@ -17,3 +17,13 @@ dynamic window sizing
 commenting
 
 documentation
+
+external css stylesheets
+
+*** publish to correct hosted url
+
+separate files into html and js
+
+clear random console logs and add useful ones, like "successfully added to database"
+
+organize similar content/functions next to each other

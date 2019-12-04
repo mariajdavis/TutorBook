@@ -133,14 +133,6 @@
             left: 100%;
         }
 
-        tr:hover {
-            opacity: 0.7;
-        }
-
-        #thead:hover {
-            opacity: 1.0;
-        }
-
         #content,
         #thead {
             width: 402px;
@@ -173,7 +165,7 @@
             padding: 3px;
         }
 
-        #profile {
+        #userPhoto {
             height: 100px;
             width: 100px;
             top: 0%;
@@ -189,6 +181,9 @@
             font-size: 65%;
             color: rgb(23, 187, 134);
         }
+        h2 {
+            display:inline;
+        }
     </style>
 
 
@@ -198,6 +193,9 @@
 <body>
 
     <a id="signin" href="signup.html">Sign In</a>
+
+    <br><h2 id='pageTitle'></h2>
+    <h2>'s Reviews</h2>
 
     <table id='thead' width=402px>
         <br><br>
@@ -219,11 +217,12 @@
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
 
-    <img src='profilephoto.png' width=100px height=100px id='profile' style='visibility:hidden'></img>
+    <img src='profilephoto.png' width=100px height=100px id='userPhoto' style='visibility:hidden'></img>
 
     <div id="options" class="modal">
         <div class="modal-content" align="center">
             <span id='close'>&times;</span>
+            <p id="homePage" onclick="backToHomePage()"></p>
             <p id="viewNotifications" onclick="viewNotifications()"></p>
             <p id="viewMessages" onclick="viewMessages()"></p>
             <p id="viewSessions" onclick="viewSessions()"></p>
@@ -233,15 +232,15 @@
 
     <script>
 
-        let optionsBtn = document.getElementById("profile");
+        let optionsBtn = document.getElementById("userPhoto");
         let optionsModal = document.getElementById("options");
         let span = document.getElementById('close')
         let profilepic = "<img id='profileperson' src='profilephoto.png' width=100px height=100px href='profilepage.html'></img>'"
         let subject = localStorage.getItem('subject')
-        console.log(subject)
 
         optionsBtn.onclick = function () {
             optionsModal.style.display = "block";
+            document.getElementById('homePage').innerHTML = "<br>Home<br>";
             document.getElementById("viewNotifications").innerHTML = "<br>Notifications<br>";
             document.getElementById("viewMessages").innerHTML = "<br>Messages<br>";
             document.getElementById("viewSessions").innerHTML = "<br>Upcoming Sessions<br>";
@@ -257,6 +256,10 @@
             if (event.target == modal) {
                 optionsModal.style.display = "none";
             }
+        }
+        
+        function backToHomePage() {
+            location.href = 'homepage.html';
         }
 
         function viewNotifications() {
@@ -314,7 +317,7 @@
 
         let tutorArray = db.collection('users')
         tutor = JSON.parse(localStorage.getItem("tutor"))
-        console.log(tutor)
+        document.getElementById('pageTitle').innerHTML = tutor.firstName
 
 
         function searchResults(table, tutorArray) {
@@ -331,14 +334,14 @@
             console.log(reviewID.data().student)
             db.collection("users").doc(reviewID.data().student).get().then(function (reviewer) {
                 if (reviewer.exists) {
-                    console.log(reviewer)
+                    console.log(reviewer.data())
                     let row = table.insertRow();
                     let photoCell = row.insertCell(0);
                     let nameCell = row.insertCell(1);
                     let ratingCell = row.insertCell(2);
                     let reviewCell = row.insertCell(3);
-                    photoCell.innerHTML = '<img src="' + reviewer.photo + '" width=100%>';
-                    nameCell.innerHTML = reviewer.firstName;
+                    photoCell.innerHTML = '<img src="' + reviewer.data().photo + '" width=100%>';
+                    nameCell.innerHTML = reviewer.data().firstName;
                     ratingCell.innerHTML = addStars(reviewID.data().rating);
                     reviewCell.innerHTML = reviewID.data().review
                     console.log(reviewID.data())
@@ -350,7 +353,6 @@
                 console.log("Error getting document:", error);
             });
         }
-
 
 
         function addStars(num) {
@@ -380,8 +382,8 @@
                     console.log('Document data:', doc.data());
                     localStorage.setItem('userName', currentUser.email.firstName);
                     document.getElementById('signin').style.visibility = 'hidden';
-                    document.getElementById('profile').src = doc.data().photo;
-                    document.getElementById('profile').style.visibility = 'visible';
+                    document.getElementById('userPhoto').src = doc.data().photo;
+                    document.getElementById('userPhoto').style.visibility = 'visible';
                 }
             })
         })

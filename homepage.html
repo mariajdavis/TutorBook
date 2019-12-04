@@ -9,7 +9,7 @@
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
 
     <style>
-        body:not(#profile) {
+        body:not(#userPhoto) {
             text-align: center;
             margin-top: 10%;
             font-family: Arial, Helvetica, sans-serif;
@@ -162,7 +162,7 @@
             background-color: rgba(16, 127, 92, 1);
         }
 
-        #profile {
+        #userPhoto {
             position: fixed;
             right: 0%;
             top: 0%;
@@ -271,24 +271,25 @@
 
     </div>
 
-    <img src='profilephoto.png' width=100px height=100px id='profile' style='visibility:hidden'></img>
+    <img src='profilephoto.png' width=100px height=100px id='userPhoto' style='visibility:hidden'></img>
 
 
     <div id="options" class="modal">
-        <div class="modal-content" align="center">
-            <span id='close'>&times;</span>
-            <p id="viewNotifications" onclick="viewNotifications()"></p>
-            <p id="viewMessages" onclick="viewMessages()"></p>
-            <p id="viewSessions" onclick="viewSessions()"></p>
-            <p id='logOut' onclick='logOut()'></p>
+            <div class="modal-content" align="center">
+                <span id='close'>&times;</span>
+                <p id="homePage" onclick="backToHomePage()"></p>
+                <p id="viewNotifications" onclick="viewNotifications()"></p>
+                <p id="viewMessages" onclick="viewMessages()"></p>
+                <p id="viewSessions" onclick="viewSessions()"></p>
+                <p id='logOut' onclick='logOut()'></p>
+            </div>
         </div>
-    </div>
 
 
     <script>
 
 
-        let profileBtn = document.getElementById("profile");
+        let optionsBtn = document.getElementById("userPhoto");
         let optionsModal = document.getElementById("options");
         let span = document.getElementById('close');
         let searchButton = document.getElementById('searchBtn')
@@ -314,8 +315,9 @@
         };
 
 
-        profileBtn.onclick = function () {
+        optionsBtn.onclick = function () {
             optionsModal.style.display = "block";
+            document.getElementById('homePage').innerHTML = "<br>Home<br>";
             document.getElementById("viewNotifications").innerHTML = "<br>Notifications<br>";
             document.getElementById("viewMessages").innerHTML = "<br>Messages<br>";
             document.getElementById("viewSessions").innerHTML = "<br>Upcoming Sessions<br>";
@@ -331,6 +333,10 @@
             if (event.target == modal) {
                 optionsModal.style.display = "none";
             }
+        }
+
+        function backToHomePage() {
+            location.href = 'homepage.html';
         }
 
         function viewNotifications() {
@@ -449,8 +455,8 @@
                     // localStorage.setItem('userName', currentUser.email.firstName);
                     document.getElementById('welcome').innerHTML = 'Welcome back, ' + doc.data().firstName + '!';
                     document.getElementById('signin').style.visibility = 'hidden';
-                    document.getElementById('profile').src = doc.data().photo;
-                    document.getElementById('profile').style.visibility = 'visible';
+                    document.getElementById('userPhoto').src = doc.data().photo;
+                    document.getElementById('userPhoto').style.visibility = 'visible';
                 }
             })
         })

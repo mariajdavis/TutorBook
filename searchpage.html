@@ -133,12 +133,8 @@
             left: 100%;
         }
 
-        tr:hover {
+        tr:not(#thead):hover {
             opacity: 0.7;
-        }
-
-        #thead:hover {
-            opacity: 1.0;
         }
 
         #content,
@@ -182,6 +178,10 @@
             display: block;
         }
 
+        #dropdown {
+            margin: 5px;
+        }
+
         select {
             height: 50px;
             width: 402px;
@@ -189,6 +189,10 @@
             font-size: 65%;
             color: rgb(23, 187, 134);
         }
+        h2 {
+            display: inline;
+        }
+
     </style>
 
 
@@ -211,7 +215,10 @@
         <option option value="linear algebra">Linear Algebra</option>
     </select></br>
     <input type='submit' id='searchBtn' value='Search!' onclick=updateSearch()>
-    <input type='button' id='filterBtn' value='Filter'>
+    <input type='button' id='filterBtn' value='Filter'><br><br>
+
+    <h2 id='searchedSubject'></h2>
+    <h2> Tutors</h2>
 
 
     <table id='thead' width=402px>
@@ -254,26 +261,32 @@
 
 
     <div id="options" class="modal">
-        <div class="modal-content" align="center">
-            <span id='close'>&times;</span>
-            <p id="viewNotifications" onclick="viewNotifications()"></p>
-            <p id="viewMessages" onclick="viewMessages()"></p>
-            <p id="viewSessions" onclick="viewSessions()"></p>
-            <p id='logOut' onclick='logOut()'></p>
+            <div class="modal-content" align="center">
+                <span id='close'>&times;</span>
+                <p id="homePage" onclick="backToHomePage()"></p>
+                <p id="viewNotifications" onclick="viewNotifications()"></p>
+                <p id="viewMessages" onclick="viewMessages()"></p>
+                <p id="viewSessions" onclick="viewSessions()"></p>
+                <p id='logOut' onclick='logOut()'></p>
+            </div>
         </div>
-    </div>
 
     <script>
 
         let optionsBtn = document.getElementById("profile");
         let optionsModal = document.getElementById("options");
-        let span = document.getElementById('close')
-        let profilepic = "<img id='profileperson' src='profilephoto.png' width=100px height=100px href='profilepage.html'></img>'"
-        let subject = localStorage.getItem('subject')
-        console.log(subject)
+        let span = document.getElementById('close');
+        let profilepic = "<img id='profileperson' src='profilephoto.png' width=100px height=100px href='profilepage.html'></img>'";
+        let subject = localStorage.getItem('subject');
+        document.getElementById('searchedSubject').innerHTML = capitalize(subject);
+
+        function capitalize(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
 
         optionsBtn.onclick = function () {
             optionsModal.style.display = "block";
+            document.getElementById('homePage').innerHTML = "<br>Home<br>";
             document.getElementById("viewNotifications").innerHTML = "<br>Notifications<br>";
             document.getElementById("viewMessages").innerHTML = "<br>Messages<br>";
             document.getElementById("viewSessions").innerHTML = "<br>Upcoming Sessions<br>";
@@ -289,6 +302,10 @@
             if (event.target == modal) {
                 optionsModal.style.display = "none";
             }
+        }
+
+        function backToHomePage() {
+            location.href = 'homepage.html';
         }
 
         function viewNotifications() {

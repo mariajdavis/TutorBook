@@ -157,14 +157,15 @@
     <img src='profilephoto.png' width=100px height=100px id='userPhoto' style='visibility:hidden;'></img>
 
     <div id="options" class="modal">
-        <div class="modal-content" align="center">
-            <span id='close'>&times;</span>
-            <p id="viewNotifications" onclick="viewNotifications()"></p>
-            <p id="viewMessages" onclick="viewMessages()"></p>
-            <p id="viewSessions" onclick="viewSessions()"></p>
-            <p id='logOut' onclick='logOut()'></p>
+            <div class="modal-content" align="center">
+                <span id='close'>&times;</span>
+                <p id="homePage" onclick="backToHomePage()"></p>
+                <p id="viewNotifications" onclick="viewNotifications()"></p>
+                <p id="viewMessages" onclick="viewMessages()"></p>
+                <p id="viewSessions" onclick="viewSessions()"></p>
+                <p id='logOut' onclick='logOut()'></p>
+            </div>
         </div>
-    </div>
 
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
@@ -255,6 +256,7 @@
 
         optionsBtn.onclick = function () {
             optionsModal.style.display = "block";
+            document.getElementById('homePage').innerHTML = "<br>Home<br>";
             document.getElementById("viewNotifications").innerHTML = "<br>Notifications<br>";
             document.getElementById("viewMessages").innerHTML = "<br>Messages<br>";
             document.getElementById("viewSessions").innerHTML = "<br>Upcoming Sessions<br>";
@@ -263,6 +265,10 @@
 
         span.onclick = function () {
             optionsModal.style.display = "none";
+        }
+
+        function backToHomePage() {
+            location.href = 'homepage.html';
         }
 
         function viewNotifications() {
