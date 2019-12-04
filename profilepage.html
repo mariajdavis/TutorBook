@@ -8,8 +8,8 @@
     <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
 
-
     <style>
+        /* Stylizing the webpage */
         body {
             text-align: center;
             margin-top: 10%;
@@ -132,12 +132,9 @@
 </head>
 
 <body>
-
-
-
-
+    <!-- Putting all of the user profile's information inside a div tag-->
     <div class="card">
-        <img src="profilephoto.png" id='tutorPhoto' alt="photo" width=250px height=250px">
+        <img src="profilephoto.png" id='tutorPhoto' alt="photo" width=250px height=250px>
         <h1 id='tutorName'></h1>
         <h3 id='tutorCity'></h3>
         <p id='bio'></p>
@@ -153,27 +150,27 @@
         <p><button id='leaveReview' style='visibility:hidden;' onclick=goToReviewPage()>Leave a Review</button></p>
     </div>
 
+    <!-- Grabbing the signup link and the profile photo image depending if the user is singed in or not --> 
     <a id="signin" href="signup.html">Sign In</a>
     <img src='profilephoto.png' width=100px height=100px id='userPhoto' style='visibility:hidden;'></img>
 
+    <!-- Options for when the user clicks on their image on the top right and displays the modal -->
     <div id="options" class="modal">
-            <div class="modal-content" align="center">
-                <span id='close'>&times;</span>
-                <p id="homePage" onclick="backToHomePage()"></p>
-                <p id="viewNotifications" onclick="viewNotifications()"></p>
-                <p id="viewMessages" onclick="viewMessages()"></p>
-                <p id="viewSessions" onclick="viewSessions()"></p>
-                <p id='logOut' onclick='logOut()'></p>
-            </div>
+        <div class="modal-content" align="center">
+            <span id='close'>&times;</span>
+            <p id="homePage" onclick="backToHomePage()"></p>
+            <p id="viewNotifications" onclick="viewNotifications()"></p>
+            <p id="viewMessages" onclick="viewMessages()"></p>
+            <p id="viewSessions" onclick="viewSessions()"></p>
+            <p id='logOut' onclick='logOut()'></p>
         </div>
+    </div>
 
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
 
-
     <script>
-
         var firebaseConfig = {
             apiKey: "AIzaSyBppJzDA662sj6TZBCP_Dprbx8cIq2SwSU",
             authDomain: "tutorbookvancouver.firebaseapp.com",
@@ -238,10 +235,16 @@
                                 });
                         }
                     }
-            )}
+                    )
+            }
         })
 
         function addStars(num) {
+            /**
+            * Creating stars for review amount. Used to display the user's review
+            * @param {Number} num A number
+            * @return {String} a number of stars
+            */
             if (num === 1) {
                 return '*'
             }
@@ -254,6 +257,7 @@
         let optionsModal = document.getElementById("options");
         let span = document.getElementById('close')
 
+        // Options displayed in the modal when user clicks on their image on the top right corner
         optionsBtn.onclick = function () {
             optionsModal.style.display = "block";
             document.getElementById('homePage').innerHTML = "<br>Home<br>";
@@ -263,40 +267,47 @@
             document.getElementById("logOut").innerHTML = "<br>Log Out<br>";
         }
 
+        // Close the modal when the user clicks outside of the box
         span.onclick = function () {
             optionsModal.style.display = "none";
         }
 
+        // Sends the user back to the homepage when they click on the homepage button
         function backToHomePage() {
             location.href = 'homepage.html';
         }
 
+        // WIP, will alert
         function viewNotifications() {
             alert("This will lead to user's notifications.");
         }
 
+        // WIP, will alert
         function viewMessages() {
             alert("This will lead to user's message page.");
         }
 
+        // WIP, will alert
         function viewSessions() {
-            location.href = 'sessionspage.html';
+            alert("This will lead to the user's session page.");
         }
 
+        // WIP, will alert
         function logOut() {
             alert("This will log you out.");
         }
 
+        // Will lead the user to the reviews page when clicked
         function goToReviewPage() {
             location.href = 'reviewpage.html';
         }
 
+        // Wlil lead the user to the view reviews page when clicked
         function viewReviews() {
             location.href = 'viewreviewspage.html';
         }
 
     </script>
-
 
 </body>
 
