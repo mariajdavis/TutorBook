@@ -7,20 +7,23 @@
     content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
 
   <style>
+    /* Sylizing the entire page */
     body {
       text-align: center;
       font-family: Arial, Helvetica, sans-serif;
       font-size: 170%;
       color: rgb(23, 187, 134);
     }
-
   </style>
+
+  <!-- Adding firestore database to our signup page -->
   <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
   <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
 </head>
 
 <body>
 
+  <!-- Positioning the signup interface to be more centered -->
   <br><br><br>
 
   <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
@@ -29,15 +32,15 @@
   <script>
     // Your web app's Firebase configuration
     var firebaseConfig = {
-            apiKey: "AIzaSyBppJzDA662sj6TZBCP_Dprbx8cIq2SwSU",
-            authDomain: "tutorbookvancouver.firebaseapp.com",
-            databaseURL: "https://tutorbookvancouver.firebaseio.com",
-            projectId: "tutorbookvancouver",
-            storageBucket: "tutorbookvancouver.appspot.com",
-            messagingSenderId: "169085210695",
-            appId: "1:169085210695:web:e24ff38e1ece1c5a65e162"
-        };
-    
+      apiKey: "AIzaSyBppJzDA662sj6TZBCP_Dprbx8cIq2SwSU",
+      authDomain: "tutorbookvancouver.firebaseapp.com",
+      databaseURL: "https://tutorbookvancouver.firebaseio.com",
+      projectId: "tutorbookvancouver",
+      storageBucket: "tutorbookvancouver.appspot.com",
+      messagingSenderId: "169085210695",
+      appId: "1:169085210695:web:e24ff38e1ece1c5a65e162"
+    };
+
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
 
@@ -74,15 +77,13 @@
     // The start method will wait until the DOM is loaded.
     ui.start('#firebaseui-auth-container', uiConfig);
 
-    firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-    // User is signed in.
-  } else {
-    // No user is signed in.
-  }
-});
-
-
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        // User is signed in.
+      } else {
+        // No user is signed in.
+      }
+    });
   </script>
 </body>
 

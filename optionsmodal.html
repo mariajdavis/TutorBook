@@ -1,0 +1,16 @@
+db.collection("users").onSnapshot((snapshot) => {
+    let currentUser = firebase.auth().currentUser;
+    snapshot.forEach(doc => {
+        if (doc.id == currentUser.email) {
+            localStorage.setItem("userInfo", doc.data());
+            console.log('Document data:', doc.data());
+            localStorage.setItem('userName', currentUser.email.firstName);
+            document.getElementById('signin').style.visibility = 'hidden';
+            document.getElementById('profile').src = doc.data().photo;
+            document.getElementById('profile').style.visibility = 'visible';
+        }
+    })
+})
+</script>
+</body>
+</html>

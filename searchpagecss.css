@@ -1,3 +1,4 @@
+/* Stylizing the entire page */
 body {
     text-align: center;
     margin-top: 120px;
@@ -15,11 +16,13 @@ input {
     color: rgb(23, 187, 134);
 }
 
+/* Table row stylizations for filtering feature */
 #filterid tr {
     background-color: white;
     color: rgb(23, 187, 134);
 }
 
+/* Filter button stylization */
 button {
     display: inline-block;
     border: none;
@@ -36,6 +39,7 @@ button {
         transform 150ms ease;
 }
 
+/* Clear indication of button being clickable */
 button:hover,
 button:focus {
     background: rgba(23, 187, 134, 0.5);
@@ -50,6 +54,7 @@ button:active {
     transform: scale(0.99);
 }
 
+/* Making sure the subjects fit inside the boxes */
 #subject {
     width: 402px;
     margin: 5px;
@@ -106,6 +111,7 @@ button:active {
     text-align: center;
 }
 
+/* Indication that button is clickable */
 #signin:hover {
     background-color: rgba(18, 145, 105, 1);
 }
@@ -121,6 +127,7 @@ button:active {
     left: 100%;
 }
 
+/* Clickable table elements */
 tr:not(#thead):hover {
     opacity: 0.7;
 }
@@ -157,6 +164,7 @@ td {
     padding: 3px;
 }
 
+/* Display user proflie image on the top right */
 #userPhoto {
     height: 100px;
     width: 100px;
