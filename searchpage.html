@@ -10,6 +10,7 @@
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
 
     <style>
+        /* Stylizing the entire page */
         body {
             text-align: center;
             margin-top: 10px;
@@ -27,11 +28,13 @@
             color: rgb(23, 187, 134);
         }
 
+        /* Table row stylizations for filtering feature */
         #filterid tr {
             background-color: white;
             color: rgb(23, 187, 134);
         }
 
+        /* Filter button stylization */
         button {
             display: inline-block;
             border: none;
@@ -48,6 +51,7 @@
                 transform 150ms ease;
         }
 
+        /* Clear indication of button being clickable */
         button:hover,
         button:focus {
             background: rgba(23, 187, 134, 0.5);
@@ -62,6 +66,7 @@
             transform: scale(0.99);
         }
 
+        /* Making sure the subjects fit inside the boxes */
         #subject {
             width: 402px;
             margin: 5px;
@@ -117,7 +122,8 @@
             width: 100px;
             text-align: center;
         }
-
+    
+        /* Indication that button is clickable */
         #signin:hover {
             background-color: rgba(18, 145, 105, 1);
         }
@@ -128,11 +134,8 @@
             text-decoration: none;
             cursor: pointer;
         }
-
-        #welcome {
-            left: 100%;
-        }
-
+        
+        /* Clickable table elements */
         tr:not(#thead):hover {
             opacity: 0.7;
         }
@@ -169,6 +172,7 @@
             padding: 3px;
         }
 
+        /* Display user proflie image on the top right */
         #userPhoto {
             height: 100px;
             width: 100px;
@@ -195,8 +199,6 @@
         }
     </style>
 
-
-
 </head>
 
 <body>
@@ -215,12 +217,16 @@
         <div role="separator"></div>
         <option option value="linear algebra">Linear Algebra</option>
     </select></br>
+
+    <!-- Creating the search and filter buttons -->
     <input type='submit' id='searchBtn' value='Search!' onclick=updateSearch()>
     <input type='button' id='filterBtn' value='Filter'><br><br>
 
     <!--Appends the subject selection dropdown-->
-    <h2 id='searchedSubject'></h2><h2> Tutors</h2>
+    <h2 id='searchedSubject'></h2>
+    <h2> Tutors</h2>
 
+    <!-- Creating a table heading so that the user can understand what they're looking at when viewing tutors -->
     <table id='thead' width=402px>
         <br><br>
         <tr>
@@ -260,13 +266,13 @@
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
 
-
     <img src='profilephoto.png' width=100px height=100px id='userPhoto' style='visibility:hidden'></img>
 
-
+    <!-- What the user sees when they click on their profile picture -->
     <div id="options" class="modal">
         <div class="modal-content" align="center">
             <span id='close'>&times;</span>
+            <!-- Some these are still work in progress, so clicking on some might just give an alert message -->
             <p id="homePage" onclick="backToHomePage()"></p>
             <p id="viewNotifications" onclick="viewNotifications()"></p>
             <p id="viewMessages" onclick="viewMessages()"></p>
@@ -276,18 +282,25 @@
     </div>
 
     <script>
-
+        // Grabbing the elements from the html section and making them a variable to manipulate within JS.
         let optionsBtn = document.getElementById("userPhoto");
         let optionsModal = document.getElementById("options");
         let span = document.getElementById('close');
+        // User profile
         let profilepic = "<img id='profileperson' src='profilephoto.png' width=100px height=100px href='profilepage.html'></img>'";
         let subject = localStorage.getItem('subject');
         document.getElementById('searchedSubject').innerHTML = capitalize(subject);
 
         function capitalize(string) {
+            /**
+            * Capitalizes the given string
+            * @param {string} string Any given string
+            * @return {string}
+            */
             return string.charAt(0).toUpperCase() + string.slice(1);
         }
 
+        // Display the modal after clicking on user image, the users will have an option to click on each 'button'
         optionsBtn.onclick = function () {
             optionsModal.style.display = "block";
             document.getElementById('homePage').innerHTML = "<br>Home<br>";
@@ -297,6 +310,7 @@
             document.getElementById("logOut").innerHTML = "<br>Log Out<br>";
         }
 
+        // Close the modal if the user clicks outside 
         span.onclick = function () {
             optionsModal.style.display = "none";
         }
@@ -308,35 +322,39 @@
             }
         }
 
+        // Sending the user back to the homepage
         function backToHomePage() {
             location.href = 'homepage.html';
         }
 
+        // WIP, will alert
         function viewNotifications() {
             alert("This will lead to user's notifications.");
         }
 
+        // WIP, will alert
         function viewMessages() {
             alert("This will lead to user's message page.");
         }
 
+        // WIP, will alert
         function viewSessions() {
-            location.href = 'sessionspage.html';
+            alert("This will lead to the user's session page.");
         }
 
+        // Logout Message
         function logOut() {
             alert("This will log you out.");
         }
 
-
         let tutorTable = document.getElementById('tableid');
         let filterBtn = document.getElementById('filterBtn')
-
         let searchBtn = document.getElementById('searchBtn');
 
         // Get the filter modal
         let filterModal = document.getElementById("filterModal");
 
+        // Firebase stuffs
         var firebaseConfig = {
             apiKey: "AIzaSyBppJzDA662sj6TZBCP_Dprbx8cIq2SwSU",
             authDomain: "tutorbookvancouver.firebaseapp.com",
@@ -354,6 +372,7 @@
         closeModal.onclick = function () {
             filterModal.style.display = "none";
         }
+
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function (event) {
             if (event.target == filterModal) {
@@ -367,7 +386,11 @@
 
         let table = document.getElementById('tableid');
 
+
         function updateSearch() {
+            /** 
+            * Update the search option after the user chooses an option from the dropdown
+            */
             let subject = document.getElementById('dropdown').value;
             localStorage.setItem('subject', subject)
             clearTable();
@@ -375,6 +398,9 @@
         }
 
         function searchBySubject(subject) {
+            /**
+            * Searches through our array list and display the results if they meet the requirements of the filter
+            */
             let tutorArray = db.collection('users')
             tutorArray.where("subjects", "array-contains", subject).get()
                 .then(function (tutorArray) {
@@ -413,6 +439,7 @@
             }
         }
 
+        // Correctly display each tuto and their information inside a table
         function displayTutor(tutor) {
             let row = table.insertRow();
             let photoCell = row.insertCell(0);
@@ -430,15 +457,24 @@
         }
 
         function addStars(num) {
+            /**
+            * Creating stars for review amount
+            * @param {Number} num A number
+            * @return {String} a number of stars
+            */
             if (num === 1) {
                 return '*'
             }
             while (num > 0) {
+                // Recursion to loop through to display stars
                 return '* ' + addStars(num - 1)
             }
         }
 
         function clearTable() {
+            /**
+            * When user searches something again, it will clear the table of tutor info
+            */
             let tableRef = document.getElementById('tableid');
             while (tableRef.rows.length > 0) {
                 tableRef.deleteRow(0);
@@ -449,6 +485,7 @@
 
         filterBtn.onclick = function () { filterModal.style.display = "block"; }
 
+        // Grabs the tutor information through the firebase database
         db.collection("users").onSnapshot((snapshot) => {
             let currentUser = firebase.auth().currentUser;
             snapshot.forEach(doc => {
