@@ -2,21 +2,24 @@
 <html>
 
 <head>
+    <!-- Enables dynamic/responsive window design -->
     <meta name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    
+    <!-- Import firebase js file and css stylesheets -->
     <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
     <link type="text/css" rel="stylesheet" href="homepagecss.css">
 </head>
 
 <body>
-    <!-- Adding elements (signup page, welcome message, site logo, and a helpful message) to the site -->
+    <!-- Appends elements (signup page, welcome message, site logo, and a helpful message) to the site -->
     <a id="signin" href="signup.html">Sign In</a>
     <p id='welcome'></p>
     <img src='logo.jpeg' alt='logo' width=302px height=200px>
     <p id="title">What subject do you <br> need help with?</p>
 
-    <!-- A dropdown for limited search options, allows users to know what the site currently offers -->
+    <!-- Appends a dropdown for limited search options, allows users to know what the site currently offers -->
     <select id="dropdown">
         <option value="">Select subject...</option>
         <div role="separator"></div>
@@ -134,6 +137,7 @@
             }
         }
 
+        // 
         var firebaseConfig = {
             apiKey: "AIzaSyBppJzDA662sj6TZBCP_Dprbx8cIq2SwSU",
             authDomain: "tutorbookvancouver.firebaseapp.com",
@@ -221,6 +225,7 @@
             })
         };
 
+        // Initialize firebase configuration
         var firebaseConfig = {
             apiKey: "AIzaSyBppJzDA662sj6TZBCP_Dprbx8cIq2SwSU",
             authDomain: "tutorbookvancouver.firebaseapp.com",
@@ -231,15 +236,12 @@
             appId: "1:169085210695:web:e24ff38e1ece1c5a65e162"
         };
 
-        // Initialize Firebase
+        // Initialize Firebase database variable
         firebase.initializeApp(firebaseConfig);
         db = firebase.firestore();
 
         // Get the modal
         var modal = document.getElementById("myModal");
-
-        // // Get the <span> element that closes the modal
-        // var span = document.getElementsByClassName("close")[0];
 
         // When the user clicks on <span> (x), close the modal
         span.onclick = function () {
@@ -252,10 +254,8 @@
             }
         }
 
+        // Saves searched subject in localStorage and moves user to search page
         function moveToSearchPage() {
-            /**
-            * Moves the user to the search page after clicking on search
-            */
             let subjectsearched = document.getElementById('dropdown').value;
             localStorage.setItem('subject', subjectsearched);
             location.href = 'searchpage.html';
@@ -265,8 +265,6 @@
         function getValues(e) {
             var user = firebase.auth().currentUser
             e.preventDefault();
-            console.log('inside getValues')
-            console.log(user)
 
             db.collection("users").doc(user.email).set({
                 // Grabbing the users information from the signup modal
@@ -291,14 +289,13 @@
             modal.style.display = "none";
         }
 
-        // Change the status of user through snapshot if the user has signed in
+        // Change the status of user (sign in button disappears and user photo appears if a user is signed in
         db.collection("users").onSnapshot((snapshot) => {
             let currentUser = firebase.auth().currentUser;
             snapshot.forEach(doc => {
                 if (doc.id == currentUser.email) {
                     localStorage.setItem("userInfo", doc.data());
                     console.log('Document data:', doc.data());
-                    // localStorage.setItem('userName', currentUser.email.firstName);
                     document.getElementById('welcome').innerHTML = 'Welcome back, ' + doc.data().firstName + '!';
                     document.getElementById('signin').style.visibility = 'hidden';
                     document.getElementById('userPhoto').src = doc.data().photo;
@@ -307,21 +304,24 @@
             })
         })
 
+        // If someone is signed in through Firestore Authorization, and their email already exists as a document name
+        // in the Firestore "users" collection, then the page will welcome them by first name. If their email does not
+        // already exist as an ID in the "users" collection, a modal will pop up where the user will be prompted to fill
+        // in personal information (which is then saved to the database)
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
-                // Save user's name in local storage
-                console.log("someone has logged in")
+                
                 db.collection('users').doc(user.email).get()
                     .then(function (doc) {
                         if (doc.exists) {
-                            localStorage.setItem('userInfo', doc.data());
+                            localStorage.setItem('userInfo', doc.data()); // Save user's name in local storage
                             console.log("user already exists");
                             console.log('Document data:', doc.data());
                             localStorage.setItem('userName', user.email.firstName);
                             document.getElementById('welcome').innerHTML = 'Welcome back, ' + doc.data().firstName + '!';
                         }
                         else {
-                            modal.style.display = "block";
+                            modal.style.display = "block"; // Makes the modal (personal information form) appear
                         }
                     })
                     .catch(function (error) {
@@ -330,7 +330,9 @@
             }
         })
 
+        // Gets values from personal information modal when submit button is clicked
         document.getElementById("myform").addEventListener('submit', getValues)
+
     </script>
 
 </body>
