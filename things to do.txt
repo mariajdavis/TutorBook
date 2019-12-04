@@ -7,3 +7,13 @@ book a session form
 view upcoming sessions page
 
 add user auth stuff to review page and view upcoming sessions page
+
+add subject name at top of search page like "python tutors", not hover over search titles
+
+round the corners of boxes/cells
+
+dynamic window sizing
+
+commenting
+
+documentation

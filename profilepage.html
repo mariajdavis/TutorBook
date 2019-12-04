@@ -147,7 +147,7 @@
         <p id='rate'> </p>
         <p style="font-size: 75%" id='bio'></p>
         <h3 id='tutorRating'></h3>
-        <p><button>View Reviews</button></p>
+        <p><button id='viewReviews' onclick=viewReviews()>View Reviews</button></p>
         <p><button id='contact' style='visibility:hidden;'>Message</button></p>
         <p><button id='bookSession' style='visibility:hidden;'>Book Session</button></p>
         <p><button id='leaveReview' style='visibility:hidden;' onclick=goToReviewPage()>Leave a Review</button></p>
@@ -285,6 +285,9 @@
             location.href = 'reviewpage.html';
         }
 
+        function viewReviews() {
+            location.href = 'viewreviewspage.html';
+        }
 
     </script>
 

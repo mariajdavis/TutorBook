@@ -199,59 +199,27 @@
 
     <a id="signin" href="signup.html">Sign In</a>
 
-    <select id="dropdown">
-        <option value="">Select subject...</option>
-        <div role="separator"></div>
-        <option value="communications">Communications</option>
-        <div role="separator"></div>
-        <option value="python">Python</option>
-        <div role="separator"></div>
-        <option value="javascript">JavaScript</option>
-        <div role="separator"></div>
-        <option option value="linear algebra">Linear Algebra</option>
-    </select></br>
-    <input type='submit' id='searchBtn' value='Search!' onclick=updateSearch()>
-    <input type='button' id='filterBtn' value='Filter'>
-
-
     <table id='thead' width=402px>
         <br><br>
         <tr>
             <td></td>
-            <td>Tutor</td>
-            <td>$/hr</td>
+            <td>Student</td>
             <td>Rating</td>
+            <td>Review</td>
         </tr>
 
     </table>
 
-    <!-- This is where search results are appended in body -->
+    <!-- This is where reviews are appended in body -->
     <div id='content'>
         <table id='tableid'></table>
-    </div>
-
-
-    <!-- Search modal -->
-    <div id="filterModal" class="modal">
-
-        <div class="modal-content">
-            <span class="close">&times;</span>
-                <table id='filterid'>
-                    <tr><td><input type='radio' name='filter' id='rating'>Highest to lowest rating<br/></td></tr>
-                    <tr><td><input type='radio' name='filter' id='rate'>Lowest to highest rate/hour<br/></td></tr>
-                </table>
-                <input type="submit" onclick=updateSearch()>
-        </div>
-
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
 
-
     <img src='profilephoto.png' width=100px height=100px id='profile' style='visibility:hidden'></img>
-
 
     <div id="options" class="modal">
         <div class="modal-content" align="center">
@@ -309,12 +277,6 @@
 
 
         let tutorTable = document.getElementById('tableid');
-        let filterBtn = document.getElementById('filterBtn')
-
-        let searchBtn = document.getElementById('searchBtn');
-
-        // Get the filter modal
-        let filterModal = document.getElementById("filterModal");
 
         var firebaseConfig = {
             apiKey: "AIzaSyBppJzDA662sj6TZBCP_Dprbx8cIq2SwSU",
@@ -325,20 +287,6 @@
             messagingSenderId: "169085210695",
             appId: "1:169085210695:web:e24ff38e1ece1c5a65e162"
         };
-
-        // Get the <span> element that closes the modal
-        var closeModal = document.getElementsByClassName("close")[0];
-
-        // When the user clicks on <span> (x), close the modal
-        closeModal.onclick = function () {
-            filterModal.style.display = "none";
-        }
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function (event) {
-            if (event.target == filterModal) {
-                filterModal.style.display = "none";
-            }
-        }
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
@@ -364,54 +312,46 @@
                 });
         }
 
-        let searchfilter = document.getElementById('filterid').value
-
-        console.log(document.getElementById('rating').checked)
+        let tutorArray = db.collection('users')
+        tutor = JSON.parse(localStorage.getItem("tutor"))
+        console.log(tutor)
 
 
         function searchResults(table, tutorArray) {
-                if (document.getElementById('rating').checked) { // Display tutors from highest to lowest ratings
-                    for (let i = 5; i > 0; i--) {
-                        tutorArray.forEach(tutor => {
-                            console.log(tutor)
-                            if (tutor.data().rating == i) {
-                                displayTutor(tutor);
-                        }
+            let allReviews = db.collection('reviews').where("tutor", "==", tutor.email).get()
+                .then(function (allReviews) {
+                    allReviews.forEach(eachDoc => {
+                        displayReview(eachDoc)
                     })
-                    }
-                }
-                else if (document.getElementById('rate').checked) { // Display tutors from lowest to highest rate
-                    for (let j = 0; j < 100; j++) {
-                        tutorArray.forEach(tutor => {
-                            if (tutor.data().rate == j) {
-                                displayTutor(tutor);
-                        }
-                    })
-                    }
-                }
-                else {
-                    tutorArray.forEach(tutor => {
-                        displayTutor(tutor)
-                    })
-                }
+                });
         }
 
-        function displayReview(tutor) {
-            let row = table.insertRow();
-            let photoCell = row.insertCell(0);
-            let nameCell = row.insertCell(1);
-            let ratingCell = row.insertCell(2)
-            let reviewCell = row.insertCell(3);
-            photoCell.innerHTML = '<img src="' + tutor.data().photo + '" width=100%>';
-            nameCell.innerHTML = tutor.data().firstName;
-            ratingCell.innerHTML = tutor.data().rate
-            reviewCell.innerHTML = addStars(tutor.data().rating);
-            console.log(tutor.data())
-            row.onclick = function () {
-                localStorage.setItem("tutor", JSON.stringify(tutor.data()));
-                location.href = 'profilepage.html';
-            }
+
+        function displayReview(reviewID) {
+            console.log(reviewID.data().student)
+            db.collection("users").doc(reviewID.data().student).get().then(function (reviewer) {
+                if (reviewer.exists) {
+                    console.log(reviewer)
+                    let row = table.insertRow();
+                    let photoCell = row.insertCell(0);
+                    let nameCell = row.insertCell(1);
+                    let ratingCell = row.insertCell(2);
+                    let reviewCell = row.insertCell(3);
+                    photoCell.innerHTML = '<img src="' + reviewer.photo + '" width=100%>';
+                    nameCell.innerHTML = reviewer.firstName;
+                    ratingCell.innerHTML = addStars(reviewID.data().rating);
+                    reviewCell.innerHTML = reviewID.data().review
+                    console.log(reviewID.data())
+                } else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                }
+            }).catch(function (error) {
+                console.log("Error getting document:", error);
+            });
         }
+
+
 
         function addStars(num) {
             if (num === 1) {
@@ -431,7 +371,6 @@
 
         listOfTutors = searchBySubject(subject);
 
-        filterBtn.onclick = function () { filterModal.style.display = "block"; }
 
         db.collection("users").onSnapshot((snapshot) => {
             let currentUser = firebase.auth().currentUser;
