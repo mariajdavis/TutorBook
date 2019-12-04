@@ -1,20 +1,28 @@
-body:not(#userPhoto) {
+/* Stylizing the entire page */
+body {
     text-align: center;
     margin-top: 120px;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 170%;
+    font-size: 120%;
     color: rgb(23, 187, 134);
 }
 
 input {
     border-color: rgb(23, 187, 134);
     border-width: 1px;
-    width: 200px;
+    width: 175px;
     height: 30px;
-    font-size: 120%;
+    font-size: 100%;
     color: rgb(23, 187, 134);
 }
 
+/* Table row stylizations for filtering feature */
+#filterid tr {
+    background-color: white;
+    color: rgb(23, 187, 134);
+}
+
+/* Filter button stylization */
 button {
     display: inline-block;
     border: none;
@@ -31,19 +39,10 @@ button {
         transform 150ms ease;
 }
 
+/* Clear indication of button being clickable */
 button:hover,
 button:focus {
     background: rgba(23, 187, 134, 0.5);
-}
-
-#subjectentry {
-    margin: 5px;
-    width: 200px;
-}
-
-#searchBtn {
-    font-size: 70%;
-    width: 204px;
 }
 
 button:focus {
@@ -53,6 +52,12 @@ button:focus {
 
 button:active {
     transform: scale(0.99);
+}
+
+/* Making sure the subjects fit inside the boxes */
+#subject {
+    width: 402px;
+    margin: 5px;
 }
 
 /* The Modal (background) */
@@ -82,7 +87,6 @@ button:active {
     padding: 20px;
     border: 1px solid rgb(23, 187, 134);
     width: 80%;
-    font-size: 80%;
 }
 
 /* The Close Button */
@@ -91,17 +95,6 @@ button:active {
     float: right;
     font-size: 28px;
     font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-#welcome {
-    left: 100%
 }
 
 #signin {
@@ -118,42 +111,81 @@ button:active {
     text-align: center;
 }
 
+/* Indication that button is clickable */
 #signin:hover {
     background-color: rgba(18, 145, 105, 1);
 }
 
-#profileperson:hover {
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#welcome {
+    left: 100%;
+}
+
+/* Clickable table elements */
+tr:not(#thead):hover {
     opacity: 0.7;
 }
 
-#profileperson {
-    position: absolute;
-    right: 10px;
+#content,
+#thead {
+    width: 355px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
+#thead tr {
+    background-color: white;
+    color: rgb(23, 187, 134);
+    font-size: 120%;
+}
+
+#tableid {
+    margin: 5px;
+    text-align: center;
+    border-collapse: collapse;
+    color: white;
+    border-collapse: separate;
+    border-spacing: 0 1em;
+}
+
+tr {
+    background-color: rgb(23, 187, 134);
+}
+
+td {
+    width: 75px;
+    height: 40px;
+    padding: 3px;
+}
+
+/* Display user proflie image on the top right */
+#userPhoto {
+    height: 100px;
+    width: 100px;
+    top: 0%;
+    right: 0%;
+    position: fixed;
+    display: block;
+}
+
+#dropdown {
+    margin: 5px;
+}
 
 select {
     height: 50px;
-    width: 204px;
+    width: 355px;
     font-weight: 525;
     font-size: 65%;
     color: rgb(23, 187, 134);
 }
 
-#searchBtn {
-    background-color: rgb(23, 187, 134);
-    color: white;
-}
-
-#searchBtn:hover {
-    cursor: pointer;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    background-color: rgba(16, 127, 92, 1);
-}
-
-#userPhoto {
-    position: fixed;
-    right: 0%;
-    top: 0%;
-
+h2 {
+    display: inline;
 }
