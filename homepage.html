@@ -2,40 +2,34 @@
 <html>
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
-
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
     <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
     <link type="text/css" rel="stylesheet" href="homepagecss.css">
 </head>
 
 <body>
+    <!-- Adding elements (signup page, welcome message, site logo, and a helpful message) to the site -->
     <a id="signin" href="signup.html">Sign In</a>
-
     <p id='welcome'></p>
-
     <img src='logo.jpeg' alt='logo' width=302px height=200px>
-
     <p id="title">What subject do you <br> need help with?</p>
 
-
-
-
-        <select id="dropdown">
-            <option value="">Select subject...</option>
-            <div role="separator" ></div>
-            <option value="communications">Communications</option>
-            <div role="separator" ></div>
-            <option value="python">Python</option>
-            <div role="separator"></div>
-            <option value="javascript">JavaScript</option>
-            <div role="separator" ></div>
-            <option option value="linear algebra">Linear Algebra</option>
-        </select><br>
-        <input type='submit' id='searchBtn' value='Search!' onclick=moveToSearchPage()>
-  
-
-
+    <!-- A dropdown for limited search options, allows users to know what the site currently offers -->
+    <select id="dropdown">
+        <option value="">Select subject...</option>
+        <div role="separator"></div>
+        <option value="communications">Communications</option>
+        <div role="separator"></div>
+        <option value="python">Python</option>
+        <div role="separator"></div>
+        <option value="javascript">JavaScript</option>
+        <div role="separator"></div>
+        <option option value="linear algebra">Linear Algebra</option>
+    </select><br>
+    <!-- Grabs the value of the search option and searches it -->
+    <input type='submit' id='searchBtn' value='Search!' onclick=moveToSearchPage()>
 
     <!-- User information modal -->
     <div id="myModal" class="modal">
@@ -45,6 +39,7 @@
             <span class="close">&times;</span>
             <form id="myform">
                 <table>
+                    <!-- Modal interface for user to create their first time account -->
                     <tr>
                         <td>First name:</td>
                         <td><input type='text' id='firstname'><br />
@@ -84,6 +79,7 @@
                         <td>Subject 1:</td>
                         <td><select name="subject1" id="sub1">
                                 <option></option>
+                                <!-- Dropdown values -->
                                 <option value="communications">Communications</option>
                                 <option value="python">Python</option>
                                 <option value="javascript">Javascript</option>
@@ -95,6 +91,7 @@
                         <td>
                             <select name="subject2" id="sub2">
                                 <option></option>
+                                <!-- Drpodown values -->
                                 <option value="communications">Communications</option>
                                 <option value="python">Python</option>
                                 <option value="javascript">Javascript</option>
@@ -102,38 +99,33 @@
                         </td>
                     </tr>
                 </table>
-
                 <input type="submit">
             </form>
         </div>
-
     </div>
 
+    <!-- Initial profile image should be invisible because the user has not signed in yet -->
     <img src='profilephoto.png' width=100px height=100px id='userPhoto' style='visibility:hidden'></img>
 
-
     <div id="options" class="modal">
-            <div class="modal-content" align="center">
-                <span id='close'>&times;</span>
-                <p id="homePage" onclick="backToHomePage()"></p>
-                <p id="viewNotifications" onclick="viewNotifications()"></p>
-                <p id="viewMessages" onclick="viewMessages()"></p>
-                <p id="viewSessions" onclick="viewSessions()"></p>
-                <p id='logOut' onclick='logOut()'></p>
-            </div>
+        <div class="modal-content" align="center">
+            <span id='close'>&times;</span>
+            <!-- Display options when user profile is clicked -->
+            <!-- Not all of these are fully implemented, so it will just display an alert message -->
+            <p id="homePage" onclick="backToHomePage()"></p>
+            <p id="viewNotifications" onclick="viewNotifications()"></p>
+            <p id="viewMessages" onclick="viewMessages()"></p>
+            <p id="viewSessions" onclick="viewSessions()"></p>
+            <p id='logOut' onclick='logOut()'></p>
         </div>
-
+    </div>
 
     <script>
-
-
+        // Grabbing the elements(user img, option list, close button, and search button) created through the HTML section
         let optionsBtn = document.getElementById("userPhoto");
         let optionsModal = document.getElementById("options");
         let span = document.getElementById('close');
         let searchButton = document.getElementById('searchBtn')
-
-
-
 
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function (event) {
@@ -151,7 +143,6 @@
             messagingSenderId: "169085210695",
             appId: "1:169085210695:web:e24ff38e1ece1c5a65e162"
         };
-
 
         optionsBtn.onclick = function () {
             optionsModal.style.display = "block";
@@ -174,40 +165,52 @@
         }
 
         function backToHomePage() {
+            /**
+            * Leads the user back to the homepage
+            */
             location.href = 'homepage.html';
         }
 
         function viewNotifications() {
+            /**
+            * WIP, will just send an alert message
+            */
             alert("This will lead to user's notifications.");
         }
 
         function viewMessages() {
+            /**
+            * WIP, will just send an alert message
+            */
             alert("This will lead to user's message page.");
         }
 
         function viewSessions() {
-            //localStorage.setItem("session", JSON.stringify(tutor.data())); 
-            location.href = 'sessionspage.html';
+            /**
+            * WIP, will just send an alert message
+            */ 
+            alert("This will lead to the user's session page.");
         }
 
         function logOut() {
+            /**
+            * WIP, will just send an alert message
+            */
             alert("This will redirect back to the main page and log you out.");
         }
-
     </script>
 
+    <!-- Adding firebase to the script for database purposes -->
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
     <script type="text/javascript">
-
         var mydropdown = document.getElementById('dropdown');
-
         mydropdown.onchange = function () {
             mydropdown.value = this.value; //to change the value
         }
-
     </script>
+
     <script>
         // Log-out template, use for the modal when user is clicked
         document.getElementById("logOut").onclick = function () {
@@ -250,11 +253,13 @@
         }
 
         function moveToSearchPage() {
-            let subjectsearched = document.getElementById('dropdown').value; 
+            /**
+            * Moves the user to the search page after clicking on search
+            */
+            let subjectsearched = document.getElementById('dropdown').value;
             localStorage.setItem('subject', subjectsearched);
             location.href = 'searchpage.html';
         }
-
 
         // Function to get values from modal form
         function getValues(e) {
@@ -264,6 +269,7 @@
             console.log(user)
 
             db.collection("users").doc(user.email).set({
+                // Grabbing the users information from the signup modal
                 firstName: document.getElementById('firstname').value,
                 firstName: document.getElementById('firstname').value,
                 lastName: document.getElementById('lastname').value,
@@ -275,15 +281,17 @@
                 document.getElementById('sub2').value.toLowerCase()]
             })
                 .then(function (docRef) {
+                    // Confirming that the info has been successfully written into the database
                     console.log("written to database")
                 })
                 .catch(function (error) {
+                    // Console log if an error occurs
                     console.log("err")
                 })
             modal.style.display = "none";
         }
 
-
+        // Change the status of user through snapshot if the user has signed in
         db.collection("users").onSnapshot((snapshot) => {
             let currentUser = firebase.auth().currentUser;
             snapshot.forEach(doc => {
@@ -301,9 +309,8 @@
 
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
-                // save user's name in local storage
+                // Save user's name in local storage
                 console.log("someone has logged in")
-
                 db.collection('users').doc(user.email).get()
                     .then(function (doc) {
                         if (doc.exists) {
@@ -324,20 +331,8 @@
         })
 
         document.getElementById("myform").addEventListener('submit', getValues)
-
-        //console.log(JSON.parse(localStorage.getItem('userInfo')))
-
-
-
-        //tutor = JSON.parse(localStorage.getItem("tutor"))
-
-        // let result = JSON.parse(JSON.stringify(currentUser))
-        // console.log(result)
-
-
     </script>
 
 </body>
-
 
 </html>
