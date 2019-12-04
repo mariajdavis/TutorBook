@@ -203,22 +203,6 @@
 
         document.getElementById('tutorSubjects').innerHTML = subjects;
 
-
-        // db.collection("users").onSnapshot((snapshot) => {
-        //     let currentUser = firebase.auth().currentUser;
-        //     snapshot.forEach(doc => {
-        //         if (doc.id == currentUser.email) {
-        //             localStorage.setItem("userInfo", doc.data());
-        //             console.log('Document data:', doc.data());
-        //             // localStorage.setItem('userName', currentUser.email.firstName);
-        //             document.getElementById('welcome').innerHTML = 'Welcome back, ' + doc.data().firstName + '!';
-        //             document.getElementById('signin').style.visibility = 'hidden';
-        //             document.getElementById('profile').src = doc.data().photo;
-        //             document.getElementById('profile').style.visibility = 'visible';
-        //         }
-        //     })
-        // })
-
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
                 // save user's name in local storage
@@ -227,7 +211,7 @@
                 db.collection('users').doc(user.email).get()
                     .then(function (doc) {
                         if (doc.exists) {
-                            localStorage.setItem('userInfo', doc.data())
+                            localStorage.setItem('userInfo', JSON.stringify(doc.data()))
                             console.log("user already exists")
                             console.log('Document data:', doc.data());
                             document.getElementById('signin').style.visibility = 'hidden';
@@ -280,13 +264,6 @@
         span.onclick = function () {
             optionsModal.style.display = "none";
         }
-
-        // // When the user clicks anywhere outside of the modal, close it
-        // window.onclick = function (event) {
-        //     if (event.target == modal) {
-        //         optionsModal.style.display = "none";
-        //     }
-        // }
 
         function viewNotifications() {
             alert("This will lead to user's notifications.");

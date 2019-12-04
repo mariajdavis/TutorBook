@@ -419,12 +419,8 @@
             console.log('inside getValues')
             console.log(user)
 
-
-
-
-
             db.collection("users").doc(user.email).set({
-                firstName: document.getElementById('firstname').vasearchchoicelue,
+                firstName: document.getElementById('firstname').value,
                 firstName: document.getElementById('firstname').value,
                 lastName: document.getElementById('lastname').value,
                 city: document.getElementById('city').value,
@@ -441,8 +437,8 @@
                     console.log("err")
                 })
             modal.style.display = "none";
-
         }
+
 
         db.collection("users").onSnapshot((snapshot) => {
             let currentUser = firebase.auth().currentUser;

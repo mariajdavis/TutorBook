@@ -4,14 +4,63 @@
 
 
 <body>
+
 <script>
 
 db.collection('users').document(user.email).collection('sessions').get().then(function(querySnapshot) {
     querySnapshot.forEach(function(doc) {
-        console.log(doc.id, " => ", doc.data());
+        if tutorName == doc.data().tutor {
+            document.getElementById('leaveReview').style.visibility='visible'
+        }
     });
 });
+
+
+let optionsBtn = document.getElementById("profile");
+        let optionsModal = document.getElementById("options");
+        let span = document.getElementById('close')
+        let profilepic = "<img id='profileperson' src='profilephoto.png' width=100px height=100px href='profilepage.html'></img>'"
+        let subject = localStorage.getItem('subject')
+        console.log(subject)
+
+        optionsBtn.onclick = function () {
+            optionsModal.style.display = "block";
+            document.getElementById("viewNotifications").innerHTML = "<br>Notifications<br>";
+            document.getElementById("viewMessages").innerHTML = "<br>Messages<br>";
+            document.getElementById("viewSessions").innerHTML = "<br>Upcoming Sessions<br>";
+            document.getElementById("logOut").innerHTML = "<br>Log Out<br>";
+        }
+
+        span.onclick = function () {
+            optionsModal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                optionsModal.style.display = "none";
+            }
+        }
+
+        function viewNotifications() {
+            alert("This will lead to user's notifications.");
+        }
+
+        function viewMessages() {
+            alert("This will lead to user's message page.");
+        }
+
+        function viewSessions() {
+            location.href = 'sessionspage.html';
+        }
+
+        function logOut() {
+            alert("This will log you out.");
+        }
 
 </script>
 </body>
 </html>
+
+
+leaveReview contact bookSession

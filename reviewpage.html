@@ -4,8 +4,13 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <head>
+            <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+            <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
+        </head>
+
     <style>
-        body:not(#profile) {
+        body:not(#userPhoto) {
             text-align: center;
             margin-top: 10%;
             font-family: Arial, Helvetica, sans-serif;
@@ -131,6 +136,38 @@
             text-decoration: none;
             cursor: pointer;
         }
+        #userPhoto {
+            position: fixed;
+            right: 0%;
+            top: 0%;
+        }
+
+        #signin {
+            background-color: rgb(23, 187, 134);
+            color: white;
+            position: fixed;
+            right: 0%;
+            top: 0%;
+            display: block;
+            height: 40px;
+            line-height: 40px;
+            text-decoration: none;
+            width: 100px;
+            text-align: center;
+        }
+
+        #signin:hover {
+            background-color: rgba(18, 145, 105, 1);
+        }
+
+        #profileperson:hover {
+            opacity: 0.7;
+        }
+
+        #profileperson {
+            position: absolute;
+            right: 10px;
+        }
     </style>
 
 </head>
@@ -149,57 +186,33 @@
             <option value="5">5 Stars</option>
         </select>
         <br><br>
-        <input id="myBtn" clas="btn" type="button" value="Submit">
+        <input id="myBtn" clas="btn" type="button" value="Submit" onclick=submitReview()>
 
-        <!-- The Modal -->
-        <div id="myModal" class="modal">
-
-            <!-- Modal content -->
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Please confirm submission</h2><br>
-                <input class="btn" id="confirm" type="button" value="Submit">
+        <a id="signin" href="signup.html">Sign In</a>
+        <img src='profilephoto.png' width=100px height=100px id='userPhoto' style='visibility:hidden'></img>
+    
+        <div id="options" class="modal">
+            <div class="modal-content" align="center">
+                <span id='close'>&times;</span>
+                <p id="viewNotifications" onclick="viewNotifications()"></p>
+                <p id="viewMessages" onclick="viewMessages()"></p>
+                <p id="viewSessions" onclick="viewSessions()"></p>
+                <p id='logOut' onclick='logOut()'></p>
             </div>
+        </div>
+
+        <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
+
+
+  
 
   
 
 
     <script>
-        // Get the modal
-        var modal = document.getElementById("myModal");
-
-        // Get the button that opens the modal
-        var btn = document.getElementById("myBtn");
-
-        var confirm = document.getElementById("confirm");
-
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
-
-        // When the user clicks the button, open the modal 
-        btn.onclick = function () {
-            modal.style.display = "block";
-        }
-
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function () {
-            modal.style.display = "none";
-        }
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-
-        confirm.onclick = function () {
-            var e = document.getElementById("starRating");
-            var strUser = e.options[e.selectedIndex].value;
-            document.getElementById("demo").innerHTML = document.getElementById("reviewText").value;
-            document.getElementById("demo2").innerHTML = strUser + " Stars"
-            modal.style.display = "none";
-        }
+     
 
 
         tutor = JSON.parse(localStorage.getItem("tutor"))
@@ -207,8 +220,62 @@
 
         document.getElementById('tutorName').innerHTML = tutor.firstName
 
+                // Initialize Firebase
 
 
+        var firebaseConfig = {
+            apiKey: "AIzaSyBppJzDA662sj6TZBCP_Dprbx8cIq2SwSU",
+            authDomain: "tutorbookvancouver.firebaseapp.com",
+            databaseURL: "https://tutorbookvancouver.firebaseio.com",
+            projectId: "tutorbookvancouver",
+            storageBucket: "tutorbookvancouver.appspot.com",
+            messagingSenderId: "169085210695",
+            appId: "1:169085210695:web:e24ff38e1ece1c5a65e162"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.firestore();
+
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                // save user's name in local storage
+                console.log("someone has logged in")
+
+                db.collection('users').doc(user.email).get()
+                    .then(function (doc) {
+                        if (doc.exists) {
+                            localStorage.setItem('userInfo', doc.data())
+                            console.log("user already exists")
+                            console.log('Document data:', doc.data());
+                            document.getElementById('signin').style.visibility = 'hidden';
+                            document.getElementById('userPhoto').src = doc.data().photo;
+                            document.getElementById('userPhoto').style.visibility = 'visible';
+                        }
+                    }
+            )}
+        })
+    
+        let user = JSON.parse(localStorage.getItem('userInfo'));
+        console.log(user.email);
+
+
+
+        function submitReview() {
+            console.log('hi')
+            db.collection("reviews").add({
+                review: document.getElementById('reviewText').value,
+                rating: document.getElementById('starRating').value,
+                tutor: tutor.email,
+                student: user.email
+            })
+                .then(function (docRef) {
+                    console.log("Document written with ID: ", docRef.id);
+                    location.href = 'profilepage.html';
+                })
+                .catch(function (error) {
+                    console.error("Error adding document: ", error);
+                });
+        }
 
 
     </script>
