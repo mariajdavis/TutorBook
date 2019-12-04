@@ -3,180 +3,20 @@
 <head>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
+    <link type="text/css" rel="stylesheet" href="reviewpagecss.css">
 
-    <head>
-            <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
-            <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
-        </head>
-
-    <style>
-        body:not(#userPhoto) {
-            text-align: center;
-            margin-top: 2%;
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 100%;
-            color: rgb(23, 187, 134);
-        }
-        #starRating {
-            font-size: 70%;
-            width: 204px;
-        }
-
-        input {
-            border-color: rgb(23, 187, 134);
-            border-width: 1px;
-            width: 200px;
-            height: 30px;
-            font-size: 120%;
-            color: rgb(23, 187, 134);
-        }
-
-        button {
-            display: inline-block;
-            border: none;
-            padding: 0.5rem 1rem;
-            margin: 0;
-            text-decoration: none;
-            background: rgb(23, 187, 134);
-            color: #ffffff;
-            font-family: sans-serif;
-            font-size: 1rem;
-            cursor: pointer;
-            text-align: center;
-            transition: background 250ms ease-in-out,
-                transform 150ms ease;
-        }
-
-        button:hover,
-        button:focus {
-            background: rgba(23, 187, 134, 0.5);
-        }
-
-        #subjectentry {
-            margin: 5px;
-            width: 200px;
-        }
-        h2 {
-            display:inline;
-        }
-
-        #searchBtn {
-            font-size: 70%;
-            width: 204px;
-        }
-
-        button:focus {
-            outline: 1px solid #fff;
-            outline-offset: -4px;
-        }
-
-        button:active {
-            transform: scale(0.99);
-        }
-        #reviewBox,
-        #reviewText {
-            text-align: center;
-        }
-
-        textarea {
-            font-size: 2em;
-        }
-
-        .btn {
-            font-size: 28px;
-            font-weight: bold;
-            width: 3em;
-        }
-
-
-        /* The Modal (background) */
-        .modal {
-            display: none;
-            /* Hidden by default */
-            position: fixed;
-            /* Stay in place */
-            z-index: 1;
-            /* Sit on top */
-            padding-top: 100px;
-            /* Location of the box */
-            left: 0;
-            top: 0;
-            width: 100%;
-            /* Full width */
-            height: 100%;
-            /* Full height */
-            overflow: auto;
-            /* Enable scroll if needed */
-            background-color: rgb(0, 0, 0);
-            /* Fallback color */
-            background-color: rgba(0, 0, 0, 0.4);
-            /* Black w/ opacity */
-        }
-
-        /* Modal Content */
-        .modal-content {
-            background-color: #fefefe;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 50%;
-        }
-
-        /* The Close Button */
-        .close {
-            color: #aaaaaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: #000;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        #userPhoto {
-            position: fixed;
-            right: 0%;
-            top: 0%;
-        }
-
-        #signin {
-            background-color: rgb(23, 187, 134);
-            color: white;
-            position: fixed;
-            right: 0%;
-            top: 0%;
-            display: block;
-            height: 40px;
-            line-height: 40px;
-            text-decoration: none;
-            width: 100px;
-            text-align: center;
-        }
-
-        #signin:hover {
-            background-color: rgba(18, 145, 105, 1);
-        }
-
-        #profileperson:hover {
-            opacity: 0.7;
-        }
-
-        #profileperson {
-            position: absolute;
-            right: 10px;
-        }
-    </style>
 
 </head>
 
 <body>
 
     <div id="reviewBox">
-        <h2>Leave a Review for </h2><h2 id='tutorName'></h2><br><br>
-        <textarea id="reviewText" name="review" cols="20px" rows="10px" required></textarea>
+        <h2>Leave a Review for </h2>
+        <br>
+        <h2 id='tutorName'></h2><br><br>
+        <textarea id="reviewText" name="review" cols="40" rows="20" required></textarea>
         <br><br>
         <select id="starRating">
             <option value="1">1 Star</option>
@@ -190,143 +30,144 @@
 
         <a id="signin" href="signup.html">Sign In</a>
         <img src='profilephoto.png' width=100px height=100px id='userPhoto' style='visibility:hidden'></img>
-    
+
         <div id="options" class="modal">
-                <div class="modal-content" align="center">
-                    <span id='close'>&times;</span>
-                    <p id="searchPage" onclick="backToSearchPage()"></p>
-                    <p id="viewNotifications" onclick="viewNotifications()"></p>
-                    <p id="viewMessages" onclick="viewMessages()"></p>
-                    <p id="viewSessions" onclick="viewSessions()"></p>
-                    <p id='logOut' onclick='logOut()'></p>
-                </div>
+            <div class="modal-content" align="center">
+                <span id='close'>&times;</span>
+                <p id="searchPage" onclick="backToSearchPage()"></p>
+                <p id="viewNotifications" onclick="viewNotifications()"></p>
+                <p id="viewMessages" onclick="viewMessages()"></p>
+                <p id="viewSessions" onclick="viewSessions()"></p>
+                <p id='logOut' onclick='logOut()'></p>
             </div>
+        </div>
 
         <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
         <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
 
 
-  
-
-  
 
 
-    <script>
-     
-        let profileBtn = document.getElementById("userPhoto");
-        let optionsModal = document.getElementById("options");
-        let span = document.getElementById('close');
-        let searchButton = document.getElementById('searchBtn')
 
-        tutor = JSON.parse(localStorage.getItem("tutor"))
-        console.log(tutor)
 
-        document.getElementById('tutorName').innerHTML = tutor.firstName
 
-        window.onclick = function (event) {
-            if (event.target == modal) {
+        <script>
+
+            let profileBtn = document.getElementById("userPhoto");
+            let optionsModal = document.getElementById("options");
+            let span = document.getElementById('close');
+            let searchButton = document.getElementById('searchBtn')
+
+            tutor = JSON.parse(localStorage.getItem("tutor"))
+            console.log(tutor)
+
+            document.getElementById('tutorName').innerHTML = tutor.firstName
+
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    optionsModal.style.display = "none";
+                }
+            }
+
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    optionsModal.style.display = "none";
+                }
+            }
+
+            function viewNotifications() {
+                alert("This will lead to user's notifications.");
+            }
+
+            function viewMessages() {
+                alert("This will lead to user's message page.");
+            }
+
+            function viewSessions() {
+                //localStorage.setItem("session", JSON.stringify(tutor.data())); 
+                location.href = 'sessionspage.html';
+            }
+
+            function logOut() {
+                alert("This will redirect back to the main page and log you out.");
+            }
+
+            span.onclick = function () {
                 optionsModal.style.display = "none";
             }
-        }
 
-   
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                optionsModal.style.display = "none";
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    optionsModal.style.display = "none";
+                }
             }
-        }
 
-        function viewNotifications() {
-            alert("This will lead to user's notifications.");
-        }
-
-        function viewMessages() {
-            alert("This will lead to user's message page.");
-        }
-
-        function viewSessions() {
-            //localStorage.setItem("session", JSON.stringify(tutor.data())); 
-            location.href = 'sessionspage.html';
-        }
-
-        function logOut() {
-            alert("This will redirect back to the main page and log you out.");
-        }
-
-        span.onclick = function () {
-            optionsModal.style.display = "none";
-        }
-
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                optionsModal.style.display = "none";
+            profileBtn.onclick = function () {
+                optionsModal.style.display = "block";
+                document.getElementById("viewNotifications").innerHTML = "<br>Notifications<br>";
+                document.getElementById("viewMessages").innerHTML = "<br>Messages<br>";
+                document.getElementById("viewSessions").innerHTML = "<br>Upcoming Sessions<br>";
+                document.getElementById("logOut").innerHTML = "<br>Log Out<br>";
             }
-        }
-
-        profileBtn.onclick = function () {
-            optionsModal.style.display = "block";
-            document.getElementById("viewNotifications").innerHTML = "<br>Notifications<br>";
-            document.getElementById("viewMessages").innerHTML = "<br>Messages<br>";
-            document.getElementById("viewSessions").innerHTML = "<br>Upcoming Sessions<br>";
-            document.getElementById("logOut").innerHTML = "<br>Log Out<br>";
-        }
 
 
-        var firebaseConfig = {
-            apiKey: "AIzaSyBppJzDA662sj6TZBCP_Dprbx8cIq2SwSU",
-            authDomain: "tutorbookvancouver.firebaseapp.com",
-            databaseURL: "https://tutorbookvancouver.firebaseio.com",
-            projectId: "tutorbookvancouver",
-            storageBucket: "tutorbookvancouver.appspot.com",
-            messagingSenderId: "169085210695",
-            appId: "1:169085210695:web:e24ff38e1ece1c5a65e162"
-        };
+            var firebaseConfig = {
+                apiKey: "AIzaSyBppJzDA662sj6TZBCP_Dprbx8cIq2SwSU",
+                authDomain: "tutorbookvancouver.firebaseapp.com",
+                databaseURL: "https://tutorbookvancouver.firebaseio.com",
+                projectId: "tutorbookvancouver",
+                storageBucket: "tutorbookvancouver.appspot.com",
+                messagingSenderId: "169085210695",
+                appId: "1:169085210695:web:e24ff38e1ece1c5a65e162"
+            };
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        db = firebase.firestore();
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.firestore();
 
-        firebase.auth().onAuthStateChanged(function (user) {
-            if (user) {
-                // save user's name in local storage
-                console.log("someone has logged in")
+            firebase.auth().onAuthStateChanged(function (user) {
+                if (user) {
+                    // save user's name in local storage
+                    console.log("someone has logged in")
 
-                db.collection('users').doc(user.email).get()
-                    .then(function (doc) {
-                        if (doc.exists) {
-                            localStorage.setItem('userInfo', doc.data())
-                            console.log("user already exists")
-                            console.log('Document data:', doc.data());
-                            document.getElementById('signin').style.visibility = 'hidden';
-                            document.getElementById('userPhoto').src = doc.data().photo;
-                            document.getElementById('userPhoto').style.visibility = 'visible';
+                    db.collection('users').doc(user.email).get()
+                        .then(function (doc) {
+                            if (doc.exists) {
+                                localStorage.setItem('userInfo', doc.data())
+                                console.log("user already exists")
+                                console.log('Document data:', doc.data());
+                                document.getElementById('signin').style.visibility = 'hidden';
+                                document.getElementById('userPhoto').src = doc.data().photo;
+                                document.getElementById('userPhoto').style.visibility = 'visible';
+                            }
                         }
-                    }
-            )}
-        })
-
-
-        function submitReview() {
-            console.log('hi')
-            db.collection("reviews").add({
-                review: document.getElementById('reviewText').value,
-                rating: document.getElementById('starRating').value,
-                tutor: tutor.email,
-                student: user.email
+                        )
+                }
             })
-                .then(function (docRef) {
-                    console.log("Document written with ID: ", docRef.id);
-                    location.href = 'profilepage.html';
+
+
+            function submitReview() {
+                console.log('hi')
+                db.collection("reviews").add({
+                    review: document.getElementById('reviewText').value,
+                    rating: document.getElementById('starRating').value,
+                    tutor: tutor.email,
+                    student: user.email
                 })
-                .catch(function (error) {
-                    console.error("Error adding document: ", error);
-                });
-        }
+                    .then(function (docRef) {
+                        console.log("Document written with ID: ", docRef.id);
+                        location.href = 'profilepage.html';
+                    })
+                    .catch(function (error) {
+                        console.error("Error adding document: ", error);
+                    });
+            }
 
 
-    </script>
+        </script>
 
 
 </body>
