@@ -1,18 +1,6 @@
-add search (link to homepage) to all options modals
-
-add a bunch of past and future sessions to a new collection (all tutor sessions)
-
-book a session form
-
-view upcoming sessions page
-
-add user auth stuff to review page and view upcoming sessions page
-
-add subject name at top of search page like "python tutors", not hover over search titles
-
 round the corners of boxes/cells
 
-dynamic window sizing
+dynamic window sizing/responsiveness/@media tag?/responsiveness not mentioned in the checklist document
 
 commenting
 
@@ -20,10 +8,10 @@ documentation
 
 external css stylesheets
 
-*** publish to correct hosted url
-
 separate files into html and js
 
 clear random console logs and add useful ones, like "successfully added to database"
 
 organize similar content/functions next to each other
+
+*** publish to correct hosted url

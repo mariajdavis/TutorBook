@@ -169,7 +169,7 @@
             padding: 3px;
         }
 
-        #profile {
+        #userPhoto {
             height: 100px;
             width: 100px;
             top: 0%;
@@ -189,10 +189,10 @@
             font-size: 65%;
             color: rgb(23, 187, 134);
         }
+
         h2 {
             display: inline;
         }
-
     </style>
 
 
@@ -200,9 +200,10 @@
 </head>
 
 <body>
-
+    <!--Appends the Sign In button-->
     <a id="signin" href="signup.html">Sign In</a>
 
+    <!--Appends the subject selection dropdown-->
     <select id="dropdown">
         <option value="">Select subject...</option>
         <div role="separator"></div>
@@ -217,9 +218,8 @@
     <input type='submit' id='searchBtn' value='Search!' onclick=updateSearch()>
     <input type='button' id='filterBtn' value='Filter'><br><br>
 
-    <h2 id='searchedSubject'></h2>
-    <h2> Tutors</h2>
-
+    <!--Appends the subject selection dropdown-->
+    <h2 id='searchedSubject'></h2><h2> Tutors</h2>
 
     <table id='thead' width=402px>
         <br><br>
@@ -243,11 +243,15 @@
 
         <div class="modal-content">
             <span class="close">&times;</span>
-                <table id='filterid'>
-                    <tr><td><input type='radio' name='filter' id='rating'>Highest to lowest rating<br/></td></tr>
-                    <tr><td><input type='radio' name='filter' id='rate'>Lowest to highest rate/hour<br/></td></tr>
-                </table>
-                <input type="submit" onclick=updateSearch()>
+            <table id='filterid'>
+                <tr>
+                    <td><input type='radio' name='filter' id='rating'>Highest to lowest rating<br /></td>
+                </tr>
+                <tr>
+                    <td><input type='radio' name='filter' id='rate'>Lowest to highest rate/hour<br /></td>
+                </tr>
+            </table>
+            <input type="submit" onclick=updateSearch()>
         </div>
 
     </div>
@@ -257,23 +261,23 @@
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
 
 
-    <img src='profilephoto.png' width=100px height=100px id='profile' style='visibility:hidden'></img>
+    <img src='profilephoto.png' width=100px height=100px id='userPhoto' style='visibility:hidden'></img>
 
 
     <div id="options" class="modal">
-            <div class="modal-content" align="center">
-                <span id='close'>&times;</span>
-                <p id="homePage" onclick="backToHomePage()"></p>
-                <p id="viewNotifications" onclick="viewNotifications()"></p>
-                <p id="viewMessages" onclick="viewMessages()"></p>
-                <p id="viewSessions" onclick="viewSessions()"></p>
-                <p id='logOut' onclick='logOut()'></p>
-            </div>
+        <div class="modal-content" align="center">
+            <span id='close'>&times;</span>
+            <p id="homePage" onclick="backToHomePage()"></p>
+            <p id="viewNotifications" onclick="viewNotifications()"></p>
+            <p id="viewMessages" onclick="viewMessages()"></p>
+            <p id="viewSessions" onclick="viewSessions()"></p>
+            <p id='logOut' onclick='logOut()'></p>
         </div>
+    </div>
 
     <script>
 
-        let optionsBtn = document.getElementById("profile");
+        let optionsBtn = document.getElementById("userPhoto");
         let optionsModal = document.getElementById("options");
         let span = document.getElementById('close');
         let profilepic = "<img id='profileperson' src='profilephoto.png' width=100px height=100px href='profilepage.html'></img>'";
@@ -383,34 +387,30 @@
 
         let searchfilter = document.getElementById('filterid').value
 
-        console.log(document.getElementById('rating').checked)
-
-
         function searchResults(table, tutorArray) {
-                if (document.getElementById('rating').checked) { // Display tutors from highest to lowest ratings
-                    for (let i = 5; i > 0; i--) {
-                        tutorArray.forEach(tutor => {
-                            console.log(tutor)
-                            if (tutor.data().rating == i) {
-                                displayTutor(tutor);
-                        }
-                    })
-                    }
-                }
-                else if (document.getElementById('rate').checked) { // Display tutors from lowest to highest rate
-                    for (let j = 0; j < 100; j++) {
-                        tutorArray.forEach(tutor => {
-                            if (tutor.data().rate == j) {
-                                displayTutor(tutor);
-                        }
-                    })
-                    }
-                }
-                else {
+            if (document.getElementById('rating').checked) { // Display tutors from highest to lowest ratings
+                for (let i = 5; i > 0; i--) {
                     tutorArray.forEach(tutor => {
-                        displayTutor(tutor)
+                        if (tutor.data().rating == i) {
+                            displayTutor(tutor);
+                        }
                     })
                 }
+            }
+            else if (document.getElementById('rate').checked) { // Display tutors from lowest to highest rate
+                for (let j = 0; j < 100; j++) {
+                    tutorArray.forEach(tutor => {
+                        if (tutor.data().rate == j) {
+                            displayTutor(tutor);
+                        }
+                    })
+                }
+            }
+            else {
+                tutorArray.forEach(tutor => {
+                    displayTutor(tutor)
+                })
+            }
         }
 
         function displayTutor(tutor) {
@@ -423,7 +423,6 @@
             nameCell.innerHTML = tutor.data().firstName;
             rateCell.innerHTML = tutor.data().rate
             ratingCell.innerHTML = addStars(tutor.data().rating);
-            console.log(tutor.data())
             row.onclick = function () {
                 localStorage.setItem("tutor", JSON.stringify(tutor.data()));
                 location.href = 'profilepage.html';
@@ -455,11 +454,10 @@
             snapshot.forEach(doc => {
                 if (doc.id == currentUser.email) {
                     localStorage.setItem("userInfo", doc.data());
-                    console.log('Document data:', doc.data());
                     localStorage.setItem('userName', currentUser.email.firstName);
                     document.getElementById('signin').style.visibility = 'hidden';
-                    document.getElementById('profile').src = doc.data().photo;
-                    document.getElementById('profile').style.visibility = 'visible';
+                    document.getElementById('userPhoto').src = doc.data().photo;
+                    document.getElementById('userPhoto').style.visibility = 'visible';
                 }
             })
         })
