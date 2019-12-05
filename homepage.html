@@ -132,7 +132,7 @@
 
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function (event) {
-            if (event.target == modal) {
+            if (event.target == optionsModal) {
                 optionsModal.style.display = "none";
             }
         }
@@ -156,18 +156,11 @@
             document.getElementById("viewMessages").innerHTML = "<br>Messages<br>";
             document.getElementById("viewSessions").innerHTML = "<br>Upcoming Sessions<br>";
             document.getElementById("logOut").innerHTML = "<br>Log Out<br>";
+            
         }
 
-        // Closes the options (navigation) modal
         span.onclick = function () {
             optionsModal.style.display = "none";
-        }
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                optionsModal.style.display = "none";
-            }
         }
 
         // Leads the user back to the homepage
@@ -240,7 +233,7 @@
         // Initialize Firebase database variable
         firebase.initializeApp(firebaseConfig);
         db = firebase.firestore();
-
+        span = document.getElementsByClassName("close")[0];
         // Get the modal
         var modal = document.getElementById("myModal");
 
@@ -248,6 +241,7 @@
         span.onclick = function () {
             modal.style.display = "none";
         }
+
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function (event) {
             if (event.target == modal) {
