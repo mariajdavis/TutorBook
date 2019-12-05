@@ -2,10 +2,11 @@
 <html>
 
 <head>
-
+    <!-- Enables dynamic/responsive window design -->
     <meta name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
 
+    <!-- Import firebase js file and css stylesheets -->
     <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
 
@@ -192,12 +193,14 @@
 
 <body>
 
-    <a id="signin" href="signup.html">Sign In</a>
+    <!-- Appends sign in button -->
+    <a id="signin" href="signup.html">Sign In</a><br>
 
-    <br>
+    <!-- Appends page title where tutor's name will be added dynamically -->
     <h2 id='pageTitle'></h2>
     <h2>'s Reviews</h2>
 
+    <!-- Appends tutor's reviews table header -->
     <table id='thead' width=402px>
         <br><br>
         <tr>
@@ -206,20 +209,22 @@
             <td>Rating</td>
             <td>Review</td>
         </tr>
-
     </table>
 
-    <!-- This is where reviews are appended in body -->
+    <!-- Appends table where tutor's reviews will be added dynamically -->
     <div id='content'>
         <table id='tableid'></table>
     </div>
 
+    <!-- Imports Firebase app, firestore, and auth scripts -->
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
 
+    <!-- Appends generic user profile photo which will be made visible and dynamically changed when user is logged in -->
     <img src='profilephoto.png' width=100px height=100px id='userPhoto' style='visibility:hidden'></img>
 
+    <!-- Appends user navigation options modal and sets onlicks to correct functions -->
     <div id="options" class="modal">
         <div class="modal-content" align="center">
             <span id='close'>&times;</span>
@@ -296,24 +301,19 @@
         firebase.initializeApp(firebaseConfig);
         db = firebase.firestore();
 
+        // Assign tableid element to variable table, get tutor info from localStorage
         let table = document.getElementById('tableid');
+        let tutor = JSON.parse(localStorage.getItem("tutor"))
 
-        function searchBySubject(subject) {
-            let tutorArray = db.collection('users')
-            tutorArray.where("subjects", "array-contains", subject).get()
-                .then(function (tutorArray) {
-                    searchResults(table, tutorArray);
-                })
-                .catch(function (error) {
-                    console.log("Error getting document:", error);
-                });
-        }
-
-        let tutorArray = db.collection('users')
-        tutor = JSON.parse(localStorage.getItem("tutor"))
+        // Dynamically changes page title to include tutor's first name
         document.getElementById('pageTitle').innerHTML = tutor.firstName
 
-        function searchResults(table, tutorArray) {
+        // Call searchResults function and pass it the table variable
+        getReviews(table);
+
+        // Function that gets all documents in "reviews" collection specific to that tutor, calls displayReview function
+        // for each individual review document
+        function getReviews() {
             let allReviews = db.collection('reviews').where("tutor", "==", tutor.email).get()
                 .then(function (allReviews) {
                     allReviews.forEach(eachDoc => {
@@ -322,11 +322,11 @@
                 });
         }
 
+        // Function that displays all of the tutor's reviews in a table row format. Includes the reviewer's photo
+        // and name, the rating (out of 5 stars), and the written review.
         function displayReview(reviewID) {
-            console.log(reviewID.data().student)
             db.collection("users").doc(reviewID.data().student).get().then(function (reviewer) {
                 if (reviewer.exists) {
-                    console.log(reviewer.data())
                     let row = table.insertRow();
                     let photoCell = row.insertCell(0);
                     let nameCell = row.insertCell(1);
@@ -336,7 +336,6 @@
                     nameCell.innerHTML = reviewer.data().firstName;
                     ratingCell.innerHTML = addStars(reviewID.data().rating);
                     reviewCell.innerHTML = reviewID.data().review
-                    console.log(reviewID.data())
                 } else {
                     // doc.data() will be undefined in this case
                     console.log("No such document!");
@@ -360,8 +359,8 @@
             }
         }
 
-        listOfTutors = searchBySubject(subject);
-
+        // Uses onSnapshot to check whether a user is logged in, displays their profile photo and the corresponding
+        // navigation options modal (onclick) if they are logged in
         db.collection("users").onSnapshot((snapshot) => {
             let currentUser = firebase.auth().currentUser;
             snapshot.forEach(doc => {
