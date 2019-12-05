@@ -155,7 +155,9 @@
             document.getElementById("viewMessages").innerHTML = "<br>Messages<br>";
             document.getElementById("viewSessions").innerHTML = "<br>Upcoming Sessions<br>";
             document.getElementById("logOut").innerHTML = "<br>Log Out<br>";
+            
         }
+
 
         span.onclick = function () {
             optionsModal.style.display = "none";
@@ -239,7 +241,7 @@
         // Initialize Firebase database variable
         firebase.initializeApp(firebaseConfig);
         db = firebase.firestore();
-
+        span = document.getElementsByClassName("close")[0];
         // Get the modal
         var modal = document.getElementById("myModal");
 
@@ -249,8 +251,8 @@
         }
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function (event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
+            if (event.target == optionsModal) {
+                optionsModal.style.display = "none";
             }
         }
 
