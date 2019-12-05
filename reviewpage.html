@@ -15,10 +15,11 @@
 <body>
     <!-- Appends div for writing a review (text) and selecting a star rating (dropdown option) -->
     <div id="reviewBox">
+
         <h2>Leave a Review for </h2>
         <h2 id='tutorName'></h2><br><br>
-        <textarea id="reviewText" name="review" cols="20px" rows="10px" required></textarea>
-        <br><br>
+        <textarea id="reviewText" name="review" cols="20px" rows="10px" required></textarea><br><br>
+
         <select id="starRating">
             <option value="1">1 Star</option>
             <option value="2">2 Stars</option>
@@ -31,117 +32,122 @@
 
         <a id="signin" href="signup.html">Sign In</a>
         <img src='profilephoto.png' width=100px height=100px id='userPhoto' style='visibility:hidden'></img>
+    </div>
 
-        <div id="options" class="modal">
-            <div class="modal-content" align="center">
-                <span id='close'>&times;</span>
-                <p id="searchPage" onclick="backToSearchPage()"></p>
-                <p id="viewNotifications" onclick="viewNotifications()"></p>
-                <p id="viewMessages" onclick="viewMessages()"></p>
-                <p id="viewSessions" onclick="viewSessions()"></p>
-                <p id='logOut' onclick='logOut()'></p>
-            </div>
+
+    <div id="options" class="modal">
+        <div class="modal-content" align="center">
+            <span id='close'>&times;</span>
+            <p id="searchPage" onclick="backToSearchPage()"></p>
+            <p id="viewNotifications" onclick="viewNotifications()"></p>
+            <p id="viewMessages" onclick="viewMessages()"></p>
+            <p id="viewSessions" onclick="viewSessions()"></p>
+            <p id='logOut' onclick='logOut()'></p>
         </div>
+    </div>
 
-        <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
 
-        <script>
-            // Generating the elements user profile, options and close button for the modal
-            let profileBtn = document.getElementById("userPhoto");
-            let optionsModal = document.getElementById("options");
-            let span = document.getElementById('close');
+    <script>
+        // Generating the elements user profile, options and close button for the modal
+        let profileBtn = document.getElementById("userPhoto");
+        let optionsModal = document.getElementById("options");
+        let span = document.getElementById('close');
 
-            tutor = JSON.parse(localStorage.getItem("tutor"))
-            console.log(tutor)
+        tutor = JSON.parse(localStorage.getItem("tutor"))
+        console.log(tutor)
 
-            document.getElementById('tutorName').innerHTML = tutor.firstName
+        document.getElementById('tutorName').innerHTML = tutor.firstName
 
-            // When the user clicks anywhere outside of the modal, close it
-            span.onclick = function () {
-                optionsModal.style.display = "none";
-            }
+        // When the user clicks anywhere outside of the modal, close it
+        span.onclick = function () {
+            optionsModal.style.display = "none";
+        }
 
-            // Modal content when the user image is clicked
-            profileBtn.onclick = function () {
-                optionsModal.style.display = "block";
-                document.getElementById("viewNotifications").innerHTML = "<br>Notifications<br>";
-                document.getElementById("viewMessages").innerHTML = "<br>Messages<br>";
-                document.getElementById("viewSessions").innerHTML = "<br>Upcoming Sessions<br>";
-                document.getElementById("logOut").innerHTML = "<br>Log Out<br>";
-            }
+        // Modal content when the user image is clicked
+        profileBtn.onclick = function () {
+            optionsModal.style.display = "block";
+            document.getElementById("viewNotifications").innerHTML = "<br>Notifications<br>";
+            document.getElementById("viewMessages").innerHTML = "<br>Messages<br>";
+            document.getElementById("viewSessions").innerHTML = "<br>Upcoming Sessions<br>";
+            document.getElementById("logOut").innerHTML = "<br>Log Out<br>";
+        }
 
-            // WIP, will alert
-            function viewNotifications() {
-                alert("This will lead to user's notifications.");
-            }
+        // WIP, will alert
+        function viewNotifications() {
+            alert("This will lead to user's notifications.");
+        }
 
-            // WIP, will alert
-            function viewMessages() {
-                alert("This will lead to user's message page.");
-            }
+        // WIP, will alert
+        function viewMessages() {
+            alert("This will lead to user's message page.");
+        }
 
-            // WIP, will alert
-            function viewSessions() {
-                alert("This will lead to the user's session page.");
-            }
+        // WIP, will alert
+        function viewSessions() {
+            alert("This will lead to the user's session page.");
+        }
 
-            // Logout Message
-            function logOut() {
-                alert("This will log you out.");
-            }
+        // Logout Message
+        function logOut() {
+            alert("This will log you out.");
+        }
 
-            var firebaseConfig = {
-                apiKey: "AIzaSyBppJzDA662sj6TZBCP_Dprbx8cIq2SwSU",
-                authDomain: "tutorbookvancouver.firebaseapp.com",
-                databaseURL: "https://tutorbookvancouver.firebaseio.com",
-                projectId: "tutorbookvancouver",
-                storageBucket: "tutorbookvancouver.appspot.com",
-                messagingSenderId: "169085210695",
-                appId: "1:169085210695:web:e24ff38e1ece1c5a65e162"
-            };
+        var firebaseConfig = {
+            apiKey: "AIzaSyBppJzDA662sj6TZBCP_Dprbx8cIq2SwSU",
+            authDomain: "tutorbookvancouver.firebaseapp.com",
+            databaseURL: "https://tutorbookvancouver.firebaseio.com",
+            projectId: "tutorbookvancouver",
+            storageBucket: "tutorbookvancouver.appspot.com",
+            messagingSenderId: "169085210695",
+            appId: "1:169085210695:web:e24ff38e1ece1c5a65e162"
+        };
 
-            // Initialize Firebase
-            firebase.initializeApp(firebaseConfig);
-            db = firebase.firestore();
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.firestore();
 
-            firebase.auth().onAuthStateChanged(function (user) {
-                if (user) {
-                    // save user's name in local storage
-                    console.log("someone has logged in")
 
-                    db.collection('users').doc(user.email).get()
-                        .then(function (doc) {
-                            if (doc.exists) {
-                                localStorage.setItem('userInfo', doc.data())
-                                console.log("user already exists")
-                                console.log('Document data:', doc.data());
-                                document.getElementById('signin').style.visibility = 'hidden';
-                                document.getElementById('userPhoto').src = doc.data().photo;
-                                document.getElementById('userPhoto').style.visibility = 'visible';
-                            }
-                        }
-                        )
+
+        var user = JSON.parse(localStorage.getItem('userInfo'))
+
+        db.collection('users').doc(user.email).get()
+            .then(function (doc) {
+                if (doc.exists) {
+                    console.log("user already exists")
+                    user = doc.data();
+                    console.log('Document data:', doc.data());
+                    document.getElementById('signin').style.visibility = 'hidden';
+                    document.getElementById('userPhoto').src = doc.data().photo;
+                    document.getElementById('userPhoto').style.visibility = 'visible';
                 }
-            })
-
-            function submitReview() {
-                db.collection("reviews").add({
-                    review: document.getElementById('reviewText').value,
-                    rating: document.getElementById('starRating').value,
-                    tutor: tutor.email,
-                    student: user.email
-                })
-                    .then(function (docRef) {
-                        console.log("Document written with ID: ", docRef.id);
-                        location.href = 'profilepage.html';
-                    })
-                    .catch(function (error) {
-                        console.error("Error adding document: ", error);
-                    });
             }
+            )
 
-        </script>
+
+
+        console.log(tutor.email)
+        console.log(user.email)
+
+        function submitReview() {
+            user = JSON.parse(localStorage.getItem('userInfo'))
+            db.collection("reviews").add({
+                review: document.getElementById('reviewText').value,
+                rating: document.getElementById('starRating').value,
+                tutor: tutor.email,
+                student: user.email
+            })
+                .then(function (docRef) {
+                    console.log("Document written with ID: ", docRef.id);
+                    location.href = 'profilepage.html';
+                })
+                .catch(function (error) {
+                    console.error("Error adding document: ", error);
+                });
+        }
+
+    </script>
 
 </body>

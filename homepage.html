@@ -297,7 +297,6 @@
             let currentUser = firebase.auth().currentUser;
             snapshot.forEach(doc => {
                 if (doc.id == currentUser.email) {
-                    localStorage.setItem("userInfo", doc.data());
                     console.log('Document data:', doc.data());
                     document.getElementById('welcome').innerHTML = 'Welcome back, ' + doc.data().firstName + '!';
                     document.getElementById('signin').style.visibility = 'hidden';
@@ -312,12 +311,14 @@
         // already exist as an ID in the "users" collection, a modal will pop up where the user will be prompted to fill
         // in personal information (which is then saved to the database)
         firebase.auth().onAuthStateChanged(function (user) {
+            console.log("in auth state - homepage")
             if (user) {
 
                 db.collection('users').doc(user.email).get()
                     .then(function (doc) {
+                        localStorage.setItem('userInfo', doc.data()); // Save user's name in local storage
+
                         if (doc.exists) {
-                            localStorage.setItem('userInfo', doc.data()); // Save user's name in local storage
                             console.log("user already exists");
                             console.log('Document data:', doc.data());
                             localStorage.setItem('userName', user.email.firstName);
