@@ -3,9 +3,11 @@
 
 <head>
 
+    <!-- Enables dynamic/responsive window design -->
     <meta name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
 
+    <!-- Import firebase js file and css stylesheets -->
     <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
     <link type="text/css" rel="stylesheet" href="searchpagecss.css">
@@ -46,7 +48,6 @@
             <td>$/hr</td>
             <td>Rating</td>
         </tr>
-
     </table>
 
     <!-- This is where search results are appended in body -->
@@ -73,6 +74,7 @@
 
     </div>
 
+    
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
@@ -193,38 +195,41 @@
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
-        db = firebase.firestore();
+        db = firebase.firestore(); 
 
+        // Assign element with id tableid to variable table
         let table = document.getElementById('tableid');
 
-
+        // Update the search option after the user chooses an option from the dropdown
         function updateSearch() {
-            /** 
-            * Update the search option after the user chooses an option from the dropdown
-            */
             let subject = document.getElementById('dropdown').value;
             localStorage.setItem('subject', subject)
             clearTable();
             searchBySubject(subject)
         }
 
+        // Searches through the list of "users" documents with a subject field that 
+        // contains the searched subject name (the parameter called subject) and 
+        // calls sortResults function to sort the results before displaying them
         function searchBySubject(subject) {
-            /**
-            * Searches through our array list and display the results if they meet the requirements of the filter
-            */
             let tutorArray = db.collection('users')
             tutorArray.where("subjects", "array-contains", subject).get()
                 .then(function (tutorArray) {
-                    searchResults(table, tutorArray);
+                    sortResults(tutorArray);
                 })
                 .catch(function (error) {
                     console.log("Error getting document:", error);
                 });
         }
 
+        // Assigns element with id filterid to searchfilter variable
         let searchfilter = document.getElementById('filterid').value
 
-        function searchResults(table, tutorArray) {
+        // Sorts through list of tutors that teach the searched subject. The list of tutors is 
+        // passed to the function as the parameter tutorArray. It checks whether a filter
+        // radio button was checked and sorts the tutors accordingly. It then calls the displayTutor 
+        // function on each tutor (once sorted, or not sorted if no filter option was checked).
+        function sortResults(tutorArray) {
             if (document.getElementById('rating').checked) { // Display tutors from highest to lowest ratings
                 for (let i = 5; i > 0; i--) {
                     tutorArray.forEach(tutor => {
@@ -244,13 +249,14 @@
                 }
             }
             else {
-                tutorArray.forEach(tutor => {
+                tutorArray.forEach(tutor => { // Displays tutors without filtering them 
                     displayTutor(tutor)
                 })
             }
         }
 
-        // Correctly display each tuto and their information inside a table
+        // Correctly display a tutor's photo information inside a table (the parameter tutor contains
+        // a tutor's "users" document information)
         function displayTutor(tutor) {
             let row = table.insertRow();
             let photoCell = row.insertCell(0);
@@ -267,12 +273,9 @@
             }
         }
 
+        // Returns a string containing stars separated by spaces. The number of stars is
+        // determined by the parameter num.
         function addStars(num) {
-            /**
-            * Creating stars for review amount
-            * @param {Number} num A number
-            * @return {String} a number of stars
-            */
             if (num === 1) {
                 return '*'
             }
@@ -282,18 +285,18 @@
             }
         }
 
+        // Clears the table of tutor info (when a user initiates a new search query)
         function clearTable() {
-            /**
-            * When user searches something again, it will clear the table of tutor info
-            */
             let tableRef = document.getElementById('tableid');
             while (tableRef.rows.length > 0) {
                 tableRef.deleteRow(0);
             }
         }
 
-        listOfTutors = searchBySubject(subject);
+        // Initiates search using the subject obtained from localStorage (passed from the initial homepage search)
+        searchBySubject(subject);
 
+        // Adds onclick function to the filter button (filterBtn), makes the filter modal appear
         filterBtn.onclick = function () { filterModal.style.display = "block"; }
 
         // Grabs the tutor information through the firebase database
