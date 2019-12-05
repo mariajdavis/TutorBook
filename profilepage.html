@@ -2,9 +2,11 @@
 <html>
 
 <head>
+    <!-- Enables dynamic/responsive window design -->
     <meta name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
 
+    <!-- Import firebase js file and css stylesheets -->
     <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
     <link type="text/css" rel="stylesheet" href="profilepagecss.css">
@@ -12,7 +14,7 @@
 </head>
 
 <body>
-    <!-- Putting all of the user profile's information inside a div tag-->
+    <!-- Appends all user profile elements inside a div tag to be dynamically updated with tutor's specific information -->
     <div class="card">
         <img src="profilephoto.png" id='tutorPhoto' alt="photo" width=250px height=250px>
         <h1 id='tutorName'></h1>
@@ -46,11 +48,14 @@
         </div>
     </div>
 
+    <!-- Imports Firebase app, firestore, and auth scripts -->
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
 
     <script>
+
+        // Initializes the project's Firebase information to firebaseConfig variable
         var firebaseConfig = {
             apiKey: "AIzaSyBppJzDA662sj6TZBCP_Dprbx8cIq2SwSU",
             authDomain: "tutorbookvancouver.firebaseapp.com",
@@ -61,14 +66,17 @@
             appId: "1:169085210695:web:e24ff38e1ece1c5a65e162"
         };
 
+        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         db = firebase.firestore();
 
+        // Get tutor location from localStorage
         tutor = JSON.parse(localStorage.getItem("tutor"))
-        console.log(tutor)
-
+        
+        // Initialize subjects variable to an emptry string
         let subjects = ''
 
+        // Dynamically update tutor's information (photo, name, city, rating, rate, bio, and subjects taught)
         document.getElementById('tutorPhoto').src = tutor.photo;
         document.getElementById('tutorName').innerHTML = tutor.firstName;
         document.getElementById('tutorCity').innerHTML = tutor.city;
@@ -78,31 +86,27 @@
         tutor.subjects.forEach(tutorSubject => {
             subjects += tutorSubject + '</br>';
         })
-
         document.getElementById('tutorSubjects').innerHTML = subjects;
 
+        // Uses onAuthStateChanged to check whether a user is logged in, displays their profile photo and the corresponding
+        // navigation options modal (onclick) if they are logged in. Also makes certain buttons (Contact, Book a Session)
+        // visible only if a user is signed-in, and makes the Leave a Review button only visible if the user has had a past 
+        // tutor session with that tutor.
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
-                // save user's name in local storage
-                console.log("someone has logged in")
-
                 db.collection('users').doc(user.email).get()
                     .then(function (doc) {
                         if (doc.exists) {
-                            localStorage.setItem('userInfo', JSON.stringify(doc.data()))
-                            console.log("user already exists")
-                            console.log('Document data:', doc.data());
+                            localStorage.setItem('userInfo', JSON.stringify(doc.data())); // Save user object in localStorage
                             document.getElementById('signin').style.visibility = 'hidden';
                             document.getElementById('userPhoto').src = doc.data().photo;
                             document.getElementById('userPhoto').style.visibility = 'visible';
                             document.getElementById('contact').style.visibility = 'visible';
                             document.getElementById('bookSession').style.visibility = 'visible';
 
+                            // This segment accesses the documents in the "sessions" collection that the user and tutor share. If
+                            // one exists, then the Leave a Review button is made visible
                             let sessions = db.collection('sessions');
-
-                            console.log(tutor.email)
-                            console.log(user.email)
-
                             sessions.where("upcoming", "==", false).where("student", "==", user.email).where("tutor", "==", tutor.email).get()
                                 .then(function (querySnapshot) {
                                     querySnapshot.forEach(function (doc) {
@@ -119,12 +123,10 @@
             }
         })
 
+        // Take a parameter called num that represents a positive integer, uses recursion to keep adding star symbols 
+        // 'num' number of times and returns a string of 'num' number of star symbols. Allows us to illustrate the tutor's 
+        // average rating.
         function addStars(num) {
-            /**
-            * Creating stars for review amount. Used to display the user's review
-            * @param {Number} num A number
-            * @return {String} a number of stars
-            */
             if (num === 1) {
                 return '*'
             }
@@ -133,6 +135,7 @@
             }
         }
 
+        // Declare clickable element ids as variables
         let optionsBtn = document.getElementById("userPhoto");
         let optionsModal = document.getElementById("options");
         let span = document.getElementById('close')
@@ -147,7 +150,7 @@
             document.getElementById("logOut").innerHTML = "<br>Log Out<br>";
         }
 
-        // Close the modal when the user clicks outside of the box
+        // Close the navigation modal when the user clicks outside of the box
         span.onclick = function () {
             optionsModal.style.display = "none";
         }
@@ -157,32 +160,32 @@
             location.href = 'homepage.html';
         }
 
-        // WIP, will alert
+        // Work in progress, will link to user's notifications page
         function viewNotifications() {
             alert("This will lead to user's notifications.");
         }
 
-        // WIP, will alert
+        // Work in progress, will link to user's messages page
         function viewMessages() {
             alert("This will lead to user's message page.");
         }
 
-        // WIP, will alert
+        // Work in progress, will link to user's past/upcoming sessions page
         function viewSessions() {
             alert("This will lead to the user's session page.");
         }
 
-        // WIP, will alert
+        // Work in progress, will enable user to log out
         function logOut() {
             alert("This will log you out.");
         }
 
-        // Will lead the user to the reviews page when clicked
+        // Brings user to the tutor's 'Leave a Review' page when clicked
         function goToReviewPage() {
             location.href = 'reviewpage.html';
         }
 
-        // Wlil lead the user to the view reviews page when clicked
+        // Brings user to the tutor's 'View Reviews' page when clicked
         function viewReviews() {
             location.href = 'viewreviewspage.html';
         }
