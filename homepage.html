@@ -5,7 +5,7 @@
     <!-- Enables dynamic/responsive window design -->
     <meta name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
-    
+
     <!-- Import firebase js file and css stylesheets -->
     <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
@@ -132,12 +132,12 @@
 
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function (event) {
-            if (event.target == modal) {
+            if (event.target == optionsModal) {
                 optionsModal.style.display = "none";
             }
         }
 
-        // 
+        // Assign the project's Firebase information to variable firebaseConfig
         var firebaseConfig = {
             apiKey: "AIzaSyBppJzDA662sj6TZBCP_Dprbx8cIq2SwSU",
             authDomain: "tutorbookvancouver.firebaseapp.com",
@@ -148,6 +148,7 @@
             appId: "1:169085210695:web:e24ff38e1ece1c5a65e162"
         };
 
+        // Assigns onclick function to the user profile photo (when logged in)
         optionsBtn.onclick = function () {
             optionsModal.style.display = "block";
             document.getElementById('homePage').innerHTML = "<br>Home<br>";
@@ -158,22 +159,12 @@
             
         }
 
-
         span.onclick = function () {
             optionsModal.style.display = "none";
         }
 
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                optionsModal.style.display = "none";
-            }
-        }
-
+        // Leads the user back to the homepage
         function backToHomePage() {
-            /**
-            * Leads the user back to the homepage
-            */
             location.href = 'homepage.html';
         }
 
@@ -194,7 +185,7 @@
         function viewSessions() {
             /**
             * WIP, will just send an alert message
-            */ 
+            */
             alert("This will lead to the user's session page.");
         }
 
@@ -202,7 +193,7 @@
             /**
             * WIP, will just send an alert message
             */
-            alert("This will redirect back to the main page and log you out.");
+            alert("This will log you out.");
         }
     </script>
 
@@ -210,14 +201,15 @@
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
-    <script type="text/javascript">
+    <script type="text/javascript"></script>
+
+    <script>
+
         var mydropdown = document.getElementById('dropdown');
         mydropdown.onchange = function () {
             mydropdown.value = this.value; //to change the value
         }
-    </script>
 
-    <script>
         // Log-out template, use for the modal when user is clicked
         document.getElementById("logOut").onclick = function () {
             firebase.auth().signOut().then(function () {
@@ -249,10 +241,11 @@
         span.onclick = function () {
             modal.style.display = "none";
         }
+
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function (event) {
-            if (event.target == optionsModal) {
-                optionsModal.style.display = "none";
+            if (event.target == modal) {
+                modal.style.display = "none";
             }
         }
 
@@ -263,13 +256,15 @@
             location.href = 'searchpage.html';
         }
 
-        // Function to get values from modal form
+        // Function to get values from modal form and submit to database in the form of a new
+        // "users" document. Parameter e and e.preventDefault() cancels the event if it can be 
+        // cancelled and the default action belonging to the event will not occur.
         function getValues(e) {
             var user = firebase.auth().currentUser
             e.preventDefault();
 
+            // Grabbing the users information from the signup (get user information) modal
             db.collection("users").doc(user.email).set({
-                // Grabbing the users information from the signup modal
                 firstName: document.getElementById('firstname').value,
                 firstName: document.getElementById('firstname').value,
                 lastName: document.getElementById('lastname').value,
@@ -282,13 +277,13 @@
             })
                 .then(function (docRef) {
                     // Confirming that the info has been successfully written into the database
-                    console.log("written to database")
+                    console.log("Written to database")
                 })
                 .catch(function (error) {
                     // Console log if an error occurs
                     console.log("err")
                 })
-            modal.style.display = "none";
+            modal.style.display = "none"; // Causes the signup modal to disappear once information is set to database
         }
 
         // Change the status of user (sign in button disappears and user photo appears if a user is signed in
@@ -312,7 +307,7 @@
         // in personal information (which is then saved to the database)
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
-                
+
                 db.collection('users').doc(user.email).get()
                     .then(function (doc) {
                         if (doc.exists) {
