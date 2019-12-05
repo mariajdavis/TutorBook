@@ -2,17 +2,18 @@
 
 <head>
 
+    <!-- Enables dynamic/responsive window design -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    
-        <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
-        <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
-        <link type="text/css" rel="stylesheet" href="reviewpagecss.css">
+    <!-- Import firebase js file and css stylesheets -->
+    <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
+    <link type="text/css" rel="stylesheet" href="reviewpagecss.css">
 
 </head>
 
 <body>
-    <!-- Interface for making a review -->
+    <!-- Appends div for writing a review (text) and selecting a star rating (dropdown option) -->
     <div id="reviewBox">
         <h2>Leave a Review for </h2>
         <h2 id='tutorName'></h2><br><br>
@@ -24,9 +25,7 @@
             <option value="3">3 Stars</option>
             <option value="4">4 Stars</option>
             <option value="5">5 Stars</option>
-        </select>
-        
-        <br><br>
+        </select><br><br>
 
         <input id="myBtn" type="button" value="Submit" onclick=submitReview()>
 
