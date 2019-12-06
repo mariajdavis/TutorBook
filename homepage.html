@@ -107,9 +107,10 @@
         </div>
     </div>
 
-    <!-- Initial profile image should be invisible because the user has not signed in yet -->
+    <!-- Profile img element appended and made invisible because the user has not signed in yet -->
     <img src='profilephoto.png' width=100px height=100px id='userPhoto' style='visibility:hidden'></img>
 
+    <!-- Appends user options (navigation) modal -->
     <div id="options" class="modal">
         <div class="modal-content" align="center">
             <span id='close'>&times;</span>
@@ -124,7 +125,8 @@
     </div>
 
     <script>
-        // Grabbing the elements(user img, option list, close button, and search button) created through the HTML section
+
+        // Accessing html elements (user img, option list, close button, and search button) by id
         let optionsBtn = document.getElementById("userPhoto");
         let optionsModal = document.getElementById("options");
         let span = document.getElementById('close');
@@ -156,9 +158,9 @@
             document.getElementById("viewMessages").innerHTML = "<br>Messages<br>";
             document.getElementById("viewSessions").innerHTML = "<br>Upcoming Sessions<br>";
             document.getElementById("logOut").innerHTML = "<br>Log Out<br>";
-            
         }
 
+        // Assigns onclick to span variable which "turns off" modal/makes it invisible
         span.onclick = function () {
             optionsModal.style.display = "none";
         }
@@ -205,9 +207,10 @@
 
     <script>
 
+        // Assigns value of dropdown element (subject searched) to variable mydropdown
         var mydropdown = document.getElementById('dropdown');
         mydropdown.onchange = function () {
-            mydropdown.value = this.value; //to change the value
+            mydropdown.value = this.value; // Updates value of dropdown menu (subject searched)
         }
 
         // Log-out template, use for the modal when user is clicked

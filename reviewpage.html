@@ -13,13 +13,12 @@
 </head>
 
 <body>
+
     <!-- Appends div for writing a review (text) and selecting a star rating (dropdown option) -->
     <div id="reviewBox">
-
         <h2>Leave a Review for </h2>
         <h2 id='tutorName'></h2><br><br>
-        <textarea id="reviewText" name="review" cols="20px" rows="10px" required></textarea><br><br>
-
+        <textarea id="reviewText" name="review" cols="30" rows="10" required></textarea><br><br>
         <select id="starRating">
             <option value="1">1 Star</option>
             <option value="2">2 Stars</option>
@@ -27,18 +26,16 @@
             <option value="4">4 Stars</option>
             <option value="5">5 Stars</option>
         </select><br><br>
-
         <input id="myBtn" type="button" value="Submit" onclick=submitReview()>
-
         <a id="signin" href="signup.html">Sign In</a>
         <img src='profilephoto.png' width=100px height=100px id='userPhoto' style='visibility:hidden'></img>
     </div>
 
-    <!--  -->
+    <!-- Appends options modal (when a user is logged in)  -->
     <div id="options" class="modal">
         <div class="modal-content" align="center">
             <span id='close'>&times;</span>
-            <p id="searchPage" onclick="backToSearchPage()"></p>
+            <p id="homePage" onclick="backToHomePage()"></p>
             <p id="viewNotifications" onclick="viewNotifications()"></p>
             <p id="viewMessages" onclick="viewMessages()"></p>
             <p id="viewSessions" onclick="viewSessions()"></p>
@@ -46,19 +43,22 @@
         </div>
     </div>
 
+    <!-- Adding firebase to the script for database purposes -->
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
 
     <script>
+
         // Generating the elements user profile, options and close button for the modal
         let profileBtn = document.getElementById("userPhoto");
         let optionsModal = document.getElementById("options");
         let span = document.getElementById('close');
 
-        tutor = JSON.parse(localStorage.getItem("tutor"))
-        console.log(tutor)
+        // Gets tutor object from localStorage and assigns it to variable tutor
+        let tutor = JSON.parse(localStorage.getItem("tutor"));
 
+        // Dynamically changes tutor name in page title
         document.getElementById('tutorName').innerHTML = tutor.firstName
 
         // When the user clicks anywhere outside of the modal, close it
@@ -69,10 +69,16 @@
         // Modal content when the user image is clicked
         profileBtn.onclick = function () {
             optionsModal.style.display = "block";
+            document.getElementById('homePage').innerHTML = "<br>Home<br>";
             document.getElementById("viewNotifications").innerHTML = "<br>Notifications<br>";
             document.getElementById("viewMessages").innerHTML = "<br>Messages<br>";
             document.getElementById("viewSessions").innerHTML = "<br>Upcoming Sessions<br>";
             document.getElementById("logOut").innerHTML = "<br>Log Out<br>";
+        }
+
+        // Leads the user back to the homepage
+        function backToHomePage() {
+            location.href = 'homepage.html';
         }
 
         // WIP, will alert
@@ -95,6 +101,7 @@
             alert("This will log you out.");
         }
 
+        // Assigns project Firebase informatino to firebaseConfig variable
         var firebaseConfig = {
             apiKey: "AIzaSyBppJzDA662sj6TZBCP_Dprbx8cIq2SwSU",
             authDomain: "tutorbookvancouver.firebaseapp.com",
@@ -109,10 +116,11 @@
         firebase.initializeApp(firebaseConfig);
         db = firebase.firestore();
 
-
-
+        // Gets user info from localStorage after parsing
         var user = JSON.parse(localStorage.getItem('userInfo'))
 
+        // Checks to see if a user that exists in the "users" collection is logged in. 
+        // If so, hides the sign up button and displays user's photo in its place
         db.collection('users').doc(user.email).get()
             .then(function (doc) {
                 if (doc.exists) {
@@ -126,13 +134,10 @@
             }
             )
 
-
-
-        console.log(tutor.email)
-        console.log(user.email)
-
+        // Adds review text, star rating, tutor's email, and student/reviewer's e-mail to
+        // a new document in the "reviews" collection
         function submitReview() {
-            user = JSON.parse(localStorage.getItem('userInfo'))
+            user = JSON.parse(localStorage.getItem('userInfo')) // Gets user information from localStorage after parsing
             db.collection("reviews").add({
                 review: document.getElementById('reviewText').value,
                 rating: document.getElementById('starRating').value,

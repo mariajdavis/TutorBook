@@ -95,18 +95,23 @@
     </div>
 
     <script>
-        // Grabbing the elements from the html section and making them a variable to manipulate within JS.
+        // Accessing the elements from the html section and making them a variable to manipulate within JS.
         let optionsBtn = document.getElementById("userPhoto");
         let optionsModal = document.getElementById("options");
         let span = document.getElementById('close');
-        // User profile
+        
+        // Assigns html to profilepic variable
         let profilepic = "<img id='profileperson' src='profilephoto.png' width=100px height=100px href='profilepage.html'></img>'";
+        
+        // Gets searched subject from localStorage
         let subject = localStorage.getItem('subject');
+        
+        // Capitalizes subject name in the header of search results using capitalize function
         document.getElementById('searchedSubject').innerHTML = capitalize(subject);
 
         function capitalize(string) {
             /**
-            * Capitalizes the given string
+            * Capitalizes the given string.
             * @param {string} string Any given string
             * @return {string}
             */
@@ -135,7 +140,7 @@
             }
         }
 
-        // Sending the user back to the homepage
+        // Sends the user back to the homepage
         function backToHomePage() {
             location.href = 'homepage.html';
         }
@@ -160,11 +165,12 @@
             alert("This will log you out.");
         }
 
+        // Assigns variables to access html elements
         let tutorTable = document.getElementById('tableid');
         let filterBtn = document.getElementById('filterBtn')
         let searchBtn = document.getElementById('searchBtn');
 
-        // Get the filter modal
+        // Accesses filter modal
         let filterModal = document.getElementById("filterModal");
 
         // Firebase stuffs

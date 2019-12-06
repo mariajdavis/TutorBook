@@ -71,7 +71,7 @@ button:active {
 
 #reviewText {
     resize: none;
-    
+    font-size:20px;
 }
 
 .btn {
